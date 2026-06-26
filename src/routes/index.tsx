@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown, Calendar } from "lucide-react";
 import hero from "@/assets/hero-deer.jpg.asset.json";
 import logo from "@/assets/wild-agile-logo.jpg.asset.json";
 import storyImg from "@/assets/about-story.jpg";
@@ -37,6 +37,7 @@ function Home() {
       <HeroSection />
       <AboutPreview />
       <FeaturedProjects />
+      <NewsUpdates />
       <ImpactNumbers />
       <GalleryPreview />
       <JoinCTA />
@@ -468,5 +469,156 @@ function JoinCTA() {
   );
 }
 
+const NEWS_ITEMS = [
+  { img: natureWalk, date: "Jun 18, 2026", category: "Field Notes", title: "Monsoon Walks in the Western Ghats", desc: "Children traced amphibian trails after the first showers — a sensory immersion into the awakening forest floor." },
+  { img: school, date: "Jun 04, 2026", category: "School Program", title: "Biodiversity Week at Vidya Niketan", desc: "Five days of birding, leaf-pressing and storytelling brought 240 students closer to their local ecology." },
+  { img: plantation, date: "May 22, 2026", category: "Conservation", title: "1,000 Native Saplings, One Hillside", desc: "Communities, students and forest officers joined hands to restore a degraded slope in the Sahyadris." },
+  { img: clean, date: "May 09, 2026", category: "Community", title: "Streambank Clean-up Along the Mula", desc: "Volunteers removed plastic waste from 2km of riverbank while learning about freshwater habitats." },
+  { img: storyImg, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
+  { img: hero.url, date: "Apr 12, 2026", category: "Project Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
+];
+
+const ARCHIVES: Array<{ year: string; months: Array<{ name: string; posts: string[] }> }> = [
+  { year: "2026", months: [
+    { name: "June", posts: ["Monsoon Walks in the Western Ghats", "Biodiversity Week at Vidya Niketan"] },
+    { name: "May", posts: ["1,000 Native Saplings, One Hillside", "Streambank Clean-up Along the Mula"] },
+    { name: "April", posts: ["Featured in The Hindu", "Spotted Deer Census Concluded"] },
+  ]},
+  { year: "2025", months: [
+    { name: "December", posts: ["Year in Review: Roots & Wings", "Winter Bird Count Report"] },
+    { name: "November", posts: ["Forest School Pilot Launched", "Partnering with Pune Municipal Schools"] },
+    { name: "October", posts: ["Wetland Walks for Teens"] },
+  ]},
+];
+
+function NewsUpdates() {
+  const [openYear, setOpenYear] = useState<string | null>("2026");
+  const [openMonth, setOpenMonth] = useState<string | null>("2026-June");
+
+  return (
+    <section className="section-pad relative">
+      <div className="container-x">
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <SectionTitle
+            eyebrow="News & Updates"
+            title={<>Stories from<br />the field.</>}
+            subtitle="Explore our latest conservation activities, wildlife stories, school programs, media coverage and project updates."
+          />
+          <Reveal>
+            <Link to="/" className="btn-primary">View All Updates <ArrowRight className="h-4 w-4" /></Link>
+          </Reveal>
+        </div>
+
+        <div className="mt-14 grid gap-10 lg:grid-cols-[7fr_3fr]">
+          {/* News grid */}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {NEWS_ITEMS.map((n, i) => (
+              <Reveal key={n.title} dir="up" delay={(i % 3) * 0.08}>
+                <article className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white shadow-[var(--shadow-card)] transition-transform duration-500 hover:-translate-y-1">
+                  <div className="relative overflow-hidden">
+                    <div className="aspect-[4/3] w-full">
+                      <img
+                        src={n.img}
+                        alt={n.title}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
+                      />
+                    </div>
+                    <span className="absolute left-4 top-4 rounded-full bg-[var(--gold)]/95 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary shadow">
+                      {n.category}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                      <Calendar className="h-3 w-3" /> {n.date}
+                    </div>
+                    <h3 className="mt-3 font-serif text-2xl leading-snug text-primary">{n.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/75 line-clamp-3">{n.desc}</p>
+                    <Link to="/" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-secondary">
+                      Read More <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Archives */}
+          <Reveal dir="up">
+            <aside className="lg:sticky lg:top-28">
+              <div className="overflow-hidden rounded-[1.5rem] bg-primary text-primary-foreground shadow-[var(--shadow-card)]">
+                <div className="border-b border-white/10 px-6 py-5">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--gold)]">Archives</div>
+                  <h3 className="mt-1 font-serif text-2xl">Browse by date</h3>
+                </div>
+                <div className="px-3 py-3">
+                  {ARCHIVES.map((y) => {
+                    const yOpen = openYear === y.year;
+                    return (
+                      <div key={y.year} className="border-b border-white/10 last:border-0">
+                        <button
+                          onClick={() => setOpenYear(yOpen ? null : y.year)}
+                          className="flex w-full items-center justify-between px-3 py-3 text-left font-serif text-lg transition-colors hover:text-[var(--gold)]"
+                        >
+                          {y.year}
+                          <ChevronDown className={`h-4 w-4 transition-transform ${yOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {yOpen && (
+                          <div className="pb-2">
+                            {y.months.map((m) => {
+                              const key = `${y.year}-${m.name}`;
+                              const mOpen = openMonth === key;
+                              return (
+                                <div key={key} className="ml-3">
+                                  <button
+                                    onClick={() => setOpenMonth(mOpen ? null : key)}
+                                    className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-primary-foreground/85 transition-colors hover:text-[var(--gold)]"
+                                  >
+                                    <span className="inline-flex items-center gap-2">
+                                      <ChevronDown className={`h-3 w-3 transition-transform ${mOpen ? "rotate-0" : "-rotate-90"}`} />
+                                      {m.name}
+                                    </span>
+                                    <span className="text-[10px] uppercase tracking-[0.18em] text-primary-foreground/55">
+                                      {m.posts.length}
+                                    </span>
+                                  </button>
+                                  {mOpen && (
+                                    <ul className="mb-2 ml-7 space-y-1.5 border-l border-white/10 pl-4 pt-1">
+                                      {m.posts.map((p) => (
+                                        <li key={p}>
+                                          <Link to="/" className="block text-[13px] leading-snug text-primary-foreground/75 transition-colors hover:text-[var(--gold)]">
+                                            {p}
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="border-t border-white/10 p-5">
+                  <Link
+                    to="/"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--gold)] px-5 py-2.5 text-sm font-semibold text-primary transition-transform hover:scale-[1.02]"
+                  >
+                    View All Archives <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </aside>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // suppress unused warnings for icons reserved for future use
 void Bird; void GraduationCap;
+
