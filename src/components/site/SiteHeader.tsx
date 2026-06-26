@@ -87,9 +87,7 @@ export function SiteHeader() {
           <button
             aria-label="Menu"
             onClick={() => setOpen((o) => !o)}
-            className={`grid h-11 w-11 place-items-center rounded-full lg:hidden ${
-              transparent ? "bg-white/15 text-white border border-white/30" : "bg-muted text-primary"
-            }`}
+            className="grid h-11 w-11 place-items-center rounded-full lg:hidden bg-muted text-primary"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
