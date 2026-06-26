@@ -37,6 +37,7 @@ export function SiteHeader() {
           ? "bg-transparent"
           : "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-[0_2px_24px_-12px_rgba(46,94,78,0.18)]"
       }`}
+      data-transparent={transparent ? "true" : "false"}
     >
       <div className="container-x flex h-20 items-center justify-between gap-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
