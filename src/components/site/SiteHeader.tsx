@@ -45,10 +45,10 @@ export function SiteHeader() {
             <img src={logo.url} alt="Wild Agile Foundation" className="h-12 w-12 object-cover" />
           </div>
           <div className="hidden min-w-0 sm:block">
-            <div className={`font-serif text-lg leading-tight tracking-tight ${transparent ? "text-white" : "text-primary"}`}>
+            <div className="font-serif text-lg leading-tight tracking-tight text-primary">
               Wild Agile
             </div>
-            <div className={`text-[10px] uppercase tracking-[0.18em] ${transparent ? "text-white/80" : "text-muted-foreground"}`}>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
               Foundation
             </div>
           </div>
