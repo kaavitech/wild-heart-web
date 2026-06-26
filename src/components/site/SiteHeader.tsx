@@ -2,7 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Heart } from "lucide-react";
-import logo from "@/assets/wild-agile-logo.jpg.asset.json";
+import logo from "@/assets/logo.jpeg";
+import { SOCIAL_LINKS } from "@/components/site/SocialBrandIcons";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -39,58 +40,80 @@ export function SiteHeader() {
       }`}
       data-transparent={transparent ? "true" : "false"}
     >
-      <div className="container-x flex h-20 items-center justify-between gap-6">
-        <Link to="/" className="flex min-w-0 items-center gap-3">
-          <div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-border/50">
-            <img src={logo.url} alt="Wild Agile Foundation" className="h-12 w-12 object-cover" />
+      <div className="container-x grid grid-cols-[auto_1fr] grid-rows-[2.5rem_5rem] gap-x-6">
+        <Link
+          to="/"
+          className="row-span-2 flex h-[7.5rem] min-w-0 items-center gap-2.5 sm:gap-4"
+        >
+          <div className="grid h-[4.21875rem] w-[4.21875rem] shrink-0 place-items-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-border/50">
+            <img
+              src={logo}
+              alt="Wild Agile Foundation"
+              className="h-full w-full object-contain p-1"
+            />
           </div>
-          <div className="hidden min-w-0 sm:block">
-            <div className="font-serif text-lg leading-tight tracking-tight text-primary">
+          <div className="hidden min-w-0 text-[1.58203125rem] sm:block">
+            <div className="font-serif leading-[0.95] tracking-tight text-primary">
               Wild Agile
             </div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="text-[0.556em] uppercase leading-none tracking-[0.18em] text-muted-foreground">
               Foundation
             </div>
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1">
-          {NAV.map((item) => {
-            const active = location.pathname === item.to;
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "text-primary"
-                    : "text-foreground/75 hover:text-primary"
-                }`}
-              >
-                {item.label}
-                {active && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 -z-10 rounded-full bg-primary/8"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="flex h-10 items-center justify-end gap-1.5 border-b border-border/40">
+          {SOCIAL_LINKS.map(({ Icon, label, href }) => (
+            <a
+              key={label}
+              href={href}
+              aria-label={label}
+              className="grid h-5 w-5 place-items-center transition hover:scale-110 hover:opacity-90"
+            >
+              <Icon />
+            </a>
+          ))}
+        </div>
 
-        <div className="flex items-center gap-3">
-          <Link to="/join" className="btn-gold hidden sm:inline-flex">
-            <Heart className="h-4 w-4" /> Donate
-          </Link>
-          <button
-            aria-label="Menu"
-            onClick={() => setOpen((o) => !o)}
-            className="grid h-11 w-11 place-items-center rounded-full lg:hidden bg-muted text-primary"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+        <div className="flex h-20 items-center gap-6">
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-1">
+            {NAV.map((item) => {
+              const active = location.pathname === item.to;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "text-primary"
+                      : "text-foreground/75 hover:text-primary"
+                  }`}
+                >
+                  {item.label}
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 -z-10 rounded-full bg-primary/8"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="ml-auto flex shrink-0 items-center gap-3 lg:ml-0">
+            <Link to="/join" className="btn-gold hidden sm:inline-flex">
+              <Heart className="h-4 w-4" /> Donate
+            </Link>
+            <button
+              aria-label="Menu"
+              onClick={() => setOpen((o) => !o)}
+              className="grid h-11 w-11 place-items-center rounded-full lg:hidden bg-muted text-primary"
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
       </div>
 

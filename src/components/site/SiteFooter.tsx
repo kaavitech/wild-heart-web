@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Linkedin, Youtube, Leaf } from "lucide-react";
-import logo from "@/assets/wild-agile-logo.jpg.asset.json";
+import logo from "@/assets/logo.jpeg";
 
 export function SiteFooter() {
   return (
@@ -12,7 +12,7 @@ export function SiteFooter() {
         <div className="md:col-span-5">
           <div className="flex items-center gap-3">
             <div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-white">
-              <img src={logo.url} alt="" className="h-12 w-12 object-cover" />
+              <img src={logo} alt="" className="h-12 w-12 object-contain p-1" />
             </div>
             <div>
               <div className="font-serif text-2xl leading-tight">Wild Agile Foundation</div>

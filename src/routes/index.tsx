@@ -1,9 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown, Calendar } from "lucide-react";
-import hero from "@/assets/hero-deer.jpg.asset.json";
-import logo from "@/assets/wild-agile-logo.jpg.asset.json";
+import heroDeer from "@/assets/landingPage/deer.jpeg";
+import heroRailwayWalk from "@/assets/landingPage/railway-walk.png";
+import heroCommunityForest from "@/assets/landingPage/community-forest.png";
+import heroClassroom from "@/assets/landingPage/classroom-session.png";
+import heroCleanup from "@/assets/landingPage/cleanup-drive.png";
+import heroVolunteers from "@/assets/landingPage/volunteer-group.png";
+import heroWorkshop from "@/assets/landingPage/workshop-hall.png";
+import heroDsc5803 from "@/assets/landingPage/DSC_5803.jpg";
+import heroImg8954 from "@/assets/landingPage/IMG_8954.jpg";
+import heroJeevanDhara1 from "@/assets/landingPage/jeevanDhara1.png";
+import heroJeevanDhara2 from "@/assets/landingPage/jeevandhara2.png";
 import storyImg from "@/assets/about-story.jpg";
 import { PROJECTS } from "@/lib/projects-data";
 import { Reveal } from "@/components/site/Reveal";
@@ -18,7 +27,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "An NGO connecting children with nature, wildlife and forests through immersive programs across India." },
       { property: "og:title", content: "Wild Agile Foundation" },
       { property: "og:description", content: "Building an environment-conscious generation." },
-      { property: "og:image", content: hero.url },
+      { property: "og:image", content: heroDeer },
     ],
   }),
   component: Home,
@@ -45,23 +54,96 @@ function Home() {
   );
 }
 
-const COLLAGE: Array<{
+const COLLAGE_ITEMS: Array<{
   src: string;
   alt: string;
-  className: string;
-  rounded: string;
-  rotate: string;
   delay: number;
-  float: string;
 }> = [
-  // around the central deer
-  { src: "", alt: "Children on a nature walk", className: "absolute left-[2%] top-[6%] h-28 w-36 md:h-36 md:w-44", rounded: "rounded-[28px]", rotate: "-rotate-[6deg]", delay: 0.5, float: "animate-float-a" },
-  { src: "", alt: "Tree plantation drive", className: "absolute right-[4%] top-[2%] h-32 w-32 md:h-40 md:w-40", rounded: "rounded-[44px_18px_44px_18px]", rotate: "rotate-[4deg]", delay: 0.6, float: "animate-float-b" },
-  { src: "", alt: "School awareness session", className: "absolute left-[0%] bottom-[18%] h-32 w-44 md:h-40 md:w-56", rounded: "rounded-[22px_44px_22px_44px]", rotate: "-rotate-[3deg]", delay: 0.75, float: "animate-float-c" },
-  { src: "", alt: "Community clean-up", className: "absolute right-[2%] bottom-[10%] h-32 w-40 md:h-40 md:w-48", rounded: "rounded-[36px]", rotate: "rotate-[5deg]", delay: 0.85, float: "animate-float-a" },
-  { src: "", alt: "Bird watching with children", className: "absolute left-[18%] -bottom-[2%] h-24 w-24 md:h-28 md:w-28", rounded: "rounded-full", rotate: "-rotate-[8deg]", delay: 0.95, float: "animate-float-b" },
-  { src: "", alt: "Forest learning circle", className: "absolute right-[22%] -top-[2%] h-24 w-24 md:h-28 md:w-28", rounded: "rounded-full", rotate: "rotate-[10deg]", delay: 1.05, float: "animate-float-c" },
+  // clockwise orbit
+  { src: heroWorkshop, alt: "Environmental workshop session", delay: 0.5 },
+  { src: heroRailwayWalk, alt: "Children on a nature walk along the railway trail", delay: 0.55 },
+  { src: heroCommunityForest, alt: "Community forest gathering", delay: 0.6 },
+  { src: heroDsc5803, alt: "Students learning in nature", delay: 0.65 },
+  { src: heroCleanup, alt: "Community clean-up drive", delay: 0.7 },
+  { src: heroVolunteers, alt: "Volunteers exploring nature together", delay: 0.75 },
+  { src: heroClassroom, alt: "Classroom awareness session", delay: 0.8 },
+  { src: heroImg8954, alt: "Community nature engagement", delay: 0.85 },
+  { src: heroJeevanDhara1, alt: "Jeevan Dhara water conservation activity", delay: 0.9 },
+  { src: heroJeevanDhara2, alt: "Jeevan Dhara community workshop", delay: 0.95 },
 ];
+
+const HERO_COLLAGE = {
+  centerSize: 31.5,
+  satelliteWidth: 23,
+  centerGap: 3,
+  neighborOverlap: 0.1,
+  cornerAngleNudge: 8,
+  cornerRadiusInset: 0,
+};
+
+/** Diagonal slots on a 10-image ring (indices 1, 4, 6, 9). */
+const CORNER_ORBIT_INDICES = new Set([1, 4, 6, 9]);
+
+/** Push corner slots slightly away from top/bottom pole images on the ring. */
+function cornerOrbitAngle(index: number, baseAngle: number, nudge: number) {
+  switch (index) {
+    case 1:
+      return baseAngle + nudge;
+    case 9:
+      return baseAngle - nudge;
+    case 4:
+      return baseAngle - nudge;
+    case 6:
+      return baseAngle + nudge;
+    default:
+      return baseAngle;
+  }
+}
+
+/**
+ * Bottom → top stacking (each image covers the one before it).
+ * Upper: jeevan1 ← jeevan2 ← community ← railway ← workshop
+ * Lower: DSC ← cleanup ← IMG ← classroom ← volunteer
+ */
+const ORBIT_Z_ORDER = [8, 9, 2, 1, 3, 4, 7, 6, 5, 0];
+
+function collageZIndex(index: number) {
+  const pos = ORBIT_Z_ORDER.indexOf(index);
+  return pos < 0 ? 21 : 21 + pos;
+}
+
+function collageOrbitRadius(
+  centerSize: number,
+  satelliteWidth: number,
+  centerGap: number,
+  total: number,
+  neighborOverlap: number,
+) {
+  const centerR = centerSize / 2;
+  const halfW = satelliteWidth / 2;
+  const halfH = (satelliteWidth * 0.75) / 2;
+  const innerReach = Math.hypot(halfW, halfH);
+  const minRadius = centerR + centerGap + innerReach;
+
+  const chord = satelliteWidth * (1 - neighborOverlap);
+  const spacingRadius = total > 1 ? chord / (2 * Math.sin(Math.PI / total)) : minRadius;
+
+  return Math.max(minRadius, spacingRadius);
+}
+
+function collageOrbitPosition(index: number, total: number, radius: number) {
+  const baseAngle = (360 / total) * index;
+  const isCorner = CORNER_ORBIT_INDICES.has(index);
+  const angle = isCorner
+    ? cornerOrbitAngle(index, baseAngle, HERO_COLLAGE.cornerAngleNudge)
+    : baseAngle;
+  const r = isCorner ? radius - HERO_COLLAGE.cornerRadiusInset : radius;
+  const rad = (angle * Math.PI) / 180;
+  return {
+    left: `${50 + Math.sin(rad) * r}%`,
+    top: `${50 - Math.cos(rad) * r}%`,
+  };
+}
 
 const HERO_BADGES = [
   { value: "500+", label: "Students" },
@@ -75,17 +157,29 @@ function HeroSection() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // very slow parallax for the collage
   const collageY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
-  const deerY = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
   const decoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
-  // wire collage sources from real assets
-  const sources = [natureWalk, plantation, school, clean, storyImg, hero.url];
-  const collage = COLLAGE.map((c, i) => ({ ...c, src: sources[i] }));
+  const collage = COLLAGE_ITEMS;
+  const orbitRadius = collageOrbitRadius(
+    HERO_COLLAGE.centerSize,
+    HERO_COLLAGE.satelliteWidth,
+    HERO_COLLAGE.centerGap,
+    collage.length,
+    HERO_COLLAGE.neighborOverlap,
+  );
+  const [highlightIndex, setHighlightIndex] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setHighlightIndex((prev) => (prev + 1) % collage.length);
+    }, 2800);
+    return () => window.clearInterval(id);
+  }, [collage.length]);
 
   return (
     <section
       ref={ref}
-      className="relative min-h-[100svh] overflow-hidden bg-background pt-28 pb-20 md:pt-32"
+      className="relative min-h-[100svh] overflow-hidden bg-background pt-[7.5rem] pb-12 md:pt-[8rem] md:pb-14"
     >
       {/* Subtle nature radial gradients */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -119,10 +213,10 @@ function HeroSection() {
         </svg>
       </motion.div>
 
-      <div className="container-x relative grid items-center gap-14 lg:grid-cols-[45fr_55fr] lg:gap-10">
+      <div className="container-x relative grid items-center gap-10 lg:grid-cols-[45fr_55fr] lg:gap-8">
         {/* LEFT — editorial copy */}
         <div className="relative z-10">
-          <motion.div
+          {/*<motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
@@ -130,12 +224,12 @@ function HeroSection() {
           >
             <Sparkles className="h-3 w-3 text-[var(--gold)]" /> Wild Agile Foundation
           </motion.div>
-
+*/}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 font-serif text-[clamp(2.75rem,6.4vw,6.25rem)] font-medium leading-[0.98] text-primary"
+            className="font-serif text-[clamp(2.35rem,5.2vw,5rem)] font-medium leading-[0.98] text-primary"
           >
             Building an{" "}
             <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-[var(--gold)] bg-clip-text text-transparent">
@@ -149,7 +243,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="mt-6 max-w-xl text-base leading-relaxed text-foreground/75 md:text-lg"
+            className="mt-4 max-w-xl text-sm leading-relaxed text-foreground/75 md:mt-5 md:text-base"
           >
             At Wild Agile Foundation, we reconnect children with nature through immersive learning
             experiences, wildlife education, biodiversity conservation and community participation.
@@ -160,7 +254,7 @@ function HeroSection() {
             initial="hidden"
             animate="show"
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.55 } } }}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            className="mt-6 flex flex-wrap items-center gap-2.5 md:mt-7"
           >
             {[
               <Link key="b1" to="/projects" className="btn-primary">Explore Our Work <ArrowRight className="h-4 w-4" /></Link>,
@@ -179,16 +273,16 @@ function HeroSection() {
             initial="hidden"
             animate="show"
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.95 } } }}
-            className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4"
+            className="mt-7 grid grid-cols-2 gap-2.5 sm:grid-cols-4 md:mt-8"
           >
             {HERO_BADGES.map((b) => (
               <motion.div
                 key={b.label}
                 variants={{ hidden: { opacity: 0, scale: 0.85 }, show: { opacity: 1, scale: 1 } }}
                 transition={{ type: "spring", stiffness: 220, damping: 20 }}
-                className="rounded-2xl border border-primary/12 bg-white/70 px-4 py-3 text-center backdrop-blur shadow-[0_8px_28px_-18px_rgba(46,94,78,0.45)]"
+                className="rounded-2xl border border-primary/12 bg-white/70 px-3 py-2.5 text-center backdrop-blur shadow-[0_8px_28px_-18px_rgba(46,94,78,0.45)]"
               >
-                <div className="font-serif text-2xl leading-none text-primary">{b.value}</div>
+                <div className="font-serif text-xl leading-none text-primary md:text-2xl">{b.value}</div>
                 <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   {b.label}
                 </div>
@@ -200,22 +294,22 @@ function HeroSection() {
         {/* RIGHT — organic photo collage */}
         <motion.div
           style={{ y: collageY }}
-          className="relative mx-auto aspect-square w-full max-w-[640px] lg:mx-0"
+          className="relative mx-auto aspect-square w-full max-w-[min(100%,680px)] overflow-visible lg:mx-0"
         >
           {/* central deer focal */}
           <motion.div
-            style={{ y: deerY }}
+            style={{ width: `${HERO_COLLAGE.centerSize}%`, height: `${HERO_COLLAGE.centerSize}%` }}
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 top-1/2 z-10 h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
           >
-            <div className="group relative h-full w-full animate-float-slow">
-              <div className="absolute -inset-4 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)] blur-2xl" />
-              <div className="relative h-full w-full overflow-hidden rounded-full border-[6px] border-white shadow-[0_30px_80px_-20px_rgba(46,94,78,0.45)] ring-1 ring-primary/10">
+            <div className="group relative h-full w-full">
+              <div className="absolute -inset-4 rounded-[1.75rem] bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)] blur-2xl" />
+              <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_80px_-20px_rgba(46,94,78,0.45)] ring-1 ring-primary/10">
                 <img
-                  src={hero.url}
-                  alt="Spotted deer in the forest at dawn"
+                  src={heroDeer}
+                  alt="Spotted deer in the forest"
                   className="h-full w-full object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
                   fetchPriority="high"
                 />
@@ -223,24 +317,50 @@ function HeroSection() {
             </div>
           </motion.div>
 
-          {/* surrounding photographs */}
-          {collage.map((c, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: c.delay, ease: [0.22, 1, 0.36, 1] }}
-              className={`${c.className} group z-20`}
-            >
-              <div className={`${c.float}`}>
-                <div
-                  className={`${c.rounded} ${c.rotate} overflow-hidden border-[3px] border-white bg-white shadow-[0_18px_40px_-18px_rgba(46,94,78,0.45)] transition-transform duration-700 ease-out hover:scale-[1.04] hover:rotate-0`}
+          {/* surrounding photographs — circular orbit with sequential overlap */}
+          {collage.map((c, i) => {
+            const pos = collageOrbitPosition(i, collage.length, orbitRadius);
+            const isHighlighted = highlightIndex === i;
+            const z = isHighlighted ? 20 + collage.length + 2 : collageZIndex(i);
+            return (
+              <div
+                key={c.alt}
+                className="absolute"
+                style={{
+                  left: pos.left,
+                  top: pos.top,
+                  width: `${HERO_COLLAGE.satelliteWidth}%`,
+                  zIndex: z,
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  animate={{ opacity: 1, scale: isHighlighted ? 1.1 : 1 }}
+                  transition={{
+                    opacity: { duration: 0.8, delay: c.delay, ease: [0.22, 1, 0.36, 1] },
+                    scale: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                  }}
+                  className="aspect-[4/3]"
                 >
-                  <img src={c.src} alt={c.alt} className="h-full w-full object-cover" loading="lazy" />
-                </div>
+                  <div
+                    className={`group h-full w-full overflow-hidden rounded-[1.35rem] border-[3px] bg-white transition-[box-shadow,ring-color] duration-500 ease-out ${
+                      isHighlighted
+                        ? "border-[var(--gold)] shadow-[0_28px_56px_-14px_rgba(46,94,78,0.55)] ring-2 ring-[var(--gold)]/50"
+                        : "border-white shadow-[0_18px_40px_-18px_rgba(46,94,78,0.45)] ring-1 ring-primary/10"
+                    }`}
+                  >
+                    <img
+                      src={c.src}
+                      alt={c.alt}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
       </div>
 
@@ -401,7 +521,7 @@ import clean from "@/assets/project-clean.jpg";
 import school from "@/assets/project-school.jpg";
 
 function GalleryPreview() {
-  const imgs = [hero.url, plantation, natureWalk, clean, school, storyImg];
+  const imgs = [heroDeer, plantation, natureWalk, clean, school, storyImg];
   return (
     <section className="section-pad">
       <div className="container-x">
@@ -475,7 +595,7 @@ const NEWS_ITEMS = [
   { img: plantation, date: "May 22, 2026", category: "Conservation", title: "1,000 Native Saplings, One Hillside", desc: "Communities, students and forest officers joined hands to restore a degraded slope in the Sahyadris." },
   { img: clean, date: "May 09, 2026", category: "Community", title: "Streambank Clean-up Along the Mula", desc: "Volunteers removed plastic waste from 2km of riverbank while learning about freshwater habitats." },
   { img: storyImg, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
-  { img: hero.url, date: "Apr 12, 2026", category: "Project Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
+  { img: heroDeer, date: "Apr 12, 2026", category: "Project Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
 ];
 
 const ARCHIVES: Array<{ year: string; months: Array<{ name: string; posts: string[] }> }> = [
