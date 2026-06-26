@@ -37,6 +37,7 @@ export function SiteHeader() {
           ? "bg-transparent"
           : "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-[0_2px_24px_-12px_rgba(46,94,78,0.18)]"
       }`}
+      data-transparent={transparent ? "true" : "false"}
     >
       <div className="container-x flex h-20 items-center justify-between gap-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
@@ -44,10 +45,10 @@ export function SiteHeader() {
             <img src={logo.url} alt="Wild Agile Foundation" className="h-12 w-12 object-cover" />
           </div>
           <div className="hidden min-w-0 sm:block">
-            <div className={`font-serif text-lg leading-tight tracking-tight ${transparent ? "text-white" : "text-primary"}`}>
+            <div className="font-serif text-lg leading-tight tracking-tight text-primary">
               Wild Agile
             </div>
-            <div className={`text-[10px] uppercase tracking-[0.18em] ${transparent ? "text-white/80" : "text-muted-foreground"}`}>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
               Foundation
             </div>
           </div>
@@ -61,15 +62,13 @@ export function SiteHeader() {
                 key={item.to}
                 to={item.to}
                 className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  transparent
-                    ? "text-white/90 hover:text-white"
-                    : active
+                  active
                     ? "text-primary"
                     : "text-foreground/75 hover:text-primary"
                 }`}
               >
                 {item.label}
-                {active && !transparent && (
+                {active && (
                   <motion.span
                     layoutId="nav-pill"
                     className="absolute inset-0 -z-10 rounded-full bg-primary/8"
@@ -88,9 +87,7 @@ export function SiteHeader() {
           <button
             aria-label="Menu"
             onClick={() => setOpen((o) => !o)}
-            className={`grid h-11 w-11 place-items-center rounded-full lg:hidden ${
-              transparent ? "bg-white/15 text-white border border-white/30" : "bg-muted text-primary"
-            }`}
+            className="grid h-11 w-11 place-items-center rounded-full lg:hidden bg-muted text-primary"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
