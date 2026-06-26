@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown, Calendar } from "lucide-react";
 import hero from "@/assets/hero-deer.jpg.asset.json";
 import logo from "@/assets/wild-agile-logo.jpg.asset.json";
 import storyImg from "@/assets/about-story.jpg";
