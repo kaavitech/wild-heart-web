@@ -37,6 +37,7 @@ function Home() {
       <HeroSection />
       <AboutPreview />
       <FeaturedProjects />
+      <NewsUpdates />
       <ImpactNumbers />
       <GalleryPreview />
       <JoinCTA />
