@@ -200,6 +200,34 @@
 }
 @utility animate-ken-burns { animation: ken-burns 22s ease-out forwards; }
 
+@keyframes float-a {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes float-c {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+@utility animate-float-a { animation: float-a 5.5s ease-in-out infinite; }
+@utility animate-float-b { animation: float-b 7s ease-in-out infinite 0.4s; }
+@utility animate-float-c { animation: float-c 6.5s ease-in-out infinite 0.8s; }
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@utility animate-pulse-soft { animation: pulse-soft 4s ease-in-out infinite; }
+
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(300%); }
+}
+@utility animate-scroll-line { animation: scroll-line 2.4s ease-in-out infinite; }
+
 @utility field {
   width: 100%;
   border-radius: 0.875rem;
