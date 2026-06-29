@@ -1,19 +1,29 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
+import { cn } from "@/lib/utils";
 
 export function SectionTitle({
   eyebrow,
   title,
   subtitle,
   align = "left",
+  className,
+  subtitleClassName,
 }: {
   eyebrow?: string;
   title: ReactNode;
   subtitle?: ReactNode;
   align?: "left" | "center";
+  className?: string;
+  subtitleClassName?: string;
 }) {
   return (
-    <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+    <div
+      className={cn(
+        align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl",
+        className,
+      )}
+    >
       {eyebrow && (
         <Reveal>
           <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
@@ -28,7 +38,14 @@ export function SectionTitle({
       </Reveal>
       {subtitle && (
         <Reveal delay={0.1}>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">{subtitle}</p>
+          <p
+            className={cn(
+              "mt-5 text-base leading-relaxed text-muted-foreground md:text-lg",
+              subtitleClassName,
+            )}
+          >
+            {subtitle}
+          </p>
         </Reveal>
       )}
     </div>

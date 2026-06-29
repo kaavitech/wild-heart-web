@@ -1,7 +1,8 @@
-import plantation from "@/assets/project-plantation.jpg";
-import natureWalk from "@/assets/project-nature-walk.jpg";
-import clean from "@/assets/project-clean.jpg";
-import school from "@/assets/project-school.jpg";
+import natureConnect from "@/assets/projects/nature-connect.png";
+import runWalkClean from "@/assets/projects/run-walk-clean.png";
+import jeevandhara from "@/assets/projects/jeevandhara.png";
+import ecoSteps from "@/assets/projects/eco-steps.png";
+import natureLibrary from "@/assets/projects/nature-library.jpg";
 
 export type Project = {
   slug: string;
@@ -19,76 +20,94 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "nature-connect",
-    name: "Nature Connect",
-    short: "Immersive forest walks that reintroduce children to the wild around them.",
+    slug: "jeevandhara",
+    name: "JeevanDhara",
+    short: "A wildlife awareness program that educates students about biodiversity, conservation, and ecological responsibility.",
     description:
-      "Nature Connect takes young learners out of classrooms and into forests, riversides, and grasslands — where curiosity becomes conservation.",
-    cover: natureWalk,
-    tags: ["Children", "Nature Walks", "Education"],
-    status: "Ongoing",
+      "A Wildlife Awareness Program aims to educate students about biodiversity, conservation, and ecological responsibility. Aligned with NEP 2020 and the UN Sustainable Development Goals (SDGs), it focuses on building environmental values early in life — shaping lifelong responsible behavior. Schools serve as the most effective platform to reach young minds, and Wildlife Week provided the ideal occasion to launch this initiative. Using films and interactive activities, the program makes learning about nature engaging and memorable.",
+    cover: jeevandhara,
+    tags: ["Wildlife", "Education", "Schools"],
+    status: "Active",
     objectives: [
-      "Introduce 1,000+ children to local ecosystems",
-      "Train teachers as nature mentors",
-      "Document local biodiversity with students",
+      "Educate students on biodiversity and conservation",
+      "Align school programs with NEP 2020 and UN SDGs",
+      "Use films and interactive activities to make nature learning memorable",
     ],
-    vision: "A generation that recognizes every tree, bird and stream as kin — not scenery.",
-    impact: "300+ children have completed guided nature immersions in the past year.",
-    expectedSupport: ["Volunteer", "Photographer", "Wildlife Expert", "School"],
+    vision: "Environmental values built early in life — shaping lifelong responsible behavior.",
+    impact: "Launched during Wildlife Week across partner schools with films and interactive sessions.",
+    expectedSupport: ["School", "Volunteer", "Wildlife Expert", "CSR Partner"],
+  },
+  {
+    slug: "eco-steps",
+    name: "ECO-STEPS",
+    short: "A fun-filled nature walk for kids — every last Sunday of the month.",
+    description:
+      "A fun-filled nature walk specially for kids — happening every last Sunday of the month! Where we go out in nature and chat about trees, birds, animals, soil, wetlands etc. all while exploring the nature. With games and stories, we learn cool ways to care for nature — while having a blast!",
+    cover: ecoSteps,
+    tags: ["Children", "Nature Walks", "Community"],
+    status: "Active",
+    objectives: [
+      "Host a monthly nature walk on the last Sunday of every month",
+      "Explore trees, birds, animals, soil and wetlands through games and stories",
+      "Help children discover fun ways to care for nature",
+    ],
+    vision: "Kids who explore nature with joy — and grow up wanting to protect it.",
+    impact: "A recurring monthly walk bringing children and families into the wild.",
+    expectedSupport: ["Volunteer", "Wildlife Expert", "Photographer", "School"],
   },
   {
     slug: "run-walk-clean",
     name: "RUN WALK CLEAN",
-    short: "Community runs that leave trails cleaner than we found them.",
+    short: "Inspiring walkers and nature lovers to pick up litter as they go.",
     description:
-      "A simple movement: lace up, show up, and leave the forest cleaner. Every event blends fitness, fellowship and stewardship.",
-    cover: clean,
-    tags: ["Community", "Clean-up", "Wellness"],
+      "Every day, many of us enjoy peaceful walks through the forest cover surrounding our city. Through this forest cleaning activity, we aim to inspire walkers and nature lovers to take a small but meaningful step — by picking up litter as they go.",
+    cover: runWalkClean,
+    tags: ["Community", "Clean-up", "Forest"],
     status: "Active",
     objectives: [
-      "Host monthly clean-runs in 5 cities",
-      "Recover and segregate 2 tonnes of waste",
-      "Build local stewardship circles",
+      "Inspire walkers to pick up litter during forest walks",
+      "Keep city forest cover cleaner for everyone",
+      "Build a culture of stewardship among nature lovers",
     ],
-    vision: "Every weekend, somewhere, a forest gets a little quieter and a little cleaner.",
-    impact: "1,200+ kg of waste collected across 18 events.",
+    vision: "Every walk through the forest leaves it a little cleaner than we found it.",
+    impact: "Engaging walkers and nature lovers in hands-on forest cleaning across the city.",
     expectedSupport: ["Volunteer", "CSR Partner", "Corporate", "Sponsor"],
   },
   {
-    slug: "jeevandhara",
-    name: "JeevanDhara",
-    short: "Reviving water bodies that schools and villages depend on.",
+    slug: "nature-connect",
+    name: "Nature Connect",
+    short: "An upcoming program connecting children with nature through immersive learning.",
     description:
-      "JeevanDhara is our long-form effort to restore ponds, springs and small reservoirs — bringing children into the work of healing water.",
-    cover: plantation,
-    tags: ["Water", "Restoration", "Community"],
-    status: "Ongoing",
+      "Nature Connect is an upcoming Wild Agile Foundation initiative — stay tuned for details on how we will bring children closer to the wild around them.",
+    cover: natureConnect,
+    tags: ["Children", "Nature", "Education"],
+    status: "Upcoming",
     objectives: [
-      "Restore 10 community water bodies",
-      "Plant 5,000 native riparian trees",
-      "Set up student-led monitoring",
+      "Connect children with local ecosystems through immersive experiences",
+      "Partner with schools and communities",
+      "Launch program details soon",
     ],
-    vision: "Wherever children grow up, they should know the sound of clean water.",
-    impact: "4 water bodies under active restoration with school partners.",
-    expectedSupport: ["Tree Plantation", "Research Partner", "Environmentalist", "CSR Partner"],
+    vision: "Every child rooted in a living relationship with nature.",
+    impact: "Launching soon — join our newsletter to be the first to know.",
+    expectedSupport: ["Volunteer", "School", "Wildlife Expert", "Sponsor"],
   },
   {
-    slug: "school-programs",
-    name: "Nature in Schools",
-    short: "Bringing forests into classrooms — and classrooms into forests.",
+    slug: "nature-library",
+    name: "Nature Library",
+    short: "An upcoming resource bringing nature books and stories to young readers.",
     description:
-      "We co-design year-long nature curricula with schools, weaving wildlife, ecology and ethics into everyday learning.",
-    cover: school,
-    tags: ["Education", "Schools", "Curriculum"],
-    status: "Ongoing",
+      "Nature Library is an upcoming Wild Agile Foundation initiative — a curated collection of nature books and stories for children. Details coming soon.",
+    cover: natureLibrary,
+    tags: ["Education", "Reading", "Children"],
+    status: "Upcoming",
     objectives: [
-      "Partner with 25 schools",
-      "Train 100+ teachers as nature guides",
-      "Publish open-source nature curriculum",
+      "Curate a collection of nature books for young readers",
+      "Make nature literature accessible in schools and communities",
+      "Launch program details soon",
     ],
-    vision: "Nature literacy as fundamental as numeracy.",
-    impact: "10 partner schools and 500+ students engaged.",
-    expectedSupport: ["School", "Content Creator", "Environmentalist", "Volunteer"],
+    vision: "Every child with a shelf of stories that whisper the language of the wild.",
+    impact: "Launching soon — join our newsletter to be the first to know.",
+    expectedSupport: ["School", "Content Creator", "Volunteer", "Sponsor"],
   },
 ];
 

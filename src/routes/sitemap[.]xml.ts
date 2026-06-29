@@ -24,7 +24,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/projects/nature-connect", changefreq: "monthly", priority: "0.7" },
           { path: "/projects/run-walk-clean", changefreq: "monthly", priority: "0.7" },
           { path: "/projects/jeevandhara", changefreq: "monthly", priority: "0.7" },
-          { path: "/projects/school-programs", changefreq: "monthly", priority: "0.7" },
+          { path: "/projects/eco-steps", changefreq: "monthly", priority: "0.7" },
+          { path: "/projects/nature-library", changefreq: "monthly", priority: "0.7" },
         ];
 
         const urls = entries.map(

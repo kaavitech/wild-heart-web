@@ -10,6 +10,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
+import { JourneyTimeline } from "@/components/site/JourneyTimeline";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -29,19 +30,6 @@ const FOCUS = [
   { icon: Bird, title: "Wildlife", desc: "Build empathy for wild lives — from spotted deer to neighbourhood sparrows.", emoji: "🦌" },
   { icon: Baby, title: "Children", desc: "Centre young people in every program — as learners, leaders, and storytellers.", emoji: "👧" },
   { icon: GraduationCap, title: "Education", desc: "Weave nature literacy into how schools teach and how families live.", emoji: "📚" },
-];
-
-const TIMELINE = [
-  { year: "2024", label: "Foundation Established" },
-  { year: "2024", label: "Nature Awareness" },
-  { year: "2024", label: "School Programs" },
-  { year: "2025", label: "Wildlife Education" },
-  { year: "2025", label: "Community Activities" },
-  { year: "2025", label: "Forest Partnerships" },
-  { year: "2025", label: "Nature Connect" },
-  { year: "2026", label: "RUN WALK CLEAN" },
-  { year: "2026", label: "JeevanDhara" },
-  { year: "Today", label: "A growing forest of changemakers" },
 ];
 
 const STATS = [
@@ -66,7 +54,7 @@ function AboutPage() {
       <PageHero />
       <Story />
       <Focus />
-      <Timeline />
+      <JourneyTimeline />
       <Impact />
       <Gallery />
       <Team />
@@ -145,43 +133,6 @@ function Focus() {
               </motion.div>
             </Reveal>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Timeline() {
-  return (
-    <section className="section-pad relative overflow-hidden bg-[var(--cream)]/40">
-      <div className="container-x">
-        <SectionTitle align="center" eyebrow="Our Journey" title={<>A timeline planted in 2024.</>} />
-        <div className="relative mx-auto mt-16 max-w-3xl">
-          <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-[var(--gold)] via-secondary to-primary md:left-1/2" />
-          <ul className="space-y-12">
-            {TIMELINE.map((t, i) => {
-              const right = i % 2 === 1;
-              return (
-                <li key={i} className="relative">
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.6, delay: 0.05 }}
-                    className={`relative ml-12 md:ml-0 md:w-1/2 ${right ? "md:ml-auto md:pl-12" : "md:pr-12"}`}
-                  >
-                    <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
-                      <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">{t.year}</div>
-                      <div className="mt-1 font-serif text-2xl text-primary">{t.label}</div>
-                    </div>
-                  </motion.div>
-                  <span className="absolute left-4 top-6 grid h-3 w-3 -translate-x-1/2 place-items-center md:left-1/2">
-                    <span className="h-3 w-3 rounded-full bg-[var(--gold)] ring-4 ring-background" />
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       </div>
     </section>

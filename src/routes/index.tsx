@@ -19,6 +19,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
+import { JourneyTimeline } from "@/components/site/JourneyTimeline";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -73,8 +74,8 @@ const COLLAGE_ITEMS: Array<{
 ];
 
 const HERO_COLLAGE = {
-  centerSize: 31.5,
-  satelliteWidth: 23,
+  centerSize: 33,
+  satelliteWidth: 23.5,
   centerGap: 3,
   neighborOverlap: 0.1,
   cornerAngleNudge: 8,
@@ -146,10 +147,10 @@ function collageOrbitPosition(index: number, total: number, radius: number) {
 }
 
 const HERO_BADGES = [
-  { value: "500+", label: "Students" },
-  { value: "25+", label: "Programs" },
-  { value: "10+", label: "Schools" },
-  { value: "100+", label: "Families" },
+  { value: "500+", label: "Students Connected With Nature" },
+  { value: "25+", label: "Nature Engagement Programs" },
+  { value: "50+", label: "Schools Engaged" },
+  { value: "100+", label: "Families Participated" },
 ];
 
 function HeroSection() {
@@ -179,7 +180,7 @@ function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100svh] overflow-hidden bg-background pt-[7.5rem] pb-12 md:pt-[8rem] md:pb-14"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden bg-background pt-[7.5rem] pb-8 md:pt-[8rem]"
     >
       {/* Subtle nature radial gradients */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -213,9 +214,10 @@ function HeroSection() {
         </svg>
       </motion.div>
 
-      <div className="container-x relative grid items-center gap-10 lg:grid-cols-[45fr_55fr] lg:gap-8">
+      <div className="container-x relative flex min-h-0 flex-1 flex-col justify-center py-4 md:py-6">
+        <div className="grid min-h-0 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12">
         {/* LEFT — editorial copy */}
-        <div className="relative z-10">
+        <div className="relative z-20 min-w-0 w-full isolate pr-2 lg:pr-4">
           {/*<motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -229,7 +231,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-[clamp(2.35rem,5.2vw,5rem)] font-medium leading-[0.98] text-primary"
+            className="font-serif text-[clamp(2rem,4.2vw,4.25rem)] font-medium leading-[1.02] text-primary"
           >
             Building an{" "}
             <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-[var(--gold)] bg-clip-text text-transparent">
@@ -243,7 +245,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="mt-4 max-w-xl text-sm leading-relaxed text-foreground/75 md:mt-5 md:text-base"
+            className="mt-4 w-full hyphens-auto text-justify text-base leading-relaxed text-foreground/75 md:mt-5 md:text-lg"
           >
             At Wild Agile Foundation, we reconnect children with nature through immersive learning
             experiences, wildlife education, biodiversity conservation and community participation.
@@ -268,33 +270,13 @@ function HeroSection() {
               </motion.span>
             ))}
           </motion.div>
-
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.95 } } }}
-            className="mt-7 grid grid-cols-2 gap-2.5 sm:grid-cols-4 md:mt-8"
-          >
-            {HERO_BADGES.map((b) => (
-              <motion.div
-                key={b.label}
-                variants={{ hidden: { opacity: 0, scale: 0.85 }, show: { opacity: 1, scale: 1 } }}
-                transition={{ type: "spring", stiffness: 220, damping: 20 }}
-                className="rounded-2xl border border-primary/12 bg-white/70 px-3 py-2.5 text-center backdrop-blur shadow-[0_8px_28px_-18px_rgba(46,94,78,0.45)]"
-              >
-                <div className="font-serif text-xl leading-none text-primary md:text-2xl">{b.value}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                  {b.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
 
         {/* RIGHT — organic photo collage */}
+        <div className="relative z-0 min-w-0">
         <motion.div
           style={{ y: collageY }}
-          className="relative mx-auto aspect-square w-full max-w-[min(100%,680px)] overflow-visible lg:mx-0"
+          className="relative mx-auto aspect-square w-full max-w-full overflow-visible"
         >
           {/* central deer focal */}
           <motion.div
@@ -362,28 +344,31 @@ function HeroSection() {
             );
           })}
         </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-primary/60"
-      >
-        <div className="flex flex-col items-center gap-2 text-[10px] font-medium uppercase tracking-[0.32em]">
-          Scroll to explore
-          <span className="relative block h-12 w-px overflow-hidden bg-primary/15">
-            <span className="absolute inset-x-0 top-0 h-4 bg-primary/70 animate-scroll-line" />
-          </span>
         </div>
-      </motion.div>
+        </div>
+
+        {/* Scroll indicator — sits just below hero content */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 }}
+          className="mt-6 shrink-0 flex justify-center text-primary/60 md:mt-8"
+        >
+          <div className="flex flex-col items-center gap-2 text-[10px] font-medium uppercase tracking-[0.32em]">
+            Scroll to explore
+            <span className="relative block h-10 w-px overflow-hidden bg-primary/15">
+              <span className="absolute inset-x-0 top-0 h-4 bg-primary/70 animate-scroll-line" />
+            </span>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }
 
 function AboutPreview() {
   return (
+    <>
     <section className="section-pad">
       <div className="container-x grid items-center gap-14 lg:grid-cols-2">
         <Reveal dir="left">
@@ -399,12 +384,34 @@ function AboutPreview() {
           </div>
         </Reveal>
 
-        <div>
+        <div className="min-w-0">
           <SectionTitle
+            className="max-w-none"
             eyebrow="Our Story"
-            title={<>Where children meet the <em className="not-italic text-secondary">wild</em>.</>}
-            subtitle="Wild Agile Foundation began with one belief — that the surest way to protect nature is to let children fall in love with it first. We design programs that bring forests, wildlife and water into the lives of young people, and bring young people into the heart of conservation."
+            title={<>Why We Started <em className="not-italic text-secondary">&</em> Where We&apos;re Going.</>}
           />
+          <Reveal delay={0.1}>
+            <p className="mt-5 hyphens-auto text-justify text-base leading-relaxed text-muted-foreground md:text-lg">
+              Nature can only be protected by people who truly understand it. We started{" "}
+              <span className="font-semibold text-primary">Wild Agile Foundation</span> to reconnect
+              children and communities with the natural world through immersive experiences, wildlife
+              awareness, and environmental education.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mt-4 hyphens-auto text-justify text-base leading-relaxed text-muted-foreground md:text-lg">
+              From{" "}
+              <span className="font-semibold text-secondary">Nature Walks</span>,{" "}
+              <span className="font-semibold text-secondary">Eco Steps</span>,{" "}
+              <span className="font-semibold text-secondary">RUN WALK CLEAN</span>, and{" "}
+              <span className="font-semibold text-secondary">JeevanDhara</span> to our upcoming{" "}
+              <span className="font-semibold text-[var(--gold)]">Nature Connect</span> and{" "}
+              <span className="font-semibold text-[var(--gold)]">Nature Library</span> initiatives,
+              every program shares <span className="font-semibold text-primary">one goal</span>—to
+              inspire curiosity, deepen understanding, and nurture a generation that will protect our
+              forests, wildlife, and the environment.
+            </p>
+          </Reveal>
           <Reveal delay={0.2}>
             <div className="mt-8">
               <Link to="/about" className="btn-primary">Learn More <ArrowRight className="h-4 w-4" /></Link>
@@ -412,7 +419,26 @@ function AboutPreview() {
           </Reveal>
         </div>
       </div>
+
+      <Reveal delay={0.15}>
+        <div className="container-x mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {HERO_BADGES.map((b) => (
+            <div
+              key={b.label}
+              className="rounded-2xl border border-primary/12 bg-white/70 px-4 py-3 text-center shadow-[0_8px_28px_-18px_rgba(46,94,78,0.45)]"
+            >
+              <div className="font-serif text-2xl leading-none text-primary">{b.value}</div>
+              <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                {b.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
     </section>
+
+    <JourneyTimeline />
+    </>
   );
 }
 
@@ -431,50 +457,47 @@ function FeaturedProjects() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-6 md:grid-rows-2">
-          {PROJECTS.slice(0, 4).map((p, i) => {
-            const span =
-              i === 0
-                ? "md:col-span-4 md:row-span-2"
-                : i === 1
-                ? "md:col-span-2"
-                : i === 2
-                ? "md:col-span-2"
-                : "md:col-span-2 md:hidden lg:block";
-            return (
-              <Reveal key={p.slug} dir="up" delay={i * 0.08} className={span}>
-                <Link
-                  to="/projects/$slug"
-                  params={{ slug: p.slug }}
-                  className="group relative block h-full overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-card)]"
-                >
-                  <div className="aspect-[4/3] h-full w-full">
-                    <img
-                      src={p.cover}
-                      alt={p.name}
-                      className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
-                      loading="lazy"
-                    />
+        <div className="mt-8 -mx-2 overflow-x-auto px-2 pb-2 [scrollbar-width:thin] lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0">
+          <div className="flex min-w-max gap-3 sm:gap-4 lg:grid lg:min-w-0 lg:grid-cols-5">
+          {PROJECTS.map((p, i) => (
+            <Reveal key={p.slug} dir="up" delay={i * 0.06} className="w-44 shrink-0 sm:w-52 lg:w-auto lg:min-w-0">
+              <Link
+                to="/projects/$slug"
+                params={{ slug: p.slug }}
+                className="group relative block aspect-[4/5] overflow-hidden rounded-2xl shadow-[var(--shadow-card)] sm:rounded-[1.35rem]"
+              >
+                <img
+                  src={p.cover}
+                  alt={p.name}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4">
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.tags.slice(0, 2).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-white/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.16em] backdrop-blur sm:text-[10px]"
+                      >
+                        {t}
+                      </span>
+                    ))}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-7 text-white">
-                    <div className="flex gap-2">
-                      {p.tags.slice(0, 2).map((t) => (
-                        <span key={t} className="rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.18em] backdrop-blur">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">{p.name}</h3>
-                    <p className="mt-2 max-w-md text-sm text-white/85">{p.short}</p>
-                    <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--gold)]">
-                      Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </div>
+                  <h3 className="mt-2 font-serif text-lg leading-tight text-white sm:text-xl lg:text-2xl">
+                    {p.name}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-white/85 sm:text-xs">
+                    {p.short}
+                  </p>
+                  <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--gold)] sm:text-xs">
+                    Learn More <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                   </div>
-                </Link>
-              </Reveal>
-            );
-          })}
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+          </div>
         </div>
       </div>
     </section>

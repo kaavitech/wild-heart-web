@@ -52,11 +52,11 @@ export function SiteHeader() {
               className="h-full w-full object-contain p-1"
             />
           </div>
-          <div className="hidden min-w-0 text-[1.58203125rem] sm:block">
-            <div className="font-serif leading-[0.95] tracking-tight text-primary">
+          <div className="hidden min-w-0 font-sans text-[1.58203125rem] sm:block">
+            <div className="font-medium leading-[0.95] tracking-tight text-primary">
               Wild Agile
             </div>
-            <div className="text-[0.556em] uppercase leading-none tracking-[0.18em] text-muted-foreground">
+            <div className="mt-2 text-[0.556em] font-medium uppercase leading-none tracking-[0.18em] text-muted-foreground">
               Foundation
             </div>
           </div>
