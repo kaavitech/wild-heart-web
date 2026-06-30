@@ -4,11 +4,42 @@ import jeevandhara from "@/assets/projects/jeevandhara.png";
 import ecoSteps from "@/assets/projects/eco-steps.png";
 import natureLibrary from "@/assets/projects/nature-library.jpg";
 
+export type DonationImpact = {
+  amount: string;
+  impact: string;
+};
+
+export type ProjectFundraising = {
+  phaseTitle: string;
+  target: string;
+  targetNote: string;
+  donationImpacts: DonationImpact[];
+  foundingPartner: { amount: string; title: string };
+  bankDetails: {
+    accountName: string;
+    bank: string;
+    accountNumber: string;
+    ifsc: string;
+  };
+  bookDonation: {
+    intro: string;
+    topics: string[];
+    recipient: string;
+    organization: string;
+    address: string;
+    listNote: string;
+  };
+};
+
 export type Project = {
   slug: string;
   name: string;
+  headline?: string;
+  heroTitle?: string;
+  tagline?: string;
   short: string;
   description: string;
+  closingStatement?: string;
   cover: string;
   tags: string[];
   status: "Active" | "Ongoing" | "Upcoming";
@@ -16,6 +47,7 @@ export type Project = {
   vision: string;
   impact: string;
   expectedSupport: string[];
+  fundraising?: ProjectFundraising;
 };
 
 export const PROJECTS: Project[] = [
@@ -94,20 +126,79 @@ export const PROJECTS: Project[] = [
   {
     slug: "nature-library",
     name: "Nature Library",
-    short: "An upcoming resource bringing nature books and stories to young readers.",
+    headline: "Build Our First Nature Library",
+    heroTitle:
+      "An environmental knowledge hub that inspires people to discover, understand, and protect nature.",
+    short:
+      "A curated collection of books on wildlife, biodiversity, forests, climate, and conservation — inspiring learning and deeper connection with nature.",
     description:
-      "Nature Library is an upcoming Wild Agile Foundation initiative — a curated collection of nature books and stories for children. Details coming soon.",
+      "The Wild Agile Nature Library is being created as a dedicated space for anyone who wishes to explore and understand the natural world. With a carefully curated collection of books on wildlife, biodiversity, forests, climate, and conservation, the library will inspire learning, encourage meaningful conversations, and deepen our connection with nature.",
+    closingStatement: "Because protecting nature begins with understanding it.",
     cover: natureLibrary,
-    tags: ["Education", "Reading", "Children"],
-    status: "Upcoming",
+    tags: ["Education", "Reading", "Conservation", "Library"],
+    status: "Ongoing",
     objectives: [
-      "Curate a collection of nature books for young readers",
-      "Make nature literature accessible in schools and communities",
-      "Launch program details soon",
+      "A collection of 500 carefully curated books",
+      "Furniture to arrange the books systematically",
+      "Comfortable reading and learning spaces",
     ],
-    vision: "Every child with a shelf of stories that whisper the language of the wild.",
-    impact: "Launching soon — join our newsletter to be the first to know.",
-    expectedSupport: ["School", "Content Creator", "Volunteer", "Sponsor"],
+    vision:
+      "A place where curiosity grows into knowledge, and knowledge grows into conservation.",
+    impact:
+      "Phase 1 fundraising is underway — help us establish the first Wild Agile Nature Library.",
+    expectedSupport: ["Monetary Donor", "Book Donor", "Sponsor", "Patron"],
+    fundraising: {
+      phaseTitle: "Our Phase 1 Goal – 2026",
+      target: "₹3,00,000",
+      targetNote:
+        "We're raising ₹3,00,000 to establish the first phase of the library.",
+      donationImpacts: [
+        { amount: "₹500", impact: "Sponsor a nature or wildlife book" },
+        { amount: "₹1,000", impact: "Sponsor two or more books" },
+        {
+          amount: "₹2,500",
+          impact:
+            "Sponsor a themed collection (Birds, Butterflies, Forests, biodiversity, etc.)",
+        },
+        {
+          amount: "₹5,000",
+          impact: "Help create a comfortable reading and learning space",
+        },
+        { amount: "₹10,000", impact: "Sponsor a bookshelf" },
+        { amount: "₹25,000", impact: "Become a Nature Library Patron" },
+        { amount: "Guidance", impact: "Provide guidance on the collection and organization of the library" },
+      ],
+      foundingPartner: {
+        amount: "₹50,000 & Above",
+        title: "Become a Founding Partner of the Wild Agile Nature Library",
+      },
+      bankDetails: {
+        accountName: "Wild Agile Foundation",
+        bank: "XXXXX Bank",
+        accountNumber: "XXXXXXXXXXXX",
+        ifsc: "XXXXXXXX",
+      },
+      bookDonation: {
+        intro: "We welcome new or gently used books related to:",
+        topics: [
+          "Environment",
+          "Wildlife",
+          "Forestry",
+          "Biodiversity",
+          "Conservation",
+          "Birds and Natural History",
+          "Climate Change",
+          "Sustainability",
+          "Ecology",
+          "Nature Education",
+        ],
+        recipient: "Dipti Pande (Co-ordinator)",
+        organization: "Wild Agile Foundation (Office)",
+        address:
+          "202, Durvang Enclave 1, Patil Layout, Swavalambi Nagar, Nagpur, Maharashtra 440022",
+        listNote: "List of books you can donate — link to be provided.",
+      },
+    },
   },
 ];
 

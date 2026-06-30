@@ -404,9 +404,9 @@ function AboutPreview() {
               <span className="font-semibold text-secondary">Nature Walks</span>,{" "}
               <span className="font-semibold text-secondary">Eco Steps</span>,{" "}
               <span className="font-semibold text-secondary">RUN WALK CLEAN</span>, and{" "}
-              <span className="font-semibold text-secondary">JeevanDhara</span> to our upcoming{" "}
-              <span className="font-semibold text-[var(--gold)]">Nature Connect</span> and{" "}
-              <span className="font-semibold text-[var(--gold)]">Nature Library</span> initiatives,
+              <span className="font-semibold text-secondary">JeevanDhara</span>, our upcoming{" "}
+              <span className="font-semibold text-[var(--gold)]">Nature Connect</span> initiative, and our{" "}
+              <span className="font-semibold text-[var(--gold)]">Nature Library</span> project,
               every program shares <span className="font-semibold text-primary">one goal</span>—to
               inspire curiosity, deepen understanding, and nurture a generation that will protect our
               forests, wildlife, and the environment.
