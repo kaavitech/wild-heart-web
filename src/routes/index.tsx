@@ -14,12 +14,21 @@ import heroImg8954 from "@/assets/landingPage/IMG_8954.jpg";
 import heroJeevanDhara1 from "@/assets/landingPage/jeevanDhara1.png";
 import heroJeevanDhara2 from "@/assets/landingPage/jeevandhara2.png";
 import storyImg from "@/assets/about-story.jpg";
-import { PROJECTS } from "@/lib/projects-data";
+import plantation from "@/assets/project-plantation.jpg";
+import natureWalk from "@/assets/project-nature-walk.jpg";
+import clean from "@/assets/project-clean.jpg";
+import school from "@/assets/project-school.jpg";
+import theProblem from "@/assets/the-problem.png";
+import { PROGRAMS } from "@/lib/programs-data";
+import { getGalleryPreviewImages } from "@/lib/gallery-data";
 import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
 import { JourneyTimeline } from "@/components/site/JourneyTimeline";
+import { InstagramReelsRow } from "@/components/site/InstagramReelsRow";
+// import { YouTubeStoryCard } from "@/components/site/YouTubeStoryCard";
+// import { FIELD_YOUTUBE_VIDEOS } from "@/lib/field-stories-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,20 +44,21 @@ export const Route = createFileRoute("/")({
 });
 
 const STATS = [
-  { value: 500, label: "Students Engaged" },
-  { value: 25, label: "Nature Engagement Programs" },
-  { value: 10, label: "Schools" },
-  { value: 100, label: "Families Connected With Nature" },
+  { value: 5000, label: "Students Connected with Nature" },
+  { value: 60, label: "Schools Engaged" },
+  { value: 70, label: "Nature Experiences" },
+  { value: 100, label: "Families Inspired" },
 ];
 
 function Home() {
   return (
     <>
       <HeroSection />
+      <TheProblemSection />
       <AboutPreview />
-      <FeaturedProjects />
-      <NewsUpdates />
+      <FeaturedPrograms />
       <ImpactNumbers />
+      <NewsUpdates />
       <GalleryPreview />
       <JoinCTA />
     </>
@@ -146,13 +156,6 @@ function collageOrbitPosition(index: number, total: number, radius: number) {
   };
 }
 
-const HERO_BADGES = [
-  { value: "500+", label: "Students Connected With Nature" },
-  { value: "25+", label: "Nature Engagement Programs" },
-  { value: "50+", label: "Schools Engaged" },
-  { value: "100+", label: "Families Participated" },
-];
-
 function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -224,32 +227,41 @@ function HeroSection() {
             transition={{ duration: 0.7 }}
             className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-primary backdrop-blur"
           >
-            <Sparkles className="h-3 w-3 text-[var(--gold)]" /> Wild Agile Foundation
+            <Sparkles className="h-3 w-3 text-gold" /> Wild Agile Foundation
           </motion.div>
 */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-[clamp(2rem,4.2vw,4.25rem)] font-medium leading-[1.02] text-primary"
+            className="font-serif text-[clamp(1.875rem,3.4vw,3.625rem)] font-medium leading-[1.08] text-primary"
           >
-            Building an{" "}
-            <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-[var(--gold)] bg-clip-text text-transparent">
-              Environment
+            <span className="block">
+              Building an{" "}
+              <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-gold bg-clip-text text-transparent">
+                Environment
+              </span>
             </span>
-            <br />
-            Conscious Generation
+            <span className="block whitespace-nowrap">Conscious Generation</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
-            className="mt-4 w-full hyphens-auto text-justify text-base leading-relaxed text-foreground/75 md:mt-5 md:text-lg"
+            transition={{ duration: 0.8, delay: 0.25 }}
+            className="text-lead mt-4 md:mt-5"
           >
-            At Wild Agile Foundation, we reconnect children with nature through immersive learning
-            experiences, wildlife education, biodiversity conservation and community participation.
-            Every walk in the forest plants a lifelong commitment to protecting our planet.
+            We protect what we love, and we love what we experience.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+            className="text-body mt-4 md:mt-5"
+          >
+            Wild Agile Foundation reconnects people with nature through immersive outdoor learning,
+            wildlife education and community-led conservation—creating lifelong environmental stewardship.
           </motion.p>
 
           <motion.div
@@ -259,11 +271,8 @@ function HeroSection() {
             className="mt-6 flex flex-wrap items-center gap-2.5 md:mt-7"
           >
             {[
-              <Link key="b1" to="/projects" className="btn-primary">Explore Our Work <ArrowRight className="h-4 w-4" /></Link>,
-              <Link key="b2" to="/about" className="btn-gold">Our Story</Link>,
-              <Link key="b3" to="/join" className="inline-flex items-center gap-2 rounded-full border border-primary/25 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/8">
-                <Heart className="h-4 w-4" /> Join Us
-              </Link>,
+              <Link key="b1" to="/programs" className="btn-primary">Explore Our Work <ArrowRight className="h-4 w-4" /></Link>,
+              <Link key="b2" to="/join" className="btn-gold">Support Our Mission</Link>,
             ].map((node, i) => (
               <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                 {node}
@@ -328,7 +337,7 @@ function HeroSection() {
                   <div
                     className={`group h-full w-full overflow-hidden rounded-[1.35rem] border-[3px] bg-white transition-[box-shadow,ring-color] duration-500 ease-out ${
                       isHighlighted
-                        ? "border-[var(--gold)] shadow-[0_28px_56px_-14px_rgba(46,94,78,0.55)] ring-2 ring-[var(--gold)]/50"
+                        ? "border-gold shadow-[0_28px_56px_-14px_rgba(46,94,78,0.55)] ring-2 ring-gold/50"
                         : "border-white shadow-[0_18px_40px_-18px_rgba(46,94,78,0.45)] ring-1 ring-primary/10"
                     }`}
                   >
@@ -366,20 +375,32 @@ function HeroSection() {
   );
 }
 
-function AboutPreview() {
+const PROBLEM_STATEMENTS = [
+  "Children spend less time outdoors than any generation before them.",
+  "Cities continue to expand.",
+  "Forests feel distant.",
+  "Wildlife becomes something we only see on screens.",
+  "The more disconnected we become from nature, the harder it becomes to protect it.",
+] as const;
+
+function TheProblemSection() {
   return (
-    <>
-    <section className="section-pad">
-      <div className="container-x grid items-center gap-14 lg:grid-cols-2">
+    <section className="section-pad relative overflow-hidden bg-gradient-to-b from-[var(--cream)]/70 to-background">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl"
+      />
+      <div className="container-x relative grid items-center gap-14 lg:grid-cols-2">
         <Reveal dir="left">
           <div className="relative">
-            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-[var(--gold)]/10 blur-2xl" />
+            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/8 blur-2xl" />
             <div className="overflow-hidden rounded-[2rem] shadow-[var(--shadow-card)]">
-              <img src={storyImg} alt="Young hands holding a seedling" className="h-[560px] w-full object-cover" loading="lazy" />
-            </div>
-            <div className="absolute -bottom-8 -right-4 hidden glass-card rounded-2xl px-6 py-4 md:block">
-              <div className="font-serif text-3xl text-primary">Since 2024</div>
-              <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">A young, growing forest</div>
+              <img
+                src={theProblem}
+                alt="The Problem — a child looks from the forest toward an expanding city skyline"
+                className="h-[420px] w-full object-cover md:h-[520px]"
+                loading="lazy"
+              />
             </div>
           </div>
         </Reveal>
@@ -387,54 +408,87 @@ function AboutPreview() {
         <div className="min-w-0">
           <SectionTitle
             className="max-w-none"
-            eyebrow="Our Story"
-            title={<>Why We Started <em className="not-italic text-secondary">&</em> Where We&apos;re Going.</>}
+            eyebrow="The Problem"
+            title="Nature is disappearing from our everyday lives."
+          />
+
+          <div className="mt-6 space-y-4">
+            {PROBLEM_STATEMENTS.map((line, i) => (
+              <Reveal key={line} delay={0.08 + i * 0.06}>
+                <p className="text-body">{line}</p>
+              </Reveal>
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <LeafDivider />
+          </div>
+
+          <Reveal delay={0.45}>
+            <blockquote className="mt-8 border-l-4 border-gold pl-5">
+              <p className="text-pull-quote">Conservation doesn&apos;t begin with action.</p>
+              <p className="text-accent-line mt-3">It begins with connection.</p>
+            </blockquote>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutPreview() {
+  return (
+    <>
+    <section className="section-pad">
+      <div className="container-x grid items-center gap-14 lg:grid-cols-2">
+        <div className="min-w-0 order-2 lg:order-1">
+          <SectionTitle
+            className="max-w-none"
+            eyebrow="Our Belief"
+            title="Conservation Begins with Understanding."
           />
           <Reveal delay={0.1}>
-            <p className="mt-5 hyphens-auto text-justify text-base leading-relaxed text-muted-foreground md:text-lg">
-              Nature can only be protected by people who truly understand it. We started{" "}
-              <span className="font-semibold text-primary">Wild Agile Foundation</span> to reconnect
-              children and communities with the natural world through immersive experiences, wildlife
-              awareness, and environmental education.
+            <p className="text-body mt-5">
+              At Wild Agile Foundation, we believe that lasting environmental change starts with awareness.
             </p>
           </Reveal>
-          <Reveal delay={0.15}>
-            <p className="mt-4 hyphens-auto text-justify text-base leading-relaxed text-muted-foreground md:text-lg">
-              From{" "}
-              <span className="font-semibold text-secondary">Nature Walks</span>,{" "}
-              <span className="font-semibold text-secondary">Eco Steps</span>,{" "}
-              <span className="font-semibold text-secondary">RUN WALK CLEAN</span>, and{" "}
-              <span className="font-semibold text-secondary">JeevanDhara</span>, our upcoming{" "}
-              <span className="font-semibold text-[var(--gold)]">Nature Connect</span> initiative, and our{" "}
-              <span className="font-semibold text-[var(--gold)]">Nature Library</span> project,
-              every program shares <span className="font-semibold text-primary">one goal</span>—to
-              inspire curiosity, deepen understanding, and nurture a generation that will protect our
-              forests, wildlife, and the environment.
+          <Reveal delay={0.12}>
+            <p className="text-body mt-4">People protect what they understand.</p>
+          </Reveal>
+          <Reveal delay={0.14}>
+            <p className="text-body mt-4">
+              That is why we create meaningful experiences that help people discover forests, wildlife,
+              biodiversity, and the environment—not through classrooms alone, but by experiencing nature
+              firsthand.
             </p>
           </Reveal>
           <Reveal delay={0.2}>
+            <blockquote className="mt-8 border-l-4 border-gold pl-5">
+              <p className="text-pull-quote">Every experience nurtures curiosity.</p>
+              <p className="text-pull-quote mt-3">Curiosity leads to understanding.</p>
+              <p className="text-accent-line mt-3">Understanding inspires action.</p>
+            </blockquote>
+          </Reveal>
+          <Reveal delay={0.25}>
             <div className="mt-8">
               <Link to="/about" className="btn-primary">Learn More <ArrowRight className="h-4 w-4" /></Link>
             </div>
           </Reveal>
         </div>
-      </div>
 
-      <Reveal delay={0.15}>
-        <div className="container-x mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {HERO_BADGES.map((b) => (
-            <div
-              key={b.label}
-              className="rounded-2xl border border-primary/12 bg-white/70 px-4 py-3 text-center shadow-[0_8px_28px_-18px_rgba(46,94,78,0.45)]"
-            >
-              <div className="font-serif text-2xl leading-none text-primary">{b.value}</div>
-              <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                {b.label}
-              </div>
+        <Reveal dir="right" className="order-1 lg:order-2">
+          <div className="relative">
+            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-[var(--gold)]/10 blur-2xl" />
+            <div className="overflow-hidden rounded-[2rem] shadow-[var(--shadow-card)]">
+              <img src={storyImg} alt="Young hands holding a seedling" className="h-[560px] w-full object-cover" loading="lazy" />
             </div>
-          ))}
-        </div>
-      </Reveal>
+            <div className="absolute -bottom-8 -left-4 hidden glass-card rounded-2xl px-6 py-4 md:block">
+              <div className="font-serif text-3xl text-primary">Since 2024</div>
+              <div className="meta-label mt-1">A young, growing forest</div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
     </section>
 
     <JourneyTimeline />
@@ -442,60 +496,67 @@ function AboutPreview() {
   );
 }
 
-function FeaturedProjects() {
+function FeaturedPrograms() {
   return (
     <section className="section-pad relative">
       <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[600px] bg-gradient-to-b from-[var(--cream)]/60 to-transparent" />
       <div className="container-x">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <SectionTitle
-            eyebrow="Featured Projects"
-            title={<>Field stories<br />from the wild.</>}
+            className="max-w-2xl"
+            eyebrow="Our Programs"
+            title="Creating Experiences that Inspire Change"
+            subtitle="Each program becomes one step in the journey."
           />
           <Reveal>
-            <Link to="/projects" className="btn-primary">All Projects <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/programs" className="btn-primary shrink-0">All Programs <ArrowRight className="h-4 w-4" /></Link>
           </Reveal>
         </div>
 
-        <div className="mt-8 -mx-2 overflow-x-auto px-2 pb-2 [scrollbar-width:thin] lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0">
-          <div className="flex min-w-max gap-3 sm:gap-4 lg:grid lg:min-w-0 lg:grid-cols-5">
-          {PROJECTS.map((p, i) => (
-            <Reveal key={p.slug} dir="up" delay={i * 0.06} className="w-44 shrink-0 sm:w-52 lg:w-auto lg:min-w-0">
-              <Link
-                to="/projects/$slug"
-                params={{ slug: p.slug }}
-                className="group relative block aspect-[4/5] overflow-hidden rounded-2xl shadow-[var(--shadow-card)] sm:rounded-[1.35rem]"
-              >
+        <div className="scrollbar-hide mt-12 overflow-x-auto overscroll-x-contain">
+          <div className="flex w-max gap-8 pr-6">
+          {PROGRAMS.map((p, i) => (
+            <div key={p.slug} className="w-72 shrink-0 sm:w-80">
+              <Reveal dir="up" delay={i * 0.06} className="h-full">
+                <Link
+                  to="/programs/$slug"
+                  params={{ slug: p.slug }}
+                  className="group relative isolate block aspect-[3/4] w-full overflow-hidden rounded-[1.35rem] shadow-[var(--shadow-card)]"
+                >
                 <img
                   src={p.cover}
                   alt={p.name}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4">
-                  <div className="flex flex-wrap gap-1.5">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10" />
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
+                  <div className="flex flex-wrap gap-2">
                     {p.tags.slice(0, 2).map((t) => (
                       <span
                         key={t}
-                        className="rounded-full bg-white/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.16em] backdrop-blur sm:text-[10px]"
+                        className="rounded-full bg-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] backdrop-blur"
                       >
                         {t}
                       </span>
                     ))}
+                    <span className="rounded-full bg-gold px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground">
+                      {p.status}
+                    </span>
                   </div>
-                  <h3 className="mt-2 font-serif text-lg leading-tight text-white sm:text-xl lg:text-2xl">
+                  <h3 className="mt-3 font-serif text-2xl leading-tight text-white sm:text-3xl">
                     {p.name}
                   </h3>
-                  <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-white/85 sm:text-xs">
+                  <p className="mt-2 text-sm leading-relaxed text-white/90 sm:text-base">
                     {p.short}
                   </p>
-                  <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--gold)] sm:text-xs">
-                    Learn More <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-gold">
+                    Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>
-            </Reveal>
+              </Reveal>
+            </div>
           ))}
           </div>
         </div>
@@ -510,11 +571,9 @@ function ImpactNumbers() {
       <div aria-hidden className="absolute -top-40 -right-32 h-[420px] w-[420px] rounded-full bg-[var(--gold)]/15 blur-3xl" />
       <div className="container-x relative">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
-            Our Impact
-          </div>
-          <h2 className="mt-3 font-serif text-4xl md:text-5xl lg:text-6xl">
-            Small numbers, big roots.
+          <div className="eyebrow-light">Our Impact</div>
+          <h2 className="mt-3 font-serif text-4xl leading-[1.05] text-primary-foreground md:text-5xl lg:text-6xl">
+            Growing an Environment Conscious Generation
           </h2>
           <LeafDivider />
         </div>
@@ -523,9 +582,7 @@ function ImpactNumbers() {
           {STATS.map((s, i) => (
             <Reveal key={s.label} dir="up" delay={i * 0.08}>
               <div className="text-center">
-                <div className="text-white">
-                  <Counter value={s.value} />
-                </div>
+                <Counter value={s.value} variant="light" />
                 <div className="mt-3 text-sm uppercase tracking-[0.2em] text-primary-foreground/75">
                   {s.label}
                 </div>
@@ -538,13 +595,8 @@ function ImpactNumbers() {
   );
 }
 
-import plantation from "@/assets/project-plantation.jpg";
-import natureWalk from "@/assets/project-nature-walk.jpg";
-import clean from "@/assets/project-clean.jpg";
-import school from "@/assets/project-school.jpg";
-
 function GalleryPreview() {
-  const imgs = [heroDeer, plantation, natureWalk, clean, school, storyImg];
+  const imgs = getGalleryPreviewImages(2);
   return (
     <section className="section-pad">
       <div className="container-x">
@@ -556,12 +608,12 @@ function GalleryPreview() {
         </div>
 
         <div className="mt-12 columns-2 gap-4 md:columns-3 lg:columns-4 [&>*]:mb-4">
-          {imgs.map((src, i) => (
-            <Reveal key={i} dir="scale" delay={i * 0.04}>
+          {imgs.map((image, i) => (
+            <Reveal key={image.id} dir="scale" delay={i * 0.04}>
               <div className="group overflow-hidden rounded-2xl">
                 <img
-                  src={src}
-                  alt=""
+                  src={image.src}
+                  alt={image.category}
                   className="w-full transition-transform duration-700 ease-out group-hover:scale-110"
                   loading="lazy"
                 />
@@ -576,9 +628,9 @@ function GalleryPreview() {
 
 function JoinCTA() {
   const items = [
-    { icon: Leaf, label: "Volunteer", desc: "Give time. Plant seasons of change." },
-    { icon: TreePine, label: "Partner", desc: "Bring your school, brand or community along." },
-    { icon: Heart, label: "Donate", desc: "Fuel programs that take kids back to the wild." },
+    { icon: Leaf, label: "Volunteer", desc: "Share your time and skills." },
+    { icon: TreePine, label: "Partner", desc: "Collaborate with us to create lasting impact." },
+    { icon: Heart, label: "Support", desc: "Help us build the next generation of environmental stewards." },
   ];
   return (
     <section className="section-pad relative overflow-hidden">
@@ -587,8 +639,7 @@ function JoinCTA() {
         <SectionTitle
           align="center"
           eyebrow="Join the Movement"
-          title={<>Step into the forest with us.</>}
-          subtitle="There's a place for you here — whether you bring time, expertise, or simply willingness."
+          title="Be Part of the Change"
         />
 
         <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-3">
@@ -599,7 +650,7 @@ function JoinCTA() {
                   <it.icon className="h-7 w-7" />
                 </div>
                 <h3 className="mt-5 font-serif text-2xl text-primary">{it.label}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
+                <p className="text-body mt-2">{it.desc}</p>
                 <Link to="/join" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-secondary">
                   Get involved <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -618,10 +669,11 @@ const NEWS_ITEMS = [
   { img: plantation, date: "May 22, 2026", category: "Conservation", title: "1,000 Native Saplings, One Hillside", desc: "Communities, students and forest officers joined hands to restore a degraded slope in the Sahyadris." },
   { img: clean, date: "May 09, 2026", category: "Community", title: "Streambank Clean-up Along the Mula", desc: "Volunteers removed plastic waste from 2km of riverbank while learning about freshwater habitats." },
   { img: storyImg, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
-  { img: heroDeer, date: "Apr 12, 2026", category: "Project Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
+  { img: heroDeer, date: "Apr 12, 2026", category: "Program Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
 ];
 
 const ARCHIVES: Array<{ year: string; months: Array<{ name: string; posts: string[] }> }> = [
+  /* hidden for now
   { year: "2026", months: [
     { name: "June", posts: ["Monsoon Walks in the Western Ghats", "Biodiversity Week at Vidya Niketan"] },
     { name: "May", posts: ["1,000 Native Saplings, One Hillside", "Streambank Clean-up Along the Mula"] },
@@ -632,11 +684,12 @@ const ARCHIVES: Array<{ year: string; months: Array<{ name: string; posts: strin
     { name: "November", posts: ["Forest School Pilot Launched", "Partnering with Pune Municipal Schools"] },
     { name: "October", posts: ["Wetland Walks for Teens"] },
   ]},
+  */
 ];
 
 function NewsUpdates() {
-  const [openYear, setOpenYear] = useState<string | null>("2026");
-  const [openMonth, setOpenMonth] = useState<string | null>("2026-June");
+  // const [openYear, setOpenYear] = useState<string | null>("2026");
+  // const [openMonth, setOpenMonth] = useState<string | null>("2026-June");
 
   return (
     <section className="section-pad relative">
@@ -645,54 +698,67 @@ function NewsUpdates() {
           <SectionTitle
             eyebrow="News & Updates"
             title={<>Stories from<br />the field.</>}
-            subtitle="Explore our latest conservation activities, wildlife stories, school programs, media coverage and project updates."
+            subtitle="Watch our latest field stories on Instagram, plus conservation activities, school programs, media coverage and program updates."
           />
           <Reveal>
             <Link to="/" className="btn-primary">View All Updates <ArrowRight className="h-4 w-4" /></Link>
           </Reveal>
         </div>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-[7fr_3fr]">
-          {/* News grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {NEWS_ITEMS.map((n, i) => (
-              <Reveal key={n.title} dir="up" delay={(i % 3) * 0.08}>
-                <article className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white shadow-[var(--shadow-card)] transition-transform duration-500 hover:-translate-y-1">
-                  <div className="relative overflow-hidden">
-                    <div className="aspect-[4/3] w-full">
-                      <img
-                        src={n.img}
-                        alt={n.title}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
-                      />
-                    </div>
-                    <span className="absolute left-4 top-4 rounded-full bg-[var(--gold)]/95 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary shadow">
-                      {n.category}
-                    </span>
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                      <Calendar className="h-3 w-3" /> {n.date}
-                    </div>
-                    <h3 className="mt-3 font-serif text-2xl leading-snug text-primary">{n.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-foreground/75 line-clamp-3">{n.desc}</p>
-                    <Link to="/" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-secondary">
-                      Read More <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+        <div className="mt-10">
+          <InstagramReelsRow />
+        </div>
 
-          {/* Archives */}
+        <div className="mt-14">
+          <div className="scrollbar-hide -mx-6 overflow-x-auto overflow-y-hidden overscroll-x-contain px-6 md:-mx-10 md:px-10">
+            <div className="flex w-max gap-4 pr-4 sm:gap-5">
+              {NEWS_ITEMS.map((n, i) => (
+                <div key={n.title} className="w-52 shrink-0 sm:w-56">
+                  <Reveal dir="up" delay={Math.min(i * 0.04, 0.4)} className="h-full">
+                    <article className="group flex flex-col overflow-hidden rounded-[1.25rem] border border-border/50 bg-white transition-transform duration-500 hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
+                      <div className="relative shrink-0 overflow-hidden">
+                        <div className="h-56 w-full sm:h-60">
+                          <img
+                            src={n.img}
+                            alt={n.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
+                          />
+                        </div>
+                        <span className="category-badge absolute left-3 top-3 text-[10px]">
+                          {n.category}
+                        </span>
+                      </div>
+                      <div className="flex flex-col p-3.5">
+                        <div className="meta-label inline-flex items-center gap-1.5 text-[10px]">
+                          <Calendar className="h-3 w-3" /> {n.date}
+                        </div>
+                        <h3 className="mt-1.5 line-clamp-1 font-serif text-base leading-snug text-primary">
+                          {n.title}
+                        </h3>
+                        <p className="text-body mt-1 line-clamp-2 text-xs leading-relaxed">{n.desc}</p>
+                        <Link
+                          to="/"
+                          className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-secondary"
+                        >
+                          Read More <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </div>
+                    </article>
+                  </Reveal>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+          {/* Archives — hidden for now
           <Reveal dir="up">
             <aside className="lg:sticky lg:top-28">
               <div className="overflow-hidden rounded-[1.5rem] bg-primary text-primary-foreground shadow-[var(--shadow-card)]">
                 <div className="border-b border-white/10 px-6 py-5">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--gold)]">Archives</div>
-                  <h3 className="mt-1 font-serif text-2xl">Browse by date</h3>
+                  <div className="eyebrow-light">Archives</div>
+                  <h3 className="mt-1 font-serif text-2xl text-primary-foreground">Browse by date</h3>
                 </div>
                 <div className="px-3 py-3">
                   {ARCHIVES.map((y) => {
@@ -701,7 +767,7 @@ function NewsUpdates() {
                       <div key={y.year} className="border-b border-white/10 last:border-0">
                         <button
                           onClick={() => setOpenYear(yOpen ? null : y.year)}
-                          className="flex w-full items-center justify-between px-3 py-3 text-left font-serif text-lg transition-colors hover:text-[var(--gold)]"
+                          className="flex w-full items-center justify-between px-3 py-3 text-left font-serif text-lg text-primary-foreground transition-colors hover:text-gold"
                         >
                           {y.year}
                           <ChevronDown className={`h-4 w-4 transition-transform ${yOpen ? "rotate-180" : ""}`} />
@@ -715,7 +781,7 @@ function NewsUpdates() {
                                 <div key={key} className="ml-3">
                                   <button
                                     onClick={() => setOpenMonth(mOpen ? null : key)}
-                                    className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-primary-foreground/85 transition-colors hover:text-[var(--gold)]"
+                                    className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-primary-foreground/85 transition-colors hover:text-gold"
                                   >
                                     <span className="inline-flex items-center gap-2">
                                       <ChevronDown className={`h-3 w-3 transition-transform ${mOpen ? "rotate-0" : "-rotate-90"}`} />
@@ -729,7 +795,7 @@ function NewsUpdates() {
                                     <ul className="mb-2 ml-7 space-y-1.5 border-l border-white/10 pl-4 pt-1">
                                       {m.posts.map((p) => (
                                         <li key={p}>
-                                          <Link to="/" className="block text-[13px] leading-snug text-primary-foreground/75 transition-colors hover:text-[var(--gold)]">
+                                          <Link to="/" className="block text-[13px] leading-snug text-primary-foreground/75 transition-colors hover:text-gold">
                                             {p}
                                           </Link>
                                         </li>
@@ -748,7 +814,7 @@ function NewsUpdates() {
                 <div className="border-t border-white/10 p-5">
                   <Link
                     to="/"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--gold)] px-5 py-2.5 text-sm font-semibold text-primary transition-transform hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary transition-transform hover:scale-[1.02]"
                   >
                     View All Archives <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -756,7 +822,7 @@ function NewsUpdates() {
               </div>
             </aside>
           </Reveal>
-        </div>
+          */}
       </div>
     </section>
   );

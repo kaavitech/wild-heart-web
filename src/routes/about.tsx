@@ -33,10 +33,10 @@ const FOCUS = [
 ];
 
 const STATS = [
-  { value: 500, label: "Students Engaged" },
-  { value: 25, label: "Nature Engagement Programs" },
-  { value: 10, label: "Schools" },
-  { value: 100, label: "Families Connected With Nature" },
+  { value: 5000, label: "Students Connected with Nature" },
+  { value: 60, label: "Schools Engaged" },
+  { value: 70, label: "Nature Experiences" },
+  { value: 100, label: "Families Inspired" },
 ];
 
 const GALLERY = [
@@ -68,7 +68,7 @@ function PageHero() {
       <div aria-hidden className="absolute inset-0 -z-10 bg-[var(--gradient-leaf)]" />
       <div className="container-x">
         <Reveal>
-          <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-secondary">About Us</div>
+          <div className="eyebrow">About Us</div>
         </Reveal>
         <Reveal delay={0.1}>
           <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-[1.02] text-primary md:text-7xl">
@@ -76,7 +76,7 @@ function PageHero() {
           </h1>
         </Reveal>
         <Reveal delay={0.2}>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+          <p className="text-body mt-6 max-w-2xl">
             We work where children and ecosystems meet — schools and forests, classrooms and rivers — quietly
             building a generation that cares because it has been there.
           </p>
@@ -102,7 +102,7 @@ function Story() {
             subtitle="A founder, a group of curious kids, a city forest no one paid attention to. By the end of that afternoon, the children had counted six bird species and named two trees they passed every day. Wild Agile Foundation grew from that single morning — the simple discovery that nature, when offered with patience, is irresistible."
           />
           <Reveal delay={0.2}>
-            <blockquote className="mt-8 border-l-4 border-[var(--gold)] pl-5 font-serif text-2xl italic leading-relaxed text-primary">
+            <blockquote className="mt-8 border-l-4 border-gold pl-5 font-serif text-2xl italic leading-relaxed text-primary">
               "Children don't need to be taught to love the wild. They need to be taken to it."
             </blockquote>
           </Reveal>
@@ -129,7 +129,7 @@ function Focus() {
                   <f.icon className="h-7 w-7" />
                 </div>
                 <h3 className="mt-5 font-serif text-2xl text-primary">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+                <p className="text-body mt-2">{f.desc}</p>
               </motion.div>
             </Reveal>
           ))}
@@ -144,15 +144,17 @@ function Impact() {
     <section className="section-pad bg-primary text-primary-foreground">
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">Our Impact</div>
-          <h2 className="mt-3 font-serif text-4xl md:text-5xl">Roots we can count.</h2>
+          <div className="eyebrow-light">Our Impact</div>
+          <h2 className="mt-3 font-serif text-4xl leading-[1.05] text-primary-foreground md:text-5xl lg:text-6xl">
+            Roots we can count.
+          </h2>
           <LeafDivider />
         </div>
         <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <Reveal key={s.label}>
               <div className="text-center">
-                <div className="text-white"><Counter value={s.value} /></div>
+                <Counter value={s.value} variant="light" />
                 <div className="mt-3 text-sm uppercase tracking-[0.2em] text-primary-foreground/75">{s.label}</div>
               </div>
             </Reveal>

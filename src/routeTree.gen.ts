@@ -17,7 +17,13 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProgramsIndexRouteImport } from './routes/programs.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
+import { Route as ApiYoutubeMetaRouteImport } from './routes/api.youtube-meta'
+import { Route as ApiInstagramThumbnailRouteImport } from './routes/api.instagram-thumbnail'
+import { Route as ApiInstagramReelsRouteImport } from './routes/api.instagram-reels'
+import { Route as ApiInstagramImageRouteImport } from './routes/api.instagram-image'
 
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
@@ -59,9 +65,39 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/projects/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
+  id: '/programs/',
+  path: '/programs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/projects/$slug',
   path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsSlugRoute = ProgramsSlugRouteImport.update({
+  id: '/programs/$slug',
+  path: '/programs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiYoutubeMetaRoute = ApiYoutubeMetaRouteImport.update({
+  id: '/api/youtube-meta',
+  path: '/api/youtube-meta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInstagramThumbnailRoute = ApiInstagramThumbnailRouteImport.update({
+  id: '/api/instagram-thumbnail',
+  path: '/api/instagram-thumbnail',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInstagramReelsRoute = ApiInstagramReelsRouteImport.update({
+  id: '/api/instagram-reels',
+  path: '/api/instagram-reels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInstagramImageRoute = ApiInstagramImageRouteImport.update({
+  id: '/api/instagram-image',
+  path: '/api/instagram-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -73,7 +109,13 @@ export interface FileRoutesByFullPath {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-image': typeof ApiInstagramImageRoute
+  '/api/instagram-reels': typeof ApiInstagramReelsRoute
+  '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/youtube-meta': typeof ApiYoutubeMetaRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -84,7 +126,13 @@ export interface FileRoutesByTo {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-image': typeof ApiInstagramImageRoute
+  '/api/instagram-reels': typeof ApiInstagramReelsRoute
+  '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/youtube-meta': typeof ApiYoutubeMetaRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/programs': typeof ProgramsIndexRoute
   '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -96,7 +144,13 @@ export interface FileRoutesById {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-image': typeof ApiInstagramImageRoute
+  '/api/instagram-reels': typeof ApiInstagramReelsRoute
+  '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/youtube-meta': typeof ApiYoutubeMetaRoute
+  '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,7 +163,13 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-image'
+    | '/api/instagram-reels'
+    | '/api/instagram-thumbnail'
+    | '/api/youtube-meta'
+    | '/programs/$slug'
     | '/projects/$slug'
+    | '/programs/'
     | '/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -120,7 +180,13 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-image'
+    | '/api/instagram-reels'
+    | '/api/instagram-thumbnail'
+    | '/api/youtube-meta'
+    | '/programs/$slug'
     | '/projects/$slug'
+    | '/programs'
     | '/projects'
   id:
     | '__root__'
@@ -131,7 +197,13 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-image'
+    | '/api/instagram-reels'
+    | '/api/instagram-thumbnail'
+    | '/api/youtube-meta'
+    | '/programs/$slug'
     | '/projects/$slug'
+    | '/programs/'
     | '/projects/'
   fileRoutesById: FileRoutesById
 }
@@ -143,7 +215,13 @@ export interface RootRouteChildren {
   NewsletterRoute: typeof NewsletterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
+  ApiInstagramImageRoute: typeof ApiInstagramImageRoute
+  ApiInstagramReelsRoute: typeof ApiInstagramReelsRoute
+  ApiInstagramThumbnailRoute: typeof ApiInstagramThumbnailRoute
+  ApiYoutubeMetaRoute: typeof ApiYoutubeMetaRoute
+  ProgramsSlugRoute: typeof ProgramsSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProgramsIndexRoute: typeof ProgramsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
@@ -205,11 +283,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programs/': {
+      id: '/programs/'
+      path: '/programs'
+      fullPath: '/programs/'
+      preLoaderRoute: typeof ProgramsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/projects/$slug'
       fullPath: '/projects/$slug'
       preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/$slug': {
+      id: '/programs/$slug'
+      path: '/programs/$slug'
+      fullPath: '/programs/$slug'
+      preLoaderRoute: typeof ProgramsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/youtube-meta': {
+      id: '/api/youtube-meta'
+      path: '/api/youtube-meta'
+      fullPath: '/api/youtube-meta'
+      preLoaderRoute: typeof ApiYoutubeMetaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/instagram-thumbnail': {
+      id: '/api/instagram-thumbnail'
+      path: '/api/instagram-thumbnail'
+      fullPath: '/api/instagram-thumbnail'
+      preLoaderRoute: typeof ApiInstagramThumbnailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/instagram-reels': {
+      id: '/api/instagram-reels'
+      path: '/api/instagram-reels'
+      fullPath: '/api/instagram-reels'
+      preLoaderRoute: typeof ApiInstagramReelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/instagram-image': {
+      id: '/api/instagram-image'
+      path: '/api/instagram-image'
+      fullPath: '/api/instagram-image'
+      preLoaderRoute: typeof ApiInstagramImageRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -223,7 +343,13 @@ const rootRouteChildren: RootRouteChildren = {
   NewsletterRoute: NewsletterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeamRoute: TeamRoute,
+  ApiInstagramImageRoute: ApiInstagramImageRoute,
+  ApiInstagramReelsRoute: ApiInstagramReelsRoute,
+  ApiInstagramThumbnailRoute: ApiInstagramThumbnailRoute,
+  ApiYoutubeMetaRoute: ApiYoutubeMetaRoute,
+  ProgramsSlugRoute: ProgramsSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
+  ProgramsIndexRoute: ProgramsIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport

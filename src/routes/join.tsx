@@ -71,11 +71,13 @@ function JoinPage() {
           {/* Right: Donate CTA */}
           <Reveal dir="right">
             <div className="relative h-full overflow-hidden rounded-3xl bg-primary p-10 text-primary-foreground shadow-[var(--shadow-card)]">
-              <div aria-hidden className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[var(--gold)]/20 blur-3xl" />
+              <div aria-hidden className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gold/20 blur-3xl" />
               <div className="relative">
-                <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">Donate</div>
-                <h2 className="mt-3 font-serif text-4xl md:text-5xl">Plant a season of change.</h2>
-                <p className="mt-4 text-primary-foreground/85">
+                <div className="eyebrow-light">Donate</div>
+                <h2 className="mt-3 font-serif text-4xl leading-[1.05] text-primary-foreground md:text-5xl lg:text-6xl">
+                  Plant a season of change.
+                </h2>
+                <p className="text-body mt-4 text-primary-foreground/85">
                   Your contribution funds buses for school trips, native saplings, field guides, and educator stipends. 100% goes to the field.
                 </p>
 

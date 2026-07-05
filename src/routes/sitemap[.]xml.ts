@@ -16,16 +16,16 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/about", changefreq: "monthly", priority: "0.8" },
-          { path: "/projects", changefreq: "weekly", priority: "0.9" },
+          { path: "/programs", changefreq: "weekly", priority: "0.9" },
           { path: "/team", changefreq: "monthly", priority: "0.6" },
           { path: "/gallery", changefreq: "weekly", priority: "0.7" },
           { path: "/newsletter", changefreq: "monthly", priority: "0.5" },
           { path: "/join", changefreq: "monthly", priority: "0.8" },
-          { path: "/projects/nature-connect", changefreq: "monthly", priority: "0.7" },
-          { path: "/projects/run-walk-clean", changefreq: "monthly", priority: "0.7" },
-          { path: "/projects/jeevandhara", changefreq: "monthly", priority: "0.7" },
-          { path: "/projects/eco-steps", changefreq: "monthly", priority: "0.7" },
-          { path: "/projects/nature-library", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/nature-connect", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/run-walk-clean", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/jeevandhara", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/eco-steps", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/nature-library", changefreq: "monthly", priority: "0.7" },
         ];
 
         const urls = entries.map(

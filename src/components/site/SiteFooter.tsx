@@ -46,7 +46,7 @@ export function SiteFooter() {
           <ul className="mt-5 space-y-3 text-sm">
             {[
               { to: "/about", label: "About" },
-              { to: "/projects", label: "Projects" },
+              { to: "/programs", label: "Programs" },
               { to: "/team", label: "Team" },
               { to: "/gallery", label: "Gallery" },
               { to: "/join", label: "Join Us" },

@@ -26,9 +26,7 @@ export function SectionTitle({
     >
       {eyebrow && (
         <Reveal>
-          <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
-            {eyebrow}
-          </div>
+          <div className="eyebrow">{eyebrow}</div>
         </Reveal>
       )}
       <Reveal delay={0.05}>
@@ -38,12 +36,7 @@ export function SectionTitle({
       </Reveal>
       {subtitle && (
         <Reveal delay={0.1}>
-          <p
-            className={cn(
-              "mt-5 text-base leading-relaxed text-muted-foreground md:text-lg",
-              subtitleClassName,
-            )}
-          >
+          <p className={cn("text-body mt-5", subtitleClassName)}>
             {subtitle}
           </p>
         </Reveal>

@@ -8,7 +8,7 @@ import { SOCIAL_LINKS } from "@/components/site/SocialBrandIcons";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
-  { to: "/projects", label: "Projects" },
+  { to: "/programs", label: "Programs" },
   { to: "/team", label: "Team" },
   { to: "/gallery", label: "Gallery" },
   { to: "/newsletter", label: "Newsletter" },

@@ -80,19 +80,17 @@ export function JourneyTimeline() {
       <div className="container-x">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal>
-            <div className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
-              Our Journey
-            </div>
+            <div className="eyebrow">Our Journey</div>
             <h2 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.05] text-primary md:text-5xl lg:text-6xl">
               From a single{" "}
-              <span className="bg-gradient-to-br from-secondary to-[var(--gold)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-br from-secondary to-gold bg-clip-text text-transparent">
                 seed
               </span>
               , a movement grows.
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground lg:text-right">
+            <p className="text-body max-w-xs lg:text-right">
               Scroll horizontally through the milestones that shaped Wild Agile Foundation.
             </p>
           </Reveal>
@@ -174,15 +172,13 @@ function MilestoneCard({
     >
       <article className="rounded-2xl border border-border/80 bg-card p-5 shadow-[var(--shadow-soft)]">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-primary/8 px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+          <span className="meta-label rounded-full bg-primary/8 px-3 py-1 text-primary">
             {m.date}
           </span>
-          <span className="font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {m.phase}
-          </span>
+          <span className="meta-label">{m.phase}</span>
         </div>
         <h3 className="mt-3 font-serif text-xl leading-snug text-primary sm:text-2xl">{m.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{m.description}</p>
+        <p className="text-body mt-2">{m.description}</p>
         {m.tags && m.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {m.tags.map((tag) => (
