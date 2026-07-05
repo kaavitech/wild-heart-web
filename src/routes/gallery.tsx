@@ -4,8 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
-import { GALLERY_CATEGORIES, GALLERY_IMAGES } from "@/lib/gallery-data";
+import { loadGalleryImages } from "@/lib/gallery-data";
 import hero from "@/assets/hero-deer.jpg.asset.json";
+
+const { images: GALLERY_IMAGES, categories: GALLERY_CATEGORIES } = loadGalleryImages();
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -65,9 +67,10 @@ function GalleryPage() {
                     className="group block w-full overflow-hidden rounded-2xl"
                   >
                     <img
-                      src={image.src}
+                      src={image.thumbSrc}
                       alt={image.category}
                       loading="lazy"
+                      decoding="async"
                       className="w-full transition-transform duration-700 group-hover:scale-110"
                     />
                   </button>

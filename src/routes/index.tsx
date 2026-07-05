@@ -3,24 +3,25 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown, Calendar } from "lucide-react";
 import heroDeer from "@/assets/landingPage/deer.jpeg";
-import heroRailwayWalk from "@/assets/landingPage/railway-walk.png";
-import heroCommunityForest from "@/assets/landingPage/community-forest.png";
-import heroClassroom from "@/assets/landingPage/classroom-session.png";
-import heroCleanup from "@/assets/landingPage/cleanup-drive.png";
-import heroVolunteers from "@/assets/landingPage/volunteer-group.png";
-import heroWorkshop from "@/assets/landingPage/workshop-hall.png";
-import heroDsc5803 from "@/assets/landingPage/DSC_5803.jpg";
-import heroImg8954 from "@/assets/landingPage/IMG_8954.jpg";
-import heroJeevanDhara1 from "@/assets/landingPage/jeevanDhara1.png";
-import heroJeevanDhara2 from "@/assets/landingPage/jeevandhara2.png";
+import heroWorkshop from "@/assets/landingPage/workshop-hall.thumb.webp";
+import heroRailwayWalk from "@/assets/landingPage/railway-walk.thumb.webp";
+import heroCommunityForest from "@/assets/landingPage/community-forest.thumb.webp";
+import heroDsc5803 from "@/assets/landingPage/DSC_5803.thumb.webp";
+import heroCleanup from "@/assets/landingPage/cleanup-drive.thumb.webp";
+import heroVolunteers from "@/assets/landingPage/volunteer-group.thumb.webp";
+import heroClassroom from "@/assets/landingPage/classroom-session.thumb.webp";
+import heroImg8954 from "@/assets/landingPage/IMG_8954.thumb.webp";
+import heroJeevanDhara1 from "@/assets/landingPage/jeevanDhara1.thumb.webp";
+import heroJeevanDhara2 from "@/assets/landingPage/jeevandhara2.thumb.webp";
 import storyImg from "@/assets/about-story.jpg";
-import plantation from "@/assets/project-plantation.jpg";
-import natureWalk from "@/assets/project-nature-walk.jpg";
-import clean from "@/assets/project-clean.jpg";
-import school from "@/assets/project-school.jpg";
+import storyThumb from "@/assets/about-story.thumb.webp";
+import plantation from "@/assets/project-plantation.thumb.webp";
+import natureWalk from "@/assets/project-nature-walk.thumb.webp";
+import clean from "@/assets/project-clean.thumb.webp";
+import school from "@/assets/project-school.thumb.webp";
 import theProblem from "@/assets/the-problem.png";
 import { PROGRAMS } from "@/lib/programs-data";
-import { getGalleryPreviewImages } from "@/lib/gallery-data";
+import { loadGalleryPreviewImages } from "@/lib/gallery-data";
 import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { SectionTitle } from "@/components/site/SectionTitle";
@@ -172,6 +173,7 @@ function HeroSection() {
     HERO_COLLAGE.neighborOverlap,
   );
   const [highlightIndex, setHighlightIndex] = useState(0);
+  const [collageReady, setCollageReady] = useState(false);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -179,6 +181,16 @@ function HeroSection() {
     }, 2800);
     return () => window.clearInterval(id);
   }, [collage.length]);
+
+  useEffect(() => {
+    const enable = () => setCollageReady(true);
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(enable, { timeout: 1200 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+    const timeoutId = window.setTimeout(enable, 400);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   return (
     <section
@@ -342,10 +354,11 @@ function HeroSection() {
                     }`}
                   >
                     <img
-                      src={c.src}
+                      src={collageReady ? c.src : undefined}
                       alt={c.alt}
                       className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 </motion.div>
@@ -596,7 +609,7 @@ function ImpactNumbers() {
 }
 
 function GalleryPreview() {
-  const imgs = getGalleryPreviewImages(2);
+  const imgs = loadGalleryPreviewImages(2);
   return (
     <section className="section-pad">
       <div className="container-x">
@@ -612,10 +625,11 @@ function GalleryPreview() {
             <Reveal key={image.id} dir="scale" delay={i * 0.04}>
               <div className="group overflow-hidden rounded-2xl">
                 <img
-                  src={image.src}
+                  src={image.thumbSrc}
                   alt={image.category}
                   className="w-full transition-transform duration-700 ease-out group-hover:scale-110"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </Reveal>
@@ -668,7 +682,7 @@ const NEWS_ITEMS = [
   { img: school, date: "Jun 04, 2026", category: "School Program", title: "Biodiversity Week at Vidya Niketan", desc: "Five days of birding, leaf-pressing and storytelling brought 240 students closer to their local ecology." },
   { img: plantation, date: "May 22, 2026", category: "Conservation", title: "1,000 Native Saplings, One Hillside", desc: "Communities, students and forest officers joined hands to restore a degraded slope in the Sahyadris." },
   { img: clean, date: "May 09, 2026", category: "Community", title: "Streambank Clean-up Along the Mula", desc: "Volunteers removed plastic waste from 2km of riverbank while learning about freshwater habitats." },
-  { img: storyImg, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
+  { img: storyThumb, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
   { img: heroDeer, date: "Apr 12, 2026", category: "Program Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
 ];
 
