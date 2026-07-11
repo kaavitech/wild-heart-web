@@ -92,14 +92,13 @@ export function loadGalleryImages() {
   };
 }
 
-/** Thumbnails only — safe for the homepage preview. */
-export function loadGalleryPreviewImages(perCategory = 2) {
+function loadAllGalleryThumbs(): GalleryImage[] {
   const thumbModules = import.meta.glob("../assets/gallery/**/*.thumb.webp", {
     eager: true,
     import: "default",
   }) as Record<string, string>;
 
-  const images = Object.entries(thumbModules)
+  return Object.entries(thumbModules)
     .map(([filePath, thumbSrc]) => {
       const category = categoryFromPath(filePath);
       const filename = filenameFromPath(filePath).replace(".thumb.webp", "");
@@ -115,6 +114,17 @@ export function loadGalleryPreviewImages(perCategory = 2) {
       const categoryOrder = a.category.localeCompare(b.category);
       return categoryOrder !== 0 ? categoryOrder : a.filename.localeCompare(b.filename);
     });
+}
 
-  return getGalleryPreviewImages(images, perCategory);
+/** Thumbnails only — safe for the homepage preview. */
+export function loadGalleryPreviewImages(perCategory = 2) {
+  return getGalleryPreviewImages(loadAllGalleryThumbs(), perCategory);
+}
+
+/** Thumbnails for a single gallery folder (e.g. program past-walks). */
+export function loadGalleryThumbsByCategory(category: string, limit?: number) {
+  const images = loadAllGalleryThumbs().filter(
+    (image) => image.category.toLowerCase() === category.toLowerCase(),
+  );
+  return typeof limit === "number" ? images.slice(0, limit) : images;
 }

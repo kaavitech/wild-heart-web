@@ -31,6 +31,46 @@ export type ProgramFundraising = {
   };
 };
 
+export type ProgramExperience = {
+  title: string;
+  intro: string;
+  highlights: string[];
+};
+
+export type ProgramWhyItMatters = {
+  title: string;
+  body: string;
+};
+
+export type ProgramPastWalks = {
+  title: string;
+  galleryCategory: string;
+};
+
+export type ProgramJoinInfo = {
+  title: string;
+  intro: string;
+  details: Array<{ label: string; value: string }>;
+};
+
+export type ProgramSessionStep = {
+  name: string;
+  description: string;
+};
+
+export type ProgramSessionFlow = {
+  title: string;
+  steps: ProgramSessionStep[];
+  closingStatement?: string;
+  galleryCategory?: string;
+  galleryNote?: string;
+};
+
+export type ProgramTestimonials = {
+  title: string;
+  quotes: string[];
+};
+
 export type Program = {
   slug: string;
   name: string;
@@ -47,6 +87,12 @@ export type Program = {
   vision: string;
   impact: string;
   expectedSupport: string[];
+  experience?: ProgramExperience;
+  whyItMatters?: ProgramWhyItMatters;
+  pastWalks?: ProgramPastWalks;
+  joinInfo?: ProgramJoinInfo;
+  sessionFlow?: ProgramSessionFlow;
+  testimonials?: ProgramTestimonials;
   fundraising?: ProgramFundraising;
 };
 
@@ -72,9 +118,11 @@ export const PROGRAMS: Program[] = [
   {
     slug: "eco-steps",
     name: "EcoSteps",
-    short: "Monthly nature walks that spark curiosity through firsthand experiences.",
+    tagline: "A walk into the wild, one Sunday at a time.",
+    short: "A walk into the wild, one Sunday at a time.",
     description:
-      "A fun-filled nature walk specially for kids — happening every last Sunday of the month! Where we go out in nature and chat about trees, birds, animals, soil, wetlands etc. all while exploring the nature. With games and stories, we learn cool ways to care for nature — while having a blast!",
+      "Every last Sunday of the month, we trade screens for soil and swap sidewalks for forest trails. EcoSteps is Wild Agile Foundation's flagship nature walk — a morning where children and their families step into the forest and, for a few hours, simply notice the world around them: the birds overhead, the insects underfoot, the quiet architecture of a wetland.",
+    closingStatement: "No lectures. No worksheets. Just forest, family, and firsthand wonder.",
     cover: ecoSteps,
     tags: ["Children", "Nature Walks", "Community"],
     status: "Active",
@@ -86,13 +134,54 @@ export const PROGRAMS: Program[] = [
     vision: "Kids who explore nature with joy — and grow up wanting to protect it.",
     impact: "A recurring monthly walk bringing children and families into the wild.",
     expectedSupport: ["Volunteer", "Wildlife Expert", "Photographer", "School"],
+    experience: {
+      title: "What Happens on an EcoSteps Walk",
+      intro:
+        "Each walk is built around one idea: you protect what you've actually experienced. So instead of teaching kids about nature, we take them into it.",
+      highlights: [
+        "Guided forest trails through Nagpur's own green spaces — Seminary Hills, Gorewada Forest Range, and other nearby habitats",
+        "Hands-on observation of birds, insects, forest plants, soil, and wetlands, often using binoculars and camera lenses to get up close",
+        "Stories and games woven into the walk, so kids absorb ecology the way they absorb everything best — by playing",
+        "Family-paced exploration — no fixed pace, no pressure, just everyone moving through the forest together",
+        "Conversations that stick — about why habitats matter, how ecosystems connect, and what it means to be a responsible visitor in the wild",
+      ],
+    },
+    whyItMatters: {
+      title: "Why It Matters",
+      body: "Children today spend less time outdoors than any generation before them. Wildlife is increasingly something they see on a screen, not in the world. EcoSteps exists to close that gap — because conservation doesn't start with a lesson plan. It starts with a child crouching by a stream, watching a bird land, and asking why.",
+    },
+    pastWalks: {
+      title: "From Our Past Walks",
+      galleryCategory: "Eco Steps",
+    },
+    joinInfo: {
+      title: "Join an EcoSteps",
+      intro:
+        "EcoSteps is free and open to families with kids. All you need is comfortable walking shoes, a sense of curiosity, and a free Sunday morning.",
+      details: [
+        {
+          label: "Next Walk",
+          value: "Last Sunday of every month",
+        },
+        {
+          label: "Where",
+          value:
+            "Seminary Hills / Gorewada Forest Range / Ambazari BioDiversity Park (location shared ahead of each walk)",
+        },
+        {
+          label: "Who",
+          value: "Children and families — no experience needed",
+        },
+      ],
+    },
   },
   {
     slug: "jeevandhara",
     name: "JeevanDhara",
-    short: "Introducing young minds to wildlife, biodiversity, and conservation.",
+    tagline: "Wildlife and environment education program for schools",
+    short: "Wildlife and environment education program for schools",
     description:
-      "A Wildlife Awareness Program aims to educate students about biodiversity, conservation, and ecological responsibility. Aligned with NEP 2020 and the UN Sustainable Development Goals (SDGs), it focuses on building environmental values early in life — shaping lifelong responsible behavior. Schools serve as the most effective platform to reach young minds, and Wildlife Week provided the ideal occasion to launch this initiative. Using films and interactive activities, the program makes learning about nature engaging and memorable.",
+      "JeevanDhara takes students inside the world of forests, biodiversity, and conservation — using film, story, and conversation instead of textbooks. Launched during Wildlife Week and aligned with NEP 2020 and the UN Sustainable Development Goals, it's built on one belief: the values that protect our planet have to be planted early.",
     cover: jeevandhara,
     tags: ["Wildlife", "Education", "Schools"],
     status: "Active",
@@ -104,13 +193,43 @@ export const PROGRAMS: Program[] = [
     vision: "Environmental values built early in life — shaping lifelong responsible behavior.",
     impact: "Launched during Wildlife Week across partner schools with films and interactive sessions.",
     expectedSupport: ["School", "Volunteer", "Wildlife Expert", "CSR Partner"],
+    sessionFlow: {
+      title: "Inside a Session — 40 Minutes That Stick",
+      steps: [
+        {
+          name: "Spark",
+          description: "A short, energetic introduction to pull students in",
+        },
+        {
+          name: "Discover",
+          description:
+            "A 20-minute documentary on forest types, local wildlife, and why conservation matters",
+        },
+        {
+          name: "Commit",
+          description: "An interactive closing where students take a conservation pledge",
+        },
+      ],
+      closingStatement:
+        "No lecture format, no rote memorization — just a format built to be watched, felt, and remembered.",
+      galleryCategory: "JeevanDhara",
+      galleryNote: "Pictures & videos from sessions — more coming soon.",
+    },
+    testimonials: {
+      title: "What Teachers Are Saying",
+      quotes: [
+        "Engaging and visual sessions like this should happen more often, with diverse topics.",
+        "External experts add freshness and make learning more enjoyable.",
+        "This will inculcate love and respect for nature from an early age.",
+      ],
+    },
   },
   {
     slug: "run-walk-clean",
     name: "Run Walk Clean",
     short: "Helping communities take ownership of the places they love.",
     description:
-      "Every day, many of us enjoy peaceful walks through the forest cover surrounding our city. Through this forest cleaning activity, we aim to inspire walkers and nature lovers to take a small but meaningful step — by picking up litter as they go.",
+      "Long before sunrise, the urban forest fills with familiar faces — the same walkers, the same joggers, the same quiet love for the forest. Run Walk Clean simply asks one more thing of that daily ritual: pick up what doesn't belong.",
     cover: runWalkClean,
     tags: ["Community", "Clean-up", "Forest"],
     status: "Active",
@@ -122,6 +241,10 @@ export const PROGRAMS: Program[] = [
     vision: "Every walk through the forest leaves it a little cleaner than we found it.",
     impact: "Engaging walkers and nature lovers in hands-on forest cleaning across the city.",
     expectedSupport: ["Volunteer", "CSR Partner", "Corporate", "Sponsor"],
+    pastWalks: {
+      title: "Gallery",
+      galleryCategory: "Run Walk Clean",
+    },
   },
   {
     slug: "nature-library",

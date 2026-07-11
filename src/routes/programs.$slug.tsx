@@ -1,10 +1,102 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, Heart, Target, Eye, Sparkles, Mail, Camera, Briefcase, GraduationCap, Users, Leaf, Microscope, PenTool, TreePine, Building2, BookOpen, IndianRupee, MapPin, Landmark } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, Heart, Target, Eye, Sparkles, Mail, Camera, Briefcase, GraduationCap, Users, Leaf, Microscope, PenTool, TreePine, Building2, BookOpen, IndianRupee, MapPin, Landmark, Calendar, Footprints } from "lucide-react";
 import { getProgram, PROGRAMS } from "@/lib/programs-data";
+import { loadGalleryThumbsByCategory, type GalleryImage } from "@/lib/gallery-data";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
+
+function HeroDescription({
+  description,
+  closingStatement,
+}: {
+  description: string;
+  closingStatement?: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="mt-4 max-w-2xl">
+      <p className={`text-lg text-white/85 ${expanded ? "" : "line-clamp-3"}`}>
+        {description}
+      </p>
+      {expanded && closingStatement && (
+        <p className="mt-4 text-lg italic text-[var(--gold)]">{closingStatement}</p>
+      )}
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)] transition-colors hover:text-white"
+      >
+        {expanded ? "Read less" : "Read more"}
+      </button>
+    </div>
+  );
+}
+
+/** Split gallery into two disjoint pools so side-by-side sections never share an image. */
+function splitGalleryPools(images: GalleryImage[]) {
+  const primary: GalleryImage[] = [];
+  const secondary: GalleryImage[] = [];
+  images.forEach((image, i) => {
+    (i % 2 === 0 ? primary : secondary).push(image);
+  });
+  return { primary, secondary };
+}
+
+function ScrollingGalleryImage({
+  images,
+  alt,
+  intervalMs = 3800,
+  tall = false,
+  glow = "primary",
+}: {
+  images: GalleryImage[];
+  alt: string;
+  intervalMs?: number;
+  tall?: boolean;
+  glow?: "primary" | "gold";
+}) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex(0);
+  }, [images]);
+
+  useEffect(() => {
+    if (images.length < 2) return;
+    const id = window.setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, intervalMs);
+    return () => window.clearInterval(id);
+  }, [images.length, intervalMs]);
+
+  if (images.length === 0) return null;
+
+  const heightClass = tall ? "h-[480px] md:h-[560px]" : "h-[420px] md:h-[520px]";
+  const glowClass = glow === "gold" ? "bg-[var(--gold)]/10" : "bg-primary/8";
+
+  return (
+    <div className="relative">
+      <div className={`absolute -inset-4 -z-10 rounded-[2.5rem] ${glowClass} blur-2xl`} />
+      <div className={`relative overflow-hidden rounded-[2rem] shadow-[var(--shadow-card)] ${heightClass}`}>
+        {images.map((image, i) => (
+          <img
+            key={image.id}
+            src={image.thumbSrc}
+            alt={`${alt} — ${image.filename}`}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-out ${
+              i === index ? "opacity-100" : "opacity-0"
+            }`}
+            loading={i === 0 ? "eager" : "lazy"}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/programs/$slug")({
   loader: ({ params }) => {
@@ -50,14 +142,43 @@ const SUPPORT_ICONS: Record<string, LucideIcon> = {
 function ProgramDetail() {
   const { program } = Route.useLoaderData();
   const other = PROGRAMS.filter((p) => p.slug !== program.slug).slice(0, 3);
+  const pastWalkImages = useMemo(
+    () =>
+      program.pastWalks
+        ? loadGalleryThumbsByCategory(program.pastWalks.galleryCategory)
+        : [],
+    [program.pastWalks],
+  );
+  const sessionGalleryImages = useMemo(
+    () =>
+      program.sessionFlow?.galleryCategory
+        ? loadGalleryThumbsByCategory(program.sessionFlow.galleryCategory)
+        : [],
+    [program.sessionFlow?.galleryCategory],
+  );
+  const galleryPools = useMemo(() => splitGalleryPools(pastWalkImages), [pastWalkImages]);
+  const experienceImages = galleryPools.primary;
+  const whyImages =
+    galleryPools.secondary.length > 0
+      ? galleryPools.secondary
+      : galleryPools.primary.slice(1);
+  const hasNarrativeLayout = Boolean(program.experience || program.sessionFlow);
 
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[80svh] min-h-[520px] overflow-hidden">
+      <section
+        className={`relative flex flex-col justify-end overflow-hidden ${
+          hasNarrativeLayout ? "min-h-[65svh]" : "h-[80svh] min-h-[520px]"
+        }`}
+      >
         <img src={program.cover} alt={program.name} className="absolute inset-0 h-full w-full object-cover animate-ken-burns" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/80" />
-        <div className="container-x relative z-10 flex h-full flex-col justify-end pb-16 pt-32">
+        <div
+          className={`container-x relative z-10 flex flex-col justify-end pt-32 ${
+            hasNarrativeLayout ? "pb-10 md:pb-12" : "h-full pb-16"
+          }`}
+        >
           <Reveal>
             <div className="flex flex-wrap gap-2">
               {program.tags.map((t: string) => (
@@ -89,7 +210,10 @@ function ProgramDetail() {
                 {program.tagline && (
                   <p className="mt-4 max-w-2xl text-lg font-medium text-white/90">{program.tagline}</p>
                 )}
-                <p className="mt-4 max-w-2xl text-lg text-white/85">{program.description}</p>
+                <HeroDescription
+                  description={program.description}
+                  closingStatement={program.closingStatement}
+                />
               </>
             )}
           </Reveal>
@@ -119,38 +243,296 @@ function ProgramDetail() {
         </section>
       )}
 
-      {/* Objectives + Vision + Impact */}
-      <section className={`section-pad ${program.heroTitle ? "pt-0" : ""}`}>
-        <div className="container-x grid gap-12 lg:grid-cols-3">
-          <Reveal>
-            <div>
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Target className="h-6 w-6" /></div>
-              <h3 className="mt-5 font-serif text-3xl text-primary">
-                {program.fundraising ? "What We're Building" : "Objectives"}
-              </h3>
-              <ul className="mt-4 space-y-3 text-base leading-relaxed text-foreground/85 md:text-lg">
-                {program.objectives.map((o: string) => (
-                  <li key={o} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />{o}</li>
+      {/* Objectives + Vision + Impact — skipped when a program has richer narrative sections */}
+      {!program.experience && !program.sessionFlow && (
+        <section className={`section-pad ${program.heroTitle ? "pt-0" : ""}`}>
+          <div className="container-x grid gap-12 lg:grid-cols-3">
+            <Reveal>
+              <div>
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Target className="h-6 w-6" /></div>
+                <h3 className="mt-5 font-serif text-3xl text-primary">
+                  {program.fundraising ? "What We're Building" : "Objectives"}
+                </h3>
+                <ul className="mt-4 space-y-3 text-base leading-relaxed text-foreground/85 md:text-lg">
+                  {program.objectives.map((o: string) => (
+                    <li key={o} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />{o}</li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div>
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Eye className="h-6 w-6" /></div>
+                <h3 className="mt-5 font-serif text-3xl text-primary">Vision</h3>
+                <p className="mt-4 text-base italic leading-relaxed text-foreground/85 md:text-lg">"{program.vision}"</p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div>
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Sparkles className="h-6 w-6" /></div>
+                <h3 className="mt-5 font-serif text-3xl text-primary">Impact</h3>
+                <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">{program.impact}</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {program.sessionFlow && (
+        <section className="bg-[var(--cream)]/40 pb-24 pt-12 md:pb-32 md:pt-16">
+          <div className="container-x grid items-center gap-14 lg:grid-cols-2">
+            {sessionGalleryImages.length > 0 && (
+              <Reveal dir="left">
+                <ScrollingGalleryImage
+                  images={sessionGalleryImages}
+                  alt={`${program.name} session`}
+                  intervalMs={4000}
+                />
+              </Reveal>
+            )}
+
+            <div className="min-w-0">
+              <SectionTitle
+                className="max-w-none"
+                title={<>{program.sessionFlow.title}</>}
+              />
+
+              <div className="mt-8">
+                <div className="mb-3 hidden grid-cols-[auto_1fr] items-end gap-x-4 border-b border-border/60 pb-2 sm:grid">
+                  <div className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Step
+                  </div>
+                  <div className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    What Happens
+                  </div>
+                </div>
+
+                <ol className="space-y-0">
+                  {program.sessionFlow.steps.map((step, i) => (
+                    <Reveal key={step.name} delay={0.06 + i * 0.06}>
+                      <li className="grid grid-cols-1 gap-1.5 border-b border-border/60 py-4 last:border-0 sm:grid-cols-[auto_1fr] sm:items-baseline sm:gap-x-4">
+                        <div className="whitespace-nowrap">
+                          <span className="font-serif text-xl text-primary md:text-2xl">{i + 1}.</span>{" "}
+                          <span className="font-display text-xs font-semibold uppercase tracking-[0.14em] text-[var(--gold)]">
+                            {step.name}
+                          </span>
+                        </div>
+                        <p className="text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                          {step.description}
+                        </p>
+                      </li>
+                    </Reveal>
+                  ))}
+                </ol>
+
+                {program.sessionFlow.closingStatement && (
+                  <Reveal delay={0.28}>
+                    <p className="mt-6 text-justify text-base italic leading-relaxed text-[var(--gold)] md:text-lg">
+                      {program.sessionFlow.closingStatement}
+                    </p>
+                  </Reveal>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="container-x mt-16">
+            <Reveal>
+              <h3 className="font-serif text-3xl text-primary md:text-4xl">Gallery</h3>
+              {program.sessionFlow.galleryNote && (
+                <p className="mt-2 text-sm text-muted-foreground md:text-base">
+                  {program.sessionFlow.galleryNote}
+                </p>
+              )}
+            </Reveal>
+            {sessionGalleryImages.length > 0 ? (
+              <div className="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                {sessionGalleryImages.map((image, i) => (
+                  <Reveal key={image.id} delay={Math.min(i * 0.04, 0.24)}>
+                    <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                      <img
+                        src={image.thumbSrc}
+                        alt={`${program.name} session — ${image.filename}`}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                      />
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            ) : (
+              <Reveal delay={0.1}>
+                <div className="mt-8 rounded-2xl border border-dashed border-border bg-card/60 px-6 py-16 text-center text-sm text-muted-foreground">
+                  Pictures &amp; videos to be added
+                </div>
+              </Reveal>
+            )}
+          </div>
+        </section>
+      )}
+
+      {program.testimonials && (
+        <section className="section-pad">
+          <div className="container-x">
+            <SectionTitle align="center" title={<>{program.testimonials.title}</>} />
+            <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-3">
+              {program.testimonials.quotes.map((quote, i) => (
+                <Reveal key={quote} delay={0.08 + i * 0.08}>
+                  <blockquote className="h-full border-l-4 border-gold pl-5">
+                    <p className="text-pull-quote text-justify">&ldquo;{quote}&rdquo;</p>
+                  </blockquote>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {program.experience && (
+        <section className="bg-[var(--cream)]/40 pb-24 pt-12 md:pb-32 md:pt-16">
+          <div className="container-x grid items-center gap-14 lg:grid-cols-2">
+            {experienceImages.length > 0 && (
+              <Reveal dir="left">
+                <ScrollingGalleryImage
+                  images={experienceImages}
+                  alt={`${program.name} walk`}
+                  intervalMs={4000}
+                />
+              </Reveal>
+            )}
+            <div className="min-w-0">
+              <SectionTitle
+                className="max-w-none"
+                title={<>{program.experience.title}</>}
+              />
+              <Reveal delay={0.08}>
+                <p className="mt-6 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                  {program.experience.intro}
+                </p>
+              </Reveal>
+              <ul className="mt-8 space-y-5">
+                {program.experience.highlights.map((item, i) => (
+                  <Reveal key={item} delay={0.1 + i * 0.05}>
+                    <li className="flex gap-4 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />
+                      <span>{item}</span>
+                    </li>
+                  </Reveal>
                 ))}
               </ul>
             </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div>
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Eye className="h-6 w-6" /></div>
-              <h3 className="mt-5 font-serif text-3xl text-primary">Vision</h3>
-              <p className="mt-4 text-base italic leading-relaxed text-foreground/85 md:text-lg">"{program.vision}"</p>
+          </div>
+        </section>
+      )}
+
+      {program.whyItMatters && (
+        <section className="section-pad">
+          <div className="container-x grid items-center gap-14 lg:grid-cols-2">
+            <div className="min-w-0 order-2 lg:order-1">
+              <SectionTitle
+                className="max-w-none"
+                title={<>{program.whyItMatters.title}</>}
+              />
+              <Reveal delay={0.1}>
+                <p className="mt-6 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                  {program.whyItMatters.body}
+                </p>
+              </Reveal>
+              <div className="mt-8">
+                <LeafDivider />
+              </div>
             </div>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div>
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Sparkles className="h-6 w-6" /></div>
-              <h3 className="mt-5 font-serif text-3xl text-primary">Impact</h3>
-              <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">{program.impact}</p>
+            {whyImages.length > 0 && (
+              <Reveal dir="right" className="order-1 lg:order-2">
+                <ScrollingGalleryImage
+                  images={whyImages}
+                  alt={`${program.name} in the wild`}
+                  intervalMs={4500}
+                  tall
+                  glow="gold"
+                />
+              </Reveal>
+            )}
+          </div>
+        </section>
+      )}
+
+      {program.pastWalks && pastWalkImages.length > 0 && (
+        <section className="section-pad bg-[var(--cream)]/40">
+          <div className="container-x">
+            <SectionTitle align="center" title={<>{program.pastWalks.title}</>} />
+            <div className="mt-12 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {pastWalkImages.map((image, i) => (
+                <Reveal key={image.id} delay={Math.min(i * 0.04, 0.28)}>
+                  <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                    <img
+                      src={image.thumbSrc}
+                      alt={`${program.name} past walk — ${image.filename}`}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </div>
+                </Reveal>
+              ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
+            <Reveal delay={0.2}>
+              <div className="mt-10 flex justify-center">
+                <Link to="/gallery" className="btn-primary">
+                  View full gallery <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {program.joinInfo && (
+        <section className="section-pad">
+          <div className="container-x">
+            <div className="mx-auto max-w-3xl">
+              <Reveal>
+                <SectionTitle
+                  align="center"
+                  title={<>{program.joinInfo.title}</>}
+                  subtitle={program.joinInfo.intro}
+                />
+              </Reveal>
+              <div className="mt-12 space-y-6">
+                {program.joinInfo.details.map((detail, i) => {
+                  const Icon = detail.label === "Where" ? MapPin : detail.label === "Who" ? Users : Calendar;
+                  return (
+                    <Reveal key={detail.label} delay={0.05 + i * 0.06}>
+                      <div className="flex gap-4 border-b border-border/70 pb-6 last:border-0">
+                        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <div className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                            {detail.label}
+                          </div>
+                          <p className="mt-1.5 text-base leading-relaxed text-foreground/90 md:text-lg">
+                            {detail.value}
+                          </p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
+              <Reveal delay={0.25}>
+                <div className="mt-10 flex flex-wrap justify-center gap-3">
+                  <Link to="/join" className="btn-primary">
+                    <Footprints className="h-4 w-4" /> Join the next walk
+                  </Link>
+                  <a href="mailto:hello@wildagilefoundation.org" className="btn-gold">
+                    <Mail className="h-4 w-4" /> Ask a question
+                  </a>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Expected support */}
       <section className="section-pad bg-[var(--cream)]/40">
