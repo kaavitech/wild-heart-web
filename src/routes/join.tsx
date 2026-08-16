@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Users, Briefcase, ArrowRight } from "lucide-react";
+import { Users, Briefcase, ArrowRight, Landmark } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
+import whatsappQR from "@/assets/whatsappQR.jpeg";
 
 export const Route = createFileRoute("/join")({
   head: () => ({
@@ -18,6 +19,13 @@ export const Route = createFileRoute("/join")({
 });
 
 type Tab = "volunteer" | "partner" | "csr";
+
+const BANK_DETAILS = [
+  { label: "Account Name", value: "Wild Agile Foundation" },
+  { label: "Bank", value: "IndusInd Bank Ltd" },
+  { label: "Account Number", value: "254330300925" },
+  { label: "IFSC", value: "INDB0002173" },
+];
 
 function JoinPage() {
   const [tab, setTab] = useState<Tab>("volunteer");
@@ -81,18 +89,48 @@ function JoinPage() {
                   Your contribution funds buses for school trips, native saplings, field guides, and educator stipends. 100% goes to the field.
                 </p>
 
-                <div className="mt-8 grid grid-cols-3 gap-3">
-                  {[500, 1500, 5000].map((amt) => (
-                    <button key={amt} className="rounded-2xl border border-white/15 bg-white/5 py-4 font-display font-semibold transition hover:bg-white/15">
-                      ₹{amt.toLocaleString()}
-                    </button>
-                  ))}
+                <div className="mt-8 rounded-2xl border border-white/15 bg-white/5 p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white/10">
+                      <Landmark className="h-5 w-5" />
+                    </div>
+                    <h3 className="font-serif text-2xl text-primary-foreground">Donate via Bank Transfer</h3>
+                  </div>
+                  <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                    <dl className="flex-1 space-y-4">
+                      {BANK_DETAILS.map((row) => (
+                        <div key={row.label}>
+                          <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/60">
+                            {row.label}
+                          </dt>
+                          <dd className="mt-1 text-base leading-relaxed tracking-wide text-primary-foreground md:text-lg">
+                            {row.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <figure className="shrink-0 self-center sm:self-start">
+                      <img
+                        src={whatsappQR}
+                        alt="Scan to pay via UPI / WhatsApp"
+                        className="h-40 w-40 rounded-2xl border border-white/15 bg-white object-contain p-2"
+                      />
+                      <figcaption className="mt-2 text-center text-xs font-medium text-primary-foreground/70">
+                        Scan to pay
+                      </figcaption>
+                    </figure>
+                  </div>
                 </div>
-                <button className="btn-gold mt-6 w-full sm:w-auto">
-                  <Heart className="h-4 w-4" /> Donate Now <ArrowRight className="h-4 w-4" />
-                </button>
 
-                <div className="mt-10 border-t border-white/10 pt-6 text-sm text-primary-foreground/75">
+                <div className="mt-6 text-sm leading-relaxed text-primary-foreground/75">
+                  After contributing, please email your transaction details to{" "}
+                  <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-white hover:underline">
+                    hello@wildagilefoundation.org
+                  </a>{" "}
+                  for acknowledgment. All donations are eligible for tax benefits under Section 80G of the Income Tax Act.
+                </div>
+
+                <div className="mt-8 border-t border-white/10 pt-6 text-sm text-primary-foreground/75">
                   Prefer to talk first? Write to <span className="text-white">hello@wildagilefoundation.org</span>.
                 </div>
               </div>

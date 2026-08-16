@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown, Calendar } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, Heart, Sparkles, Leaf, Bird, GraduationCap, TreePine, ChevronDown } from "lucide-react";
 import heroDeer from "@/assets/landingPage/deer.jpeg";
 import heroWorkshop from "@/assets/landingPage/workshop-hall.thumb.webp";
 import heroRailwayWalk from "@/assets/landingPage/railway-walk.thumb.webp";
@@ -14,11 +14,6 @@ import heroImg8954 from "@/assets/landingPage/IMG_8954.thumb.webp";
 import heroJeevanDhara1 from "@/assets/landingPage/jeevanDhara1.thumb.webp";
 import heroJeevanDhara2 from "@/assets/landingPage/jeevandhara2.thumb.webp";
 import storyImg from "@/assets/about-story.jpg";
-import storyThumb from "@/assets/about-story.thumb.webp";
-import plantation from "@/assets/project-plantation.thumb.webp";
-import natureWalk from "@/assets/project-nature-walk.thumb.webp";
-import clean from "@/assets/project-clean.thumb.webp";
-import school from "@/assets/project-school.thumb.webp";
 import theProblem from "@/assets/the-problem.png";
 import { PROGRAMS } from "@/lib/programs-data";
 import { loadGalleryPreviewImages } from "@/lib/gallery-data";
@@ -28,6 +23,11 @@ import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
 import { JourneyTimeline } from "@/components/site/JourneyTimeline";
 import { InstagramReelsRow } from "@/components/site/InstagramReelsRow";
+import { FieldInstagramReelsRow } from "@/components/site/FieldInstagramReelsRow";
+import {
+  isNisargBaithakCampaignActive,
+  NISARG_BAITHAK_IMAGES,
+} from "@/lib/nisarg-baithak";
 // import { YouTubeStoryCard } from "@/components/site/YouTubeStoryCard";
 // import { FIELD_YOUTUBE_VIDEOS } from "@/lib/field-stories-data";
 
@@ -157,12 +157,16 @@ function collageOrbitPosition(index: number, total: number, radius: number) {
   };
 }
 
+const HERO_ROTATION_MS = 8000;
+
 function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  // very slow parallax for the collage
   const collageY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
   const decoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
+  const campaignActive = useMemo(() => isNisargBaithakCampaignActive(), []);
+  const [activeVisual, setActiveVisual] = useState(0);
 
   const collage = COLLAGE_ITEMS;
   const orbitRadius = collageOrbitRadius(
@@ -174,6 +178,14 @@ function HeroSection() {
   );
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [collageReady, setCollageReady] = useState(false);
+
+  useEffect(() => {
+    if (!campaignActive) return;
+    const id = window.setInterval(() => {
+      setActiveVisual((prev) => (prev + 1) % 2);
+    }, HERO_ROTATION_MS);
+    return () => window.clearInterval(id);
+  }, [campaignActive]);
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -192,37 +204,33 @@ function HeroSection() {
     return () => window.clearTimeout(timeoutId);
   }, []);
 
+  const showNisargBaithak = campaignActive && activeVisual === 0;
+  const showOrbitCollage = !campaignActive || activeVisual === 1;
+
   return (
     <section
       ref={ref}
       className="relative flex min-h-[100svh] flex-col overflow-hidden bg-background pt-[7.5rem] pb-8 md:pt-[8rem]"
     >
-      {/* Subtle nature radial gradients */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -left-32 top-10 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_14%,transparent),transparent_70%)]" />
         <div className="absolute -right-40 bottom-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--secondary)_12%,transparent),transparent_70%)]" />
         <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--gold)_8%,transparent),transparent_70%)]" />
       </div>
 
-      {/* Decorative nature flourishes */}
       <motion.div style={{ y: decoY }} aria-hidden className="pointer-events-none absolute inset-0 -z-[5]">
-        {/* glowing green dots */}
         {[
           "left-[8%] top-[20%]", "left-[14%] top-[68%]", "left-[42%] top-[14%]",
           "right-[12%] top-[36%]", "right-[28%] bottom-[18%]", "left-[52%] bottom-[10%]",
         ].map((pos, i) => (
           <span key={i} className={`absolute ${pos} h-1.5 w-1.5 rounded-full bg-secondary/70 shadow-[0_0_18px_4px_color-mix(in_oklab,var(--secondary)_45%,transparent)] animate-pulse-soft`} style={{ animationDelay: `${i * 0.6}s` }} />
         ))}
-        {/* gold accent rings */}
         <span className="absolute left-[6%] bottom-[16%] h-24 w-24 rounded-full border border-[var(--gold)]/30" />
         <span className="absolute right-[8%] top-[18%] h-16 w-16 rounded-full border border-[var(--gold)]/40" />
-        {/* floating leaves */}
         <Leaf className="absolute left-[28%] top-[18%] h-5 w-5 -rotate-12 text-secondary/35 animate-float-c" />
         <Leaf className="absolute right-[36%] bottom-[12%] h-4 w-4 rotate-45 text-primary/30 animate-float-a" />
-        {/* bird silhouettes */}
         <Bird className="absolute left-[44%] top-[8%] h-4 w-4 text-primary/40 animate-float-b" />
         <Bird className="absolute right-[18%] top-[12%] h-3.5 w-3.5 text-primary/30 animate-float-c" />
-        {/* thin connecting curves */}
         <svg className="absolute inset-0 h-full w-full opacity-[0.18]" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path d="M55,20 Q70,10 85,18" stroke="var(--primary)" strokeWidth="0.15" fill="none" strokeDasharray="0.6 0.8" />
           <path d="M60,70 Q75,80 90,72" stroke="var(--gold)" strokeWidth="0.15" fill="none" strokeDasharray="0.6 0.8" />
@@ -231,145 +239,186 @@ function HeroSection() {
 
       <div className="container-x relative flex min-h-0 flex-1 flex-col justify-center py-4 md:py-6">
         <div className="grid min-h-0 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12">
-        {/* LEFT — editorial copy */}
-        <div className="relative z-20 min-w-0 w-full isolate pr-2 lg:pr-4">
-          {/*<motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-primary backdrop-blur"
-          >
-            <Sparkles className="h-3 w-3 text-gold" /> Wild Agile Foundation
-          </motion.div>
-*/}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-[clamp(1.875rem,3.4vw,3.625rem)] font-medium leading-[1.08] text-primary"
-          >
-            <span className="block">
-              Building an{" "}
-              <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-gold bg-clip-text text-transparent">
-                Environment
+          <div className="relative z-20 min-w-0 w-full isolate pr-2 lg:pr-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="font-serif text-[clamp(1.875rem,3.4vw,3.625rem)] font-medium leading-[1.08] text-primary"
+            >
+              <span className="block">
+                Building an{" "}
+                <span className="italic bg-gradient-to-br from-[color-mix(in_oklab,var(--primary)_85%,black)] via-secondary to-gold bg-clip-text text-transparent">
+                  Environment
+                </span>
               </span>
-            </span>
-            <span className="block whitespace-nowrap">Conscious Generation</span>
-          </motion.h1>
+              <span className="block whitespace-nowrap">Conscious Generation</span>
+            </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.25 }}
-            className="text-lead mt-4 md:mt-5"
-          >
-            We protect what we love, and we love what we experience.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="text-lead mt-4 md:mt-5"
+            >
+              We protect what we love, and we love what we experience.
+            </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
-            className="text-body mt-4 md:mt-5"
-          >
-            Wild Agile Foundation reconnects people with nature through immersive outdoor learning,
-            wildlife education and community-led conservation—creating lifelong environmental stewardship.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="text-body mt-4 md:mt-5"
+            >
+              Wild Agile Foundation reconnects people with nature through immersive outdoor learning,
+              wildlife education and community-led conservation—creating lifelong environmental stewardship.
+            </motion.p>
 
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.55 } } }}
-            className="mt-6 flex flex-wrap items-center gap-2.5 md:mt-7"
-          >
-            {[
-              <Link key="b1" to="/programs" className="btn-primary">Explore Our Work <ArrowRight className="h-4 w-4" /></Link>,
-              <Link key="b2" to="/join" className="btn-gold">Support Our Mission</Link>,
-            ].map((node, i) => (
-              <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
-                {node}
-              </motion.span>
-            ))}
-          </motion.div>
-        </div>
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.55 } } }}
+              className="mt-6 flex flex-wrap items-center gap-2.5 md:mt-7"
+            >
+              {[
+                <Link key="b1" to="/programs" className="btn-primary">Explore Our Work <ArrowRight className="h-4 w-4" /></Link>,
+                <Link key="b2" to="/join" className="btn-gold">Support Our Mission</Link>,
+              ].map((node, i) => (
+                <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                  {node}
+                </motion.span>
+              ))}
+            </motion.div>
+          </div>
 
-        {/* RIGHT — organic photo collage */}
-        <div className="relative z-0 min-w-0">
-        <motion.div
-          style={{ y: collageY }}
-          className="relative mx-auto aspect-square w-full max-w-full overflow-visible"
-        >
-          {/* central deer focal */}
-          <motion.div
-            style={{ width: `${HERO_COLLAGE.centerSize}%`, height: `${HERO_COLLAGE.centerSize}%` }}
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-          >
-            <div className="group relative h-full w-full">
-              <div className="absolute -inset-4 rounded-[1.75rem] bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)] blur-2xl" />
-              <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_80px_-20px_rgba(46,94,78,0.45)] ring-1 ring-primary/10">
-                <img
-                  src={heroDeer}
-                  alt="Spotted deer in the forest"
-                  className="h-full w-full object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
-                  fetchPriority="high"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* surrounding photographs — circular orbit with sequential overlap */}
-          {collage.map((c, i) => {
-            const pos = collageOrbitPosition(i, collage.length, orbitRadius);
-            const isHighlighted = highlightIndex === i;
-            const z = isHighlighted ? 20 + collage.length + 2 : collageZIndex(i);
-            return (
-              <div
-                key={c.alt}
-                className="absolute"
-                style={{
-                  left: pos.left,
-                  top: pos.top,
-                  width: `${HERO_COLLAGE.satelliteWidth}%`,
-                  zIndex: z,
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.88 }}
-                  animate={{ opacity: 1, scale: isHighlighted ? 1.1 : 1 }}
-                  transition={{
-                    opacity: { duration: 0.8, delay: c.delay, ease: [0.22, 1, 0.36, 1] },
-                    scale: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-                  }}
-                  className="aspect-[4/3]"
-                >
-                  <div
-                    className={`group h-full w-full overflow-hidden rounded-[1.35rem] border-[3px] bg-white transition-[box-shadow,ring-color] duration-500 ease-out ${
-                      isHighlighted
-                        ? "border-gold shadow-[0_28px_56px_-14px_rgba(46,94,78,0.55)] ring-2 ring-gold/50"
-                        : "border-white shadow-[0_18px_40px_-18px_rgba(46,94,78,0.45)] ring-1 ring-primary/10"
-                    }`}
+          <div className="relative z-0 min-w-0">
+            <div className="relative mx-auto aspect-square w-full max-w-full overflow-visible">
+              <AnimatePresence mode="wait" initial={false}>
+                {showNisargBaithak && (
+                  <motion.div
+                    key="nisarg-baithak"
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 flex items-center justify-center p-2 sm:p-3"
                   >
-                    <img
-                      src={collageReady ? c.src : undefined}
-                      alt={c.alt}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </motion.div>
+                    <div className="flex h-full w-full items-center justify-center gap-3 sm:gap-4 md:gap-5">
+                      {NISARG_BAITHAK_IMAGES.map(({ src, alt }, index) => (
+                        <div
+                          key={src}
+                          className={`aspect-[3/4] w-[calc(50%-0.375rem)] overflow-hidden rounded-2xl border border-border/50 bg-white shadow-[0_16px_48px_-16px_rgba(46,94,78,0.35)] ring-1 ring-black/[0.04] sm:w-[calc(50%-0.625rem)] ${
+                            index === 1 ? "translate-y-6 sm:translate-y-8 md:translate-y-10" : ""
+                          }`}
+                        >
+                          <img
+                            src={src}
+                            alt={alt}
+                            className="h-full w-full object-cover object-top"
+                            fetchPriority={index === 0 ? "high" : "auto"}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
+                {showOrbitCollage && (
+                  <motion.div
+                    key="orbit-collage"
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <motion.div style={{ y: collageY }} className="relative h-full w-full overflow-visible">
+                      <motion.div
+                        style={{ width: `${HERO_COLLAGE.centerSize}%`, height: `${HERO_COLLAGE.centerSize}%` }}
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                      >
+                        <div className="group relative h-full w-full">
+                          <div className="absolute -inset-4 rounded-[1.75rem] bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)] blur-2xl" />
+                          <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_80px_-20px_rgba(46,94,78,0.45)] ring-1 ring-primary/10">
+                            <img
+                              src={heroDeer}
+                              alt="Spotted deer in the forest"
+                              className="h-full w-full object-cover transition-transform duration-[1.6s] ease-out group-hover:scale-110"
+                              fetchPriority="high"
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {collage.map((c, i) => {
+                        const pos = collageOrbitPosition(i, collage.length, orbitRadius);
+                        const isHighlighted = highlightIndex === i;
+                        const z = isHighlighted ? 20 + collage.length + 2 : collageZIndex(i);
+                        return (
+                          <div
+                            key={c.alt}
+                            className="absolute"
+                            style={{
+                              left: pos.left,
+                              top: pos.top,
+                              width: `${HERO_COLLAGE.satelliteWidth}%`,
+                              zIndex: z,
+                              transform: "translate(-50%, -50%)",
+                            }}
+                          >
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.88 }}
+                              animate={{ opacity: 1, scale: isHighlighted ? 1.1 : 1 }}
+                              transition={{
+                                opacity: { duration: 0.8, delay: c.delay, ease: [0.22, 1, 0.36, 1] },
+                                scale: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                              }}
+                              className="aspect-[4/3]"
+                            >
+                              <div
+                                className={`group h-full w-full overflow-hidden rounded-[1.35rem] border-[3px] bg-white transition-[box-shadow,ring-color] duration-500 ease-out ${
+                                  isHighlighted
+                                    ? "border-gold shadow-[0_28px_56px_-14px_rgba(46,94,78,0.55)] ring-2 ring-gold/50"
+                                    : "border-white shadow-[0_18px_40px_-18px_rgba(46,94,78,0.45)] ring-1 ring-primary/10"
+                                }`}
+                              >
+                                <img
+                                  src={collageReady ? c.src : undefined}
+                                  alt={c.alt}
+                                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                            </motion.div>
+                          </div>
+                        );
+                      })}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {campaignActive && (
+              <div className="mt-4 flex justify-center gap-2 lg:justify-end lg:pr-4">
+                {[0, 1].map((index) => (
+                  <span
+                    key={index}
+                    aria-hidden
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      activeVisual === index ? "w-8 bg-primary" : "w-1.5 bg-primary/25"
+                    }`}
+                  />
+                ))}
               </div>
-            );
-          })}
-        </motion.div>
-        </div>
+            )}
+          </div>
         </div>
 
-        {/* Scroll indicator — sits just below hero content */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -677,15 +726,6 @@ function JoinCTA() {
   );
 }
 
-const NEWS_ITEMS = [
-  { img: natureWalk, date: "Jun 18, 2026", category: "Field Notes", title: "Monsoon Walks in the Western Ghats", desc: "Children traced amphibian trails after the first showers — a sensory immersion into the awakening forest floor." },
-  { img: school, date: "Jun 04, 2026", category: "School Program", title: "Biodiversity Week at Vidya Niketan", desc: "Five days of birding, leaf-pressing and storytelling brought 240 students closer to their local ecology." },
-  { img: plantation, date: "May 22, 2026", category: "Conservation", title: "1,000 Native Saplings, One Hillside", desc: "Communities, students and forest officers joined hands to restore a degraded slope in the Sahyadris." },
-  { img: clean, date: "May 09, 2026", category: "Community", title: "Streambank Clean-up Along the Mula", desc: "Volunteers removed plastic waste from 2km of riverbank while learning about freshwater habitats." },
-  { img: storyThumb, date: "Apr 27, 2026", category: "Media", title: "Featured in The Hindu — Sunday Magazine", desc: "Our work with rural schools was profiled in a feature on grassroots conservation movements." },
-  { img: heroDeer, date: "Apr 12, 2026", category: "Program Update", title: "Spotted Deer Census Concluded", desc: "Citizen-science volunteers contributed 320 sightings across three protected pockets this season." },
-];
-
 const ARCHIVES: Array<{ year: string; months: Array<{ name: string; posts: string[] }> }> = [
   /* hidden for now
   { year: "2026", months: [
@@ -724,46 +764,7 @@ function NewsUpdates() {
         </div>
 
         <div className="mt-14">
-          <div className="scrollbar-hide -mx-6 overflow-x-auto overflow-y-hidden overscroll-x-contain px-6 md:-mx-10 md:px-10">
-            <div className="flex w-max gap-4 pr-4 sm:gap-5">
-              {NEWS_ITEMS.map((n, i) => (
-                <div key={n.title} className="w-52 shrink-0 sm:w-56">
-                  <Reveal dir="up" delay={Math.min(i * 0.04, 0.4)} className="h-full">
-                    <article className="group flex flex-col overflow-hidden rounded-[1.25rem] border border-border/50 bg-white transition-transform duration-500 hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
-                      <div className="relative shrink-0 overflow-hidden">
-                        <div className="h-56 w-full sm:h-60">
-                          <img
-                            src={n.img}
-                            alt={n.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
-                          />
-                        </div>
-                        <span className="category-badge absolute left-3 top-3 text-[10px]">
-                          {n.category}
-                        </span>
-                      </div>
-                      <div className="flex flex-col p-3.5">
-                        <div className="meta-label inline-flex items-center gap-1.5 text-[10px]">
-                          <Calendar className="h-3 w-3" /> {n.date}
-                        </div>
-                        <h3 className="mt-1.5 line-clamp-1 font-serif text-base leading-snug text-primary">
-                          {n.title}
-                        </h3>
-                        <p className="text-body mt-1 line-clamp-2 text-xs leading-relaxed">{n.desc}</p>
-                        <Link
-                          to="/"
-                          className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-secondary"
-                        >
-                          Read More <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                      </div>
-                    </article>
-                  </Reveal>
-                </div>
-              ))}
-            </div>
-          </div>
+          <FieldInstagramReelsRow />
         </div>
 
           {/* Archives — hidden for now

@@ -24,6 +24,7 @@ import { Route as ApiYoutubeMetaRouteImport } from './routes/api.youtube-meta'
 import { Route as ApiInstagramThumbnailRouteImport } from './routes/api.instagram-thumbnail'
 import { Route as ApiInstagramReelsRouteImport } from './routes/api.instagram-reels'
 import { Route as ApiInstagramImageRouteImport } from './routes/api.instagram-image'
+import { Route as ApiInstagramFieldReelsRouteImport } from './routes/api.instagram-field-reels'
 
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
@@ -100,6 +101,11 @@ const ApiInstagramImageRoute = ApiInstagramImageRouteImport.update({
   path: '/api/instagram-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiInstagramFieldReelsRoute = ApiInstagramFieldReelsRouteImport.update({
+  id: '/api/instagram-field-reels',
+  path: '/api/instagram-field-reels',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/newsletter': typeof NewsletterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/newsletter'
     | '/sitemap.xml'
     | '/team'
+    | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   NewsletterRoute: typeof NewsletterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
+  ApiInstagramFieldReelsRoute: typeof ApiInstagramFieldReelsRoute
   ApiInstagramImageRoute: typeof ApiInstagramImageRoute
   ApiInstagramReelsRoute: typeof ApiInstagramReelsRoute
   ApiInstagramThumbnailRoute: typeof ApiInstagramThumbnailRoute
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiInstagramImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/instagram-field-reels': {
+      id: '/api/instagram-field-reels'
+      path: '/api/instagram-field-reels'
+      fullPath: '/api/instagram-field-reels'
+      preLoaderRoute: typeof ApiInstagramFieldReelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewsletterRoute: NewsletterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeamRoute: TeamRoute,
+  ApiInstagramFieldReelsRoute: ApiInstagramFieldReelsRoute,
   ApiInstagramImageRoute: ApiInstagramImageRoute,
   ApiInstagramReelsRoute: ApiInstagramReelsRoute,
   ApiInstagramThumbnailRoute: ApiInstagramThumbnailRoute,

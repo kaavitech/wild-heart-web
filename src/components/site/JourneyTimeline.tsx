@@ -5,7 +5,8 @@ import {
   Landmark,
   GraduationCap,
   Mountain,
-  PawPrint,
+  BookOpen,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
@@ -62,12 +63,20 @@ const MILESTONES: Milestone[] = [
     icon: Mountain,
   },
   {
-    date: "March 2026",
-    phase: "Wild",
-    title: "Jungle Trail Experience",
+    date: "2026",
+    phase: "Roots of Knowledge",
+    title: "Nature Library",
     description:
-      "Collaborated with Gorewada Zoological Park to curate Central India's first Premium Jungle Trail Experience.",
-    icon: PawPrint,
+      "Established the Nature Library — a curated space of books, resources, and stories that nurture ecological curiosity and deepen understanding of the natural world.",
+    icon: BookOpen,
+  },
+  {
+    date: "2026",
+    phase: "Growing Together",
+    title: "Nature Connect",
+    description:
+      "Launched Nature Connect to bring communities closer to nature through immersive experiences, dialogues, and shared learning that strengthen the bond between people and the environment.",
+    icon: Users,
   },
 ];
 
@@ -98,7 +107,7 @@ export function JourneyTimeline() {
 
         <div className="relative mt-14 -mx-2 px-2 sm:mx-0 sm:px-0">
           <div
-            className="overflow-x-auto pb-4 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/25 [&::-webkit-scrollbar-track]:bg-primary/5"
+            className="overflow-x-auto overflow-y-hidden pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <div className="relative min-w-max px-4 pb-2 sm:px-8">
               {/* horizontal spine */}
@@ -114,7 +123,7 @@ export function JourneyTimeline() {
                   return (
                     <li
                       key={m.title}
-                      className="relative flex h-[26rem] w-[17.5rem] shrink-0 flex-col sm:w-[19rem]"
+                      className="relative flex h-[34rem] w-[17.5rem] shrink-0 flex-col sm:w-[19rem]"
                     >
                       {above ? (
                         <>

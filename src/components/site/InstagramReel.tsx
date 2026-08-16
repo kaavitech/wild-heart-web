@@ -10,7 +10,8 @@ type InstagramReelProps = {
 };
 
 function toEmbedUrl(url: string) {
-  return `${url.replace(/\?.*$/, "").replace(/\/?$/, "")}/embed`;
+  const clean = url.replace(/\?.*$/, "").replace(/\/?$/, "");
+  return `${clean}/embed/?autoplay=1&hidecaption=1`;
 }
 
 function hasDirectThumbnail(thumbnailUrl?: string) {
@@ -31,14 +32,21 @@ async function fetchThumbnail(url: string, direct?: string) {
   return data.thumbnailUrl ?? "";
 }
 
+function loadInstagramEmbedScript() {
+  if (document.querySelector('script[src*="instagram.com/embed.js"]')) return;
+
+  const script = document.createElement("script");
+  script.src = "https://www.instagram.com/embed.js";
+  script.async = true;
+  document.body.appendChild(script);
+}
+
 export function InstagramReel({
   url,
   title = "Instagram reel",
   thumbnailUrl,
-  videoUrl,
 }: InstagramReelProps) {
   const [playing, setPlaying] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
   const [resolvedThumb, setResolvedThumb] = useState("");
 
   useEffect(() => {
@@ -62,30 +70,19 @@ export function InstagramReel({
     };
   }, [url, thumbnailUrl]);
 
-  if (playing && videoUrl && !videoFailed) {
-    return (
-      <video
-        src={videoUrl}
-        poster={resolvedThumb || proxiedInstagramImageUrl(thumbnailUrl ?? "")}
-        controls
-        playsInline
-        autoPlay
-        preload="metadata"
-        title={title}
-        className="h-full w-full bg-black object-cover"
-        onError={() => setVideoFailed(true)}
-      />
-    );
-  }
+  useEffect(() => {
+    if (playing) loadInstagramEmbedScript();
+  }, [playing]);
 
   if (playing) {
     return (
       <iframe
         src={toEmbedUrl(url)}
         title={title}
-        className="h-full w-full border-0"
+        className="h-full w-full border-0 bg-black"
         allowFullScreen
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
       />
     );
   }
@@ -93,7 +90,10 @@ export function InstagramReel({
   return (
     <button
       type="button"
-      onClick={() => setPlaying(true)}
+      onClick={(event) => {
+        event.stopPropagation();
+        setPlaying(true);
+      }}
       className="group/play relative block h-full w-full overflow-hidden bg-primary/10"
       aria-label={`Play ${title}`}
     >

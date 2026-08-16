@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   enrichReelThumbnails,
   extractReelShortcode,
+  fetchInstagramEmbedMeta,
   fetchProfileThumbnailMap,
 } from "@/lib/instagram";
 import { INSTAGRAM_USERNAME } from "@/lib/instagram-fallback";
@@ -22,14 +23,23 @@ export const Route = createFileRoute("/api/instagram-thumbnail")({
 
         try {
           const thumbnails = await fetchProfileThumbnailMap(INSTAGRAM_USERNAME);
-          const thumbnailUrl = thumbnails.get(shortcode) ?? "";
+          let thumbnailUrl = thumbnails.get(shortcode) ?? "";
+
+          if (!thumbnailUrl) {
+            const meta = await fetchInstagramEmbedMeta(url);
+            thumbnailUrl = meta?.thumbnailUrl ?? "";
+          }
 
           return Response.json(
             { thumbnailUrl },
             { headers: { "Cache-Control": "public, max-age=86400" } },
           );
         } catch {
-          return Response.json({ thumbnailUrl: "" });
+          const meta = await fetchInstagramEmbedMeta(url);
+          return Response.json(
+            { thumbnailUrl: meta?.thumbnailUrl ?? "" },
+            { headers: { "Cache-Control": "public, max-age=86400" } },
+          );
         }
       },
     },

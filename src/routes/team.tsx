@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { motion } from "framer-motion";
-import prafulImage from "@/assets/team/praful.png";
-import diptiImage from "@/assets/team/dipti.png";
-import pratikImage from "@/assets/team/pratik.png";
-import smrutiImage from "@/assets/team/smruti.png";
+import { TEAM as team } from "@/lib/team-data";
 
 export const Route = createFileRoute("/team")({
   head: () => ({
@@ -14,45 +11,11 @@ export const Route = createFileRoute("/team")({
       { name: "description", content: "The people behind Wild Agile Foundation." },
       { property: "og:title", content: "Our Team — Wild Agile Foundation" },
       { property: "og:description", content: "Meet the people connecting children with nature." },
-      { property: "og:image", content: prafulImage },
+      { property: "og:image", content: team[0]?.img },
     ],
   }),
   component: TeamPage,
 });
-
-type Member = {
-  name: string;
-  role: string;
-  bio: string;
-  img: string;
-};
-
-const team: Member[] = [
-  {
-    name: "Praful Deshmukh",
-    role: "Founder & Chairman",
-    bio: "A die-hard nature and wildlife enthusiast dedicating his life to giving back to the world. A seasoned Product Manager who has built IT products for leading global banks, his true passion lies in wildlife photography and conservation.",
-    img: prafulImage,
-  },
-  {
-    name: "Ar. Dipti Pande",
-    role: "Secretary",
-    bio: "A qualified conservation architect with a deep love for teaching, history, the Indian knowledge system, ancient Vedas, and culture. Her unparalleled passion for gardening speaks of her nurturing spirit and bond with nature.",
-    img: diptiImage,
-  },
-  {
-    name: "Pratik Mundhada",
-    role: "Treasurer",
-    bio: "A passionate civil engineer with global expertise in metro rail construction. A firm believer in living in harmony with nature, he blends technical excellence with deep environmental consciousness and financial stewardship.",
-    img: pratikImage,
-  },
-  {
-    name: "Smruti Chobitkar",
-    role: "Lead — Media & Public Relations",
-    bio: "A journalist by education and a committed environmentalist, Smruti leads our communication with sharp media acumen — shaping the outreach that carries our environmental movement forward.",
-    img: smrutiImage,
-  },
-];
 
 function TeamPage() {
   return (

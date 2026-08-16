@@ -63,6 +63,44 @@ function reelTitle(caption: string) {
   return line.length > 90 ? `${line.slice(0, 87)}…` : line;
 }
 
+export { reelTitle };
+
+type InstagramOembedResponse = {
+  thumbnail_url?: string;
+  title?: string;
+  author_name?: string;
+};
+
+export async function fetchInstagramEmbedMeta(url: string) {
+  const shortcode = extractReelShortcode(url);
+  if (!shortcode) return null;
+
+  const normalizedUrl = url.split("?")[0].replace(/\/?$/, "/");
+
+  try {
+    const res = await fetch(
+      `https://www.instagram.com/api/v1/oembed/?url=${encodeURIComponent(normalizedUrl)}`,
+      { headers: igHeaders(normalizedUrl) },
+    );
+
+    if (!res.ok) return null;
+
+    const data = (await res.json()) as InstagramOembedResponse;
+    const caption = data.title?.trim() ?? "";
+
+    return {
+      shortcode,
+      url: normalizedUrl,
+      thumbnailUrl: data.thumbnail_url ?? "",
+      caption,
+      title: reelTitle(caption),
+      author: data.author_name?.trim() || "Wild Agile Foundation",
+    };
+  } catch {
+    return null;
+  }
+}
+
 function captionFromNode(node: IgTimelineNode) {
   return (
     node.edge_media_to_caption?.edges?.[0]?.node?.text?.trim() ??
@@ -171,15 +209,40 @@ export async function enrichReelThumbnails(
   reels: InstagramReel[],
   username: string,
 ): Promise<InstagramReel[]> {
-  if (reels.every((reel) => reel.thumbnailUrl)) return reels;
+  let thumbnails = new Map<string, string>();
 
   try {
-    const thumbnails = await fetchProfileThumbnailMap(username);
-    return reels.map((reel) => ({
-      ...reel,
-      thumbnailUrl: reel.thumbnailUrl || thumbnails.get(reel.shortcode) || "",
-    }));
+    thumbnails = await fetchProfileThumbnailMap(username);
   } catch {
-    return reels;
+    // Profile lookup may fail when Instagram blocks server requests.
   }
+
+  return Promise.all(
+    reels.map(async (reel) => {
+      let thumbnailUrl = reel.thumbnailUrl || thumbnails.get(reel.shortcode) || "";
+      let caption = reel.caption;
+      let title = reel.title;
+      let author = reel.author;
+
+      if (!thumbnailUrl || !caption) {
+        const meta = await fetchInstagramEmbedMeta(reel.url);
+        if (meta) {
+          thumbnailUrl = thumbnailUrl || meta.thumbnailUrl;
+          if (!caption && meta.caption) {
+            caption = meta.caption;
+            title = meta.title;
+          }
+          author = meta.author || author;
+        }
+      }
+
+      return {
+        ...reel,
+        thumbnailUrl,
+        caption,
+        title,
+        author,
+      };
+    }),
+  );
 }

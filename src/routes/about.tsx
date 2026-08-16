@@ -2,15 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Leaf, Bird, GraduationCap, Baby } from "lucide-react";
 import storyImg from "@/assets/about-story.jpg";
-import school from "@/assets/project-school.jpg";
-import nature from "@/assets/project-nature-walk.jpg";
-import plantation from "@/assets/project-plantation.jpg";
-import clean from "@/assets/project-clean.jpg";
 import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
 import { JourneyTimeline } from "@/components/site/JourneyTimeline";
+import { TEAM } from "@/lib/team-data";
+import { loadGalleryThumbsByCategory } from "@/lib/gallery-data";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -39,14 +37,17 @@ const STATS = [
   { value: 100, label: "Families Inspired" },
 ];
 
-const GALLERY = [
-  { src: nature, cat: "Nature Walks" },
-  { src: school, cat: "Children" },
-  { src: clean, cat: "Community" },
-  { src: plantation, cat: "Tree Plantation" },
-  { src: storyImg, cat: "Children" },
-];
-const CATS = ["All", "Nature Walks", "Children", "Community", "Tree Plantation"];
+const TRAIL_GALLERY_CATEGORIES = ["Eco Steps", "Run Walk Clean"] as const;
+
+const GALLERY = TRAIL_GALLERY_CATEGORIES.flatMap((category) =>
+  loadGalleryThumbsByCategory(category).map((image) => ({
+    id: image.id,
+    src: image.thumbSrc,
+    cat: category,
+  })),
+);
+
+const CATS = ["All", ...TRAIL_GALLERY_CATEGORIES];
 
 function AboutPage() {
   return (
@@ -179,7 +180,7 @@ function Gallery() {
         </div>
         <div className="mt-10 columns-2 gap-4 md:columns-3 [&>*]:mb-4">
           {GALLERY.map((g, i) => (
-            <Reveal key={i} dir="scale" delay={i * 0.05}>
+            <Reveal key={g.id} dir="scale" delay={i * 0.05}>
               <div className="group relative overflow-hidden rounded-2xl">
                 <img src={g.src} alt={g.cat} loading="lazy" className="w-full transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-xs uppercase tracking-[0.2em] text-white">{g.cat}</div>
@@ -192,13 +193,6 @@ function Gallery() {
   );
 }
 
-const TEAM = [
-  { name: "Aarav Sharma", role: "Founder & Director", quote: "Every child deserves a forest to call their own." },
-  { name: "Priya Nair", role: "Programs Lead", quote: "Conservation begins where curiosity is allowed to wander." },
-  { name: "Rohan Patil", role: "Field Educator", quote: "The forest is the best teacher I've ever assisted." },
-  { name: "Meera Joshi", role: "Community Manager", quote: "Communities heal land when land first heals them." },
-];
-
 function Team() {
   return (
     <section className="section-pad bg-[var(--cream)]/40">
@@ -206,17 +200,20 @@ function Team() {
         <SectionTitle eyebrow="Meet Our Team" title={<>People who show up for the wild.</>} />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TEAM.map((m, i) => (
-            <Reveal key={m.name} dir="up" delay={i * 0.06}>
+            <Reveal key={m.name} dir="up" delay={(i % 4) * 0.06}>
               <motion.div whileHover={{ y: -4 }} className="group h-full overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-soft)]">
-                <div className="aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-secondary/30 to-primary/30">
-                  <div className="flex h-full w-full items-center justify-center font-serif text-7xl text-white/80">
-                    {m.name.split(" ").map((p) => p[0]).join("")}
-                  </div>
+                <div className="aspect-[4/5] w-full overflow-hidden bg-muted">
+                  <img
+                    src={m.img}
+                    alt={m.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
                 <div className="p-6">
                   <h3 className="font-serif text-2xl text-primary">{m.name}</h3>
                   <div className="text-xs uppercase tracking-[0.18em] text-secondary">{m.role}</div>
-                  <p className="mt-3 font-serif italic text-foreground/80">"{m.quote}"</p>
+                  <p className="mt-3 text-sm leading-relaxed text-foreground/80">{m.bio}</p>
                 </div>
               </motion.div>
             </Reveal>

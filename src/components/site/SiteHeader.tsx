@@ -45,18 +45,18 @@ export function SiteHeader() {
           to="/"
           className="row-span-2 flex h-[7.5rem] min-w-0 items-center gap-2.5 sm:gap-4"
         >
-          <div className="grid h-[4.21875rem] w-[4.21875rem] shrink-0 place-items-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-border/50">
+          <div className="grid aspect-square h-full shrink-0 place-items-center overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-border/50">
             <img
               src={logo}
               alt="Wild Agile Foundation"
-              className="h-full w-full object-contain p-1"
+              className="h-full w-full object-contain p-1.5"
             />
           </div>
-          <div className="hidden min-w-0 font-sans text-[1.58203125rem] sm:block">
-            <div className="font-medium leading-[0.95] tracking-tight text-primary">
+          <div className="hidden min-w-0 font-serif text-[1.58203125rem] sm:block">
+            <div className="font-semibold uppercase leading-[0.95] tracking-[0.08em] text-primary">
               Wild Agile
             </div>
-            <div className="mt-2 text-[0.556em] font-medium uppercase leading-none tracking-[0.18em] text-muted-foreground">
+            <div className="mt-2 text-center text-[0.556em] font-medium uppercase leading-none tracking-[0.18em] text-muted-foreground">
               Foundation
             </div>
           </div>

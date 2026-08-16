@@ -53,6 +53,35 @@ export type ProgramJoinInfo = {
   details: Array<{ label: string; value: string }>;
 };
 
+export type ProgramScheduleEntry = {
+  date: string;
+  day: string;
+  venue: string;
+  registrationLink: string;
+};
+
+export type ProgramSchedule = {
+  title: string;
+  intro?: string;
+  entries: ProgramScheduleEntry[];
+};
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+export function getUpcomingScheduleEntries(
+  entries: ProgramScheduleEntry[],
+  now = new Date(),
+): ProgramScheduleEntry[] {
+  const today = startOfDay(now);
+
+  return entries.filter((entry) => {
+    const walkDate = startOfDay(new Date(entry.date));
+    return !Number.isNaN(walkDate.getTime()) && walkDate >= today;
+  });
+}
+
 export type ProgramSessionStep = {
   name: string;
   description: string;
@@ -83,14 +112,15 @@ export type Program = {
   cover: string;
   tags: string[];
   status: "Active" | "Ongoing" | "Upcoming";
-  objectives: string[];
-  vision: string;
-  impact: string;
+  objectives?: string[];
+  vision?: string;
+  impact?: string;
   expectedSupport: string[];
   experience?: ProgramExperience;
   whyItMatters?: ProgramWhyItMatters;
   pastWalks?: ProgramPastWalks;
   joinInfo?: ProgramJoinInfo;
+  schedule?: ProgramSchedule;
   sessionFlow?: ProgramSessionFlow;
   testimonials?: ProgramTestimonials;
   fundraising?: ProgramFundraising;
@@ -171,6 +201,60 @@ export const PROGRAMS: Program[] = [
         {
           label: "Who",
           value: "Children and families — no experience needed",
+        },
+      ],
+    },
+    schedule: {
+      title: "Upcoming Walks",
+      intro: "Register for a Sunday walk near you.",
+      entries: [
+        {
+          date: "26 Jul 2026",
+          day: "Sunday",
+          venue: "Seminary Hills – Behind Bal Udyaan",
+          registrationLink: "https://luma.com/51agnpev",
+        },
+        {
+          date: "30 Aug 2026",
+          day: "Sunday",
+          venue: "Ambazari Biodiversity Park",
+          registrationLink: "https://luma.com/h3tnktjn",
+        },
+        {
+          date: "27 Sep 2026",
+          day: "Sunday",
+          venue: "Seminary Hills – Behind TTC",
+          registrationLink: "https://luma.com/tlvw6rph",
+        },
+        {
+          date: "25 Oct 2026",
+          day: "Sunday",
+          venue: "Gorewada Nature Trail",
+          registrationLink: "https://luma.com/z2nncypz",
+        },
+        {
+          date: "29 Nov 2026",
+          day: "Sunday",
+          venue: "Seminary Hills – Behind Bal Udyaan",
+          registrationLink: "https://luma.com/q5ul0f5i",
+        },
+        {
+          date: "20 Dec 2026",
+          day: "Sunday",
+          venue: "Gorewada Nature Trail",
+          registrationLink: "https://luma.com/pyt3maz0",
+        },
+        {
+          date: "31 Jan 2027",
+          day: "Sunday",
+          venue: "Gorewada Nature Trail",
+          registrationLink: "https://luma.com/2sl8d9n6",
+        },
+        {
+          date: "28 Feb 2027",
+          day: "Sunday",
+          venue: "Seminary Hills – Behind Bal Udyaan",
+          registrationLink: "https://luma.com/jqayx7l1",
         },
       ],
     },
@@ -259,15 +343,6 @@ export const PROGRAMS: Program[] = [
     cover: natureLibrary,
     tags: ["Education", "Reading", "Conservation", "Library"],
     status: "Ongoing",
-    objectives: [
-      "A collection of 500 carefully curated books",
-      "Furniture to arrange the books systematically",
-      "Comfortable reading and learning spaces",
-    ],
-    vision:
-      "A place where curiosity grows into knowledge, and knowledge grows into conservation.",
-    impact:
-      "Phase 1 fundraising is underway — help us establish the first Wild Agile Nature Library.",
     expectedSupport: ["Monetary Donor", "Book Donor", "Sponsor", "Patron"],
     fundraising: {
       phaseTitle: "Our Phase 1 Goal – 2026",
@@ -296,9 +371,9 @@ export const PROGRAMS: Program[] = [
       },
       bankDetails: {
         accountName: "Wild Agile Foundation",
-        bank: "XXXXX Bank",
-        accountNumber: "XXXXXXXXXXXX",
-        ifsc: "XXXXXXXX",
+        bank: "IndusInd Bank Ltd",
+        accountNumber: "254330300925",
+        ifsc: "INDB0002173",
       },
       bookDonation: {
         intro: "We welcome new or gently used books related to:",

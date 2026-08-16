@@ -2,11 +2,12 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Heart, Target, Eye, Sparkles, Mail, Camera, Briefcase, GraduationCap, Users, Leaf, Microscope, PenTool, TreePine, Building2, BookOpen, IndianRupee, MapPin, Landmark, Calendar, Footprints } from "lucide-react";
-import { getProgram, PROGRAMS } from "@/lib/programs-data";
+import { getProgram, getUpcomingScheduleEntries, PROGRAMS } from "@/lib/programs-data";
 import { loadGalleryThumbsByCategory, type GalleryImage } from "@/lib/gallery-data";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
+import whatsappQR from "@/assets/whatsappQR.jpeg";
 
 function HeroDescription({
   description,
@@ -156,6 +157,13 @@ function ProgramDetail() {
         : [],
     [program.sessionFlow?.galleryCategory],
   );
+  const upcomingScheduleEntries = useMemo(
+    () =>
+      program.schedule
+        ? getUpcomingScheduleEntries(program.schedule.entries)
+        : [],
+    [program.schedule],
+  );
   const galleryPools = useMemo(() => splitGalleryPools(pastWalkImages), [pastWalkImages]);
   const experienceImages = galleryPools.primary;
   const whyImages =
@@ -163,6 +171,29 @@ function ProgramDetail() {
       ? galleryPools.secondary
       : galleryPools.primary.slice(1);
   const hasNarrativeLayout = Boolean(program.experience || program.sessionFlow);
+
+  const expectedSupportSection = (
+    <section className={`bg-[var(--cream)]/40 ${program.fundraising ? "py-16 md:py-20" : "section-pad"}`}>
+      <div className="container-x">
+        <SectionTitle align="center" eyebrow="Expected Support" title={<>How you can step in.</>} />
+        <div className="mx-auto mt-14 grid max-w-5xl gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {program.expectedSupport.map((s: string) => {
+            const Icon = SUPPORT_ICONS[s] ?? Users;
+            return (
+              <Reveal key={s} dir="up">
+                <div className="group glass-card flex h-full flex-col items-start rounded-2xl p-6 transition-transform hover:-translate-y-1">
+                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/8 text-primary">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <div className="mt-4 text-base font-semibold text-primary md:text-lg">{s}</div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
 
   return (
     <>
@@ -221,7 +252,7 @@ function ProgramDetail() {
       </section>
 
       {program.heroTitle && (
-        <section className="section-pad">
+        <section className="pb-12 pt-16 md:pb-16 md:pt-20">
           <div className="container-x mx-auto max-w-3xl text-center">
             <Reveal>
               {program.headline && (
@@ -244,39 +275,47 @@ function ProgramDetail() {
       )}
 
       {/* Objectives + Vision + Impact — skipped when a program has richer narrative sections */}
-      {!program.experience && !program.sessionFlow && (
-        <section className={`section-pad ${program.heroTitle ? "pt-0" : ""}`}>
-          <div className="container-x grid gap-12 lg:grid-cols-3">
-            <Reveal>
-              <div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Target className="h-6 w-6" /></div>
-                <h3 className="mt-5 font-serif text-3xl text-primary">
-                  {program.fundraising ? "What We're Building" : "Objectives"}
-                </h3>
-                <ul className="mt-4 space-y-3 text-base leading-relaxed text-foreground/85 md:text-lg">
-                  {program.objectives.map((o: string) => (
-                    <li key={o} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />{o}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Eye className="h-6 w-6" /></div>
-                <h3 className="mt-5 font-serif text-3xl text-primary">Vision</h3>
-                <p className="mt-4 text-base italic leading-relaxed text-foreground/85 md:text-lg">"{program.vision}"</p>
-              </div>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Sparkles className="h-6 w-6" /></div>
-                <h3 className="mt-5 font-serif text-3xl text-primary">Impact</h3>
-                <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">{program.impact}</p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
+      {!program.experience &&
+        !program.sessionFlow &&
+        (program.objectives?.length || program.vision || program.impact) && (
+          <section className={`section-pad ${program.heroTitle ? "pt-0" : ""}`}>
+            <div className="container-x grid gap-12 lg:grid-cols-3">
+              {program.objectives && program.objectives.length > 0 && (
+                <Reveal>
+                  <div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Target className="h-6 w-6" /></div>
+                    <h3 className="mt-5 font-serif text-3xl text-primary">
+                      {program.fundraising ? "What We're Building" : "Objectives"}
+                    </h3>
+                    <ul className="mt-4 space-y-3 text-base leading-relaxed text-foreground/85 md:text-lg">
+                      {program.objectives.map((o: string) => (
+                        <li key={o} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />{o}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              )}
+              {program.vision && (
+                <Reveal delay={0.1}>
+                  <div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Eye className="h-6 w-6" /></div>
+                    <h3 className="mt-5 font-serif text-3xl text-primary">Vision</h3>
+                    <p className="mt-4 text-base italic leading-relaxed text-foreground/85 md:text-lg">"{program.vision}"</p>
+                  </div>
+                </Reveal>
+              )}
+              {program.impact && (
+                <Reveal delay={0.2}>
+                  <div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Sparkles className="h-6 w-6" /></div>
+                    <h3 className="mt-5 font-serif text-3xl text-primary">Impact</h3>
+                    <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">{program.impact}</p>
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          </section>
+        )}
 
       {program.sessionFlow && (
         <section className="bg-[var(--cream)]/40 pb-24 pt-12 md:pb-32 md:pt-16">
@@ -489,7 +528,7 @@ function ProgramDetail() {
       {program.joinInfo && (
         <section className="section-pad">
           <div className="container-x">
-            <div className="mx-auto max-w-3xl">
+            <div className={program.schedule ? "mx-auto max-w-6xl" : "mx-auto max-w-3xl"}>
               <Reveal>
                 <SectionTitle
                   align="center"
@@ -497,68 +536,125 @@ function ProgramDetail() {
                   subtitle={program.joinInfo.intro}
                 />
               </Reveal>
-              <div className="mt-12 space-y-6">
-                {program.joinInfo.details.map((detail, i) => {
-                  const Icon = detail.label === "Where" ? MapPin : detail.label === "Who" ? Users : Calendar;
-                  return (
-                    <Reveal key={detail.label} delay={0.05 + i * 0.06}>
-                      <div className="flex gap-4 border-b border-border/70 pb-6 last:border-0">
+              <div
+                className={
+                  program.schedule
+                    ? "mt-12 grid gap-10 lg:grid-cols-2 lg:items-stretch"
+                    : "mt-12"
+                }
+              >
+                <div>
+                  <div className="space-y-6">
+                    {program.joinInfo.details.map((detail, i) => {
+                      const Icon = detail.label === "Where" ? MapPin : detail.label === "Who" ? Users : Calendar;
+                      return (
+                        <Reveal key={detail.label} delay={0.05 + i * 0.06}>
+                          <div className="flex gap-4 border-b border-border/70 pb-6 last:border-0">
+                            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <div className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                                {detail.label}
+                              </div>
+                              <p className="mt-1.5 text-base leading-relaxed text-foreground/90 md:text-lg">
+                                {detail.value}
+                              </p>
+                            </div>
+                          </div>
+                        </Reveal>
+                      );
+                    })}
+                  </div>
+                  <Reveal delay={0.25}>
+                    <div
+                      className={
+                        program.schedule
+                          ? "mt-10 flex flex-wrap gap-3"
+                          : "mt-10 flex flex-wrap justify-center gap-3"
+                      }
+                    >
+                      <Link to="/join" className="btn-primary">
+                        <Footprints className="h-4 w-4" /> Join the next walk
+                      </Link>
+                      <a href="mailto:hello@wildagilefoundation.org" className="btn-gold">
+                        <Mail className="h-4 w-4" /> Ask a question
+                      </a>
+                    </div>
+                  </Reveal>
+                </div>
+
+                {program.schedule && (
+                  <div className="lg:relative">
+                    <Reveal delay={0.1} className="lg:absolute lg:inset-0">
+                    <div className="flex h-full flex-col rounded-2xl border border-border/70 bg-card p-6 shadow-[var(--shadow-soft)]">
+                      <div className="flex items-center gap-3">
                         <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
-                          <Icon className="h-5 w-5" />
+                          <Calendar className="h-5 w-5" />
                         </div>
                         <div>
-                          <div className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                            {detail.label}
-                          </div>
-                          <p className="mt-1.5 text-base leading-relaxed text-foreground/90 md:text-lg">
-                            {detail.value}
-                          </p>
+                          <h3 className="font-display text-lg font-semibold text-foreground">
+                            {program.schedule.title}
+                          </h3>
+                          {program.schedule.intro && (
+                            <p className="text-sm text-muted-foreground">{program.schedule.intro}</p>
+                          )}
                         </div>
                       </div>
+                      <ul className="mt-6 min-h-0 flex-1 space-y-3 overflow-y-auto pr-1 [scrollbar-width:thin]">
+                        {upcomingScheduleEntries.length === 0 ? (
+                          <li className="rounded-xl border border-dashed border-border/60 bg-background/40 p-4 text-sm text-muted-foreground">
+                            No upcoming walks scheduled right now. Check back soon.
+                          </li>
+                        ) : null}
+                        {upcomingScheduleEntries.map((entry) => (
+                          <li
+                            key={entry.registrationLink}
+                            className="flex items-center gap-4 rounded-xl border border-border/60 bg-background/60 p-3 transition-colors hover:border-primary/40 hover:bg-primary/5"
+                          >
+                            <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-primary/8 text-primary">
+                              <span className="text-lg font-bold leading-none">
+                                {entry.date.split(" ")[0]}
+                              </span>
+                              <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wide">
+                                {entry.date.split(" ").slice(1).join(" ")}
+                              </span>
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                                {entry.day}
+                              </div>
+                              <p className="mt-0.5 truncate text-sm font-medium text-foreground/90">
+                                {entry.venue}
+                              </p>
+                            </div>
+                            <a
+                              href={entry.registrationLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                            >
+                              Register <ArrowRight className="h-3.5 w-3.5" />
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                     </Reveal>
-                  );
-                })}
+                  </div>
+                )}
               </div>
-              <Reveal delay={0.25}>
-                <div className="mt-10 flex flex-wrap justify-center gap-3">
-                  <Link to="/join" className="btn-primary">
-                    <Footprints className="h-4 w-4" /> Join the next walk
-                  </Link>
-                  <a href="mailto:hello@wildagilefoundation.org" className="btn-gold">
-                    <Mail className="h-4 w-4" /> Ask a question
-                  </a>
-                </div>
-              </Reveal>
             </div>
           </div>
         </section>
       )}
 
-      {/* Expected support */}
-      <section className="section-pad bg-[var(--cream)]/40">
-        <div className="container-x">
-          <SectionTitle align="center" eyebrow="Expected Support" title={<>How you can step in.</>} />
-          <div className="mx-auto mt-14 grid max-w-5xl gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {program.expectedSupport.map((s: string) => {
-              const Icon = SUPPORT_ICONS[s] ?? Users;
-              return (
-                <Reveal key={s} dir="up">
-                  <div className="group glass-card flex h-full flex-col items-start rounded-2xl p-6 transition-transform hover:-translate-y-1">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/8 text-primary">
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <div className="mt-4 text-base font-semibold text-primary md:text-lg">{s}</div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* Expected support — shown here for non-fundraising programs; fundraising programs render it below the bank details */}
+      {!program.fundraising && expectedSupportSection}
 
       {program.fundraising && (
         <>
-          <section className="section-pad bg-[var(--cream)]/40">
+          <section className="bg-[var(--cream)]/40 pt-16 pb-12 md:pt-20 md:pb-16">
             <div className="container-x">
               <Reveal>
                 <SectionTitle
@@ -579,7 +675,7 @@ function ProgramDetail() {
             </div>
           </section>
 
-          <section className="section-pad">
+          <section className="pb-16 pt-4 md:pb-20 md:pt-6">
             <div className="container-x">
               <SectionTitle
                 align="center"
@@ -629,8 +725,8 @@ function ProgramDetail() {
         </>
       )}
 
-      {/* Volunteer form + Donate */}
-      <section className="section-pad">
+      {/* Volunteer form + Donate (bank details for fundraising programs) */}
+      <section className={program.fundraising ? "pb-16 pt-0 md:pb-20" : "section-pad"}>
         <div className={`container-x grid gap-10 ${program.fundraising ? "" : "lg:grid-cols-2"}`}>
           {!program.fundraising && (
             <Reveal>
@@ -666,6 +762,9 @@ function ProgramDetail() {
           )}
         </div>
       </section>
+
+      {/* Expected support — for fundraising programs, shown below the bank details */}
+      {program.fundraising && expectedSupportSection}
 
       {/* Other programs */}
       <section className="pb-24">
@@ -713,24 +812,36 @@ function FundraisingSupport({ fundraising }: { fundraising: NonNullable<ReturnTy
             </div>
             <h3 className="font-serif text-3xl text-primary">Donate via Bank Transfer</h3>
           </div>
-          <dl className="mt-6 space-y-4">
-            <div>
-              <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Account Name</dt>
-              <dd className="mt-1 text-base leading-relaxed text-foreground/90 md:text-lg">{bankDetails.accountName}</dd>
-            </div>
-            <div>
-              <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Bank</dt>
-              <dd className="mt-1 text-base leading-relaxed text-foreground/90 md:text-lg">{bankDetails.bank}</dd>
-            </div>
-            <div>
-              <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Account Number</dt>
-              <dd className="mt-1 font-mono text-base text-foreground/90">{bankDetails.accountNumber}</dd>
-            </div>
-            <div>
-              <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">IFSC</dt>
-              <dd className="mt-1 font-mono text-base text-foreground/90">{bankDetails.ifsc}</dd>
-            </div>
-          </dl>
+          <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <dl className="flex-1 space-y-4">
+              <div>
+                <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Account Name</dt>
+                <dd className="mt-1 text-base leading-relaxed text-foreground/90 md:text-lg">{bankDetails.accountName}</dd>
+              </div>
+              <div>
+                <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Bank</dt>
+                <dd className="mt-1 text-base leading-relaxed text-foreground/90 md:text-lg">{bankDetails.bank}</dd>
+              </div>
+              <div>
+                <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Account Number</dt>
+                <dd className="mt-1 text-base leading-relaxed tracking-wide text-foreground/90 md:text-lg">{bankDetails.accountNumber}</dd>
+              </div>
+              <div>
+                <dt className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">IFSC</dt>
+                <dd className="mt-1 text-base leading-relaxed tracking-wide text-foreground/90 md:text-lg">{bankDetails.ifsc}</dd>
+              </div>
+            </dl>
+            <figure className="shrink-0 self-center sm:self-start">
+              <img
+                src={whatsappQR}
+                alt="Scan to pay via UPI / WhatsApp"
+                className="h-40 w-40 rounded-2xl border border-border bg-white object-contain p-2 shadow-[var(--shadow-soft)]"
+              />
+              <figcaption className="mt-2 text-center text-xs font-medium text-muted-foreground">
+                Scan to pay
+              </figcaption>
+            </figure>
+          </div>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
             After contributing, please email your transaction details to{" "}
             <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-primary hover:underline">

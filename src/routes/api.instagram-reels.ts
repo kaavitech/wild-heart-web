@@ -12,7 +12,8 @@ export const Route = createFileRoute("/api/instagram-reels")({
         try {
           const reels = await fetchInstagramReels(username);
           if (reels.length > 0) {
-            return Response.json(reels, {
+            const enriched = await enrichReelThumbnails(reels, username);
+            return Response.json(enriched, {
               headers: { "Cache-Control": "public, max-age=1800" },
             });
           }
