@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Calendar, Clock, ExternalLink, MapPin, Ticket } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Calendar, Clock, ExternalLink, MapPin, Ticket } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -180,6 +181,18 @@ export function NisargBaithakEventDialog({ open, onOpenChange }: NisargBaithakEv
                 Get directions on Google Maps
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
+            </section>
+
+            <section className="border-t border-border/60 pb-2 pt-4">
+              <Link
+                to="/programs/$slug"
+                params={{ slug: "nisarg-baithak" }}
+                onClick={() => onOpenChange(false)}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                See all Nisarg Baithak sessions
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </section>
           </div>
         </div>

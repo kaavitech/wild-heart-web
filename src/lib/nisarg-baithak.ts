@@ -1,4 +1,6 @@
 import nisargBaithakSession2 from "@/assets/landingPage/NisargBaithakSession2.png";
+import nisargBaithakSession1Thumb from "@/assets/landingPage/NisargBaithak.thumb.webp";
+import nisargBaithakSession2Thumb from "@/assets/landingPage/NisargBaithakSession2.thumb.webp";
 
 /** Campaign promos hide after this instant (local time). */
 export const NISARG_BAITHAK_CAMPAIGN_END = new Date(2026, 10, 1, 23, 59, 59, 999);
@@ -16,7 +18,7 @@ export const NISARG_BAITHAK_EVENT = {
   subtitle: "Wildlife Rescue Stories and the Science Behind It",
   tagline: "Because every wildlife rescue deserves a wild ending!",
   dateLabel: "Sunday, 1 November 2026",
-  timeLabel: "10:00 AM – 12:00 PM (Morning)",
+  timeLabel: "10:30 AM – 12:30 PM (Morning)",
   venueLine:
     "Purva Vidharbha Mahila Parishad Hall, beside Vibgyour School, Burdi, Nagpur, opposite Metro Pillar No. 281",
   venueShort: "Purva Vidharbha Mahila Parishad Hall, Burdi, Nagpur",
@@ -80,6 +82,74 @@ export const NISARG_BAITHAK_IMAGES = [
     alt: "Nisarg Baithak — From Rescue to Freedom",
   },
 ] as const;
+
+export type NisargBaithakGuest = {
+  name: string;
+  role: string;
+};
+
+export type NisargBaithakSession = {
+  sessionLabel: string;
+  topic: string;
+  subtitle: string;
+  tagline?: string;
+  /** ISO date (YYYY-MM-DD), used to sort sessions and tell upcoming from past. */
+  date: string;
+  dateLabel: string;
+  timeLabel: string;
+  venue: string;
+  guests: NisargBaithakGuest[];
+  summary: string;
+  poster: string;
+  posterAlt: string;
+  entryNote?: string;
+  bookingUrl?: string;
+  /** Session whose full details open in NisargBaithakEventDialog. */
+  isFeaturedEvent?: boolean;
+};
+
+/** Every Nisarg Baithak session, oldest first. Add the next session at the end. */
+export const NISARG_BAITHAK_SESSIONS: NisargBaithakSession[] = [
+  {
+    sessionLabel: "Session 01",
+    topic: "Trees Have Rights Too",
+    subtitle: "Understanding the Tree Act",
+    tagline: "Before the axe falls, the law speaks.",
+    date: "2026-08-22",
+    dateLabel: "Saturday, 22 August 2026",
+    timeLabel: "5:00 PM – 7:00 PM",
+    venue: NISARG_BAITHAK_EVENT.venueShort,
+    guests: [{ name: "Adv. Krishna Agrawal", role: "Environmental Lawyer" }],
+    summary:
+      "What protects a tree before it is cut? A session on the Tree Act with environmental lawyer Adv. Krishna Agrawal — what the law says about protecting trees, and how citizens can use it to speak up for the trees around them.",
+    poster: nisargBaithakSession1Thumb,
+    posterAlt: "Nisarg Baithak Session 01 poster — Trees Have Rights Too",
+    entryNote: "Free entry",
+  },
+  {
+    sessionLabel: NISARG_BAITHAK_EVENT.sessionLabel,
+    topic: NISARG_BAITHAK_EVENT.topic,
+    subtitle: NISARG_BAITHAK_EVENT.subtitle,
+    tagline: NISARG_BAITHAK_EVENT.tagline,
+    date: "2026-11-01",
+    dateLabel: NISARG_BAITHAK_EVENT.dateLabel,
+    timeLabel: NISARG_BAITHAK_EVENT.timeLabel,
+    venue: NISARG_BAITHAK_EVENT.venueShort,
+    guests: NISARG_BAITHAK_EVENT.speakers.map(({ name, role }) => ({ name, role })),
+    summary: NISARG_BAITHAK_EVENT.expectations,
+    poster: nisargBaithakSession2Thumb,
+    posterAlt: "Nisarg Baithak Session 02 poster — From Rescue to Freedom",
+    entryNote: NISARG_BAITHAK_EVENT.bookingNote,
+    bookingUrl: NISARG_BAITHAK_BOOKING_URL,
+    isFeaturedEvent: true,
+  },
+];
+
+export function isNisargBaithakSessionUpcoming(session: NisargBaithakSession, now = new Date()) {
+  const [year, month, day] = session.date.split("-").map(Number);
+  const endOfSessionDay = new Date(year, month - 1, day, 23, 59, 59, 999);
+  return now.getTime() <= endOfSessionDay.getTime();
+}
 
 export function isNisargBaithakCampaignActive(now = new Date()) {
   return now.getTime() <= NISARG_BAITHAK_CAMPAIGN_END.getTime();

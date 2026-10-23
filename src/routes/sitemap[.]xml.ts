@@ -26,6 +26,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/programs/jeevandhara", changefreq: "monthly", priority: "0.7" },
           { path: "/programs/eco-steps", changefreq: "monthly", priority: "0.7" },
           { path: "/programs/nature-library", changefreq: "monthly", priority: "0.7" },
+          { path: "/programs/nisarg-baithak", changefreq: "monthly", priority: "0.7" },
         ];
 
         const urls = entries.map(

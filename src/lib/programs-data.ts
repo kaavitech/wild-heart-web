@@ -3,6 +3,8 @@ import runWalkClean from "@/assets/projects/run-walk-clean.png";
 import jeevandhara from "@/assets/projects/jeevandhara.png";
 import ecoSteps from "@/assets/projects/eco-steps.png";
 import natureLibrary from "@/assets/projects/nature-library.jpg";
+import nisargBaithak from "@/assets/projects/nisarg-baithak.jpg";
+import { NISARG_BAITHAK_SESSIONS, type NisargBaithakSession } from "./nisarg-baithak";
 
 export type DonationImpact = {
   amount: string;
@@ -95,6 +97,12 @@ export type ProgramSessionFlow = {
   galleryNote?: string;
 };
 
+export type ProgramSessions = {
+  title: string;
+  intro?: string;
+  sessions: NisargBaithakSession[];
+};
+
 export type ProgramTestimonials = {
   title: string;
   quotes: string[];
@@ -122,6 +130,7 @@ export type Program = {
   joinInfo?: ProgramJoinInfo;
   schedule?: ProgramSchedule;
   sessionFlow?: ProgramSessionFlow;
+  sessions?: ProgramSessions;
   testimonials?: ProgramTestimonials;
   fundraising?: ProgramFundraising;
 };
@@ -395,6 +404,23 @@ export const PROGRAMS: Program[] = [
           "202, Durvang Enclave 1, Patil Layout, Swavalambi Nagar, Nagpur, Maharashtra 440022",
         listNote: "List of books you can donate — link to be provided.",
       },
+    },
+  },
+  {
+    slug: "nisarg-baithak",
+    name: "Nisarg Baithak",
+    tagline: "Talks | Films | Art | Conversation",
+    short: "Conversations on nature with the specialists who protect it.",
+    description:
+      "Nisarg Baithak is a series of gatherings by Wild Agile Foundation. Each session takes up one topic — from the laws that protect our trees to the work of rescuing wildlife — and brings in guests who live that work every day. Come with your curiosity and questions; leave with a deeper understanding of how nature is protected on the ground.",
+    cover: nisargBaithak,
+    tags: ["Talks", "Community", "Conservation"],
+    status: "Active",
+    expectedSupport: ["Wildlife Expert", "Environmentalist", "Volunteer", "Sponsor"],
+    sessions: {
+      title: "Sessions",
+      intro: "Every session brings a new topic and a new guest.",
+      sessions: NISARG_BAITHAK_SESSIONS,
     },
   },
 ];

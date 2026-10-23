@@ -7,6 +7,7 @@ import { loadGalleryThumbsByCategory, type GalleryImage } from "@/lib/gallery-da
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
+import { NisargBaithakSessions } from "@/components/site/NisargBaithakSessions";
 import whatsappQR from "@/assets/whatsappQR.jpeg";
 
 function HeroDescription({
@@ -273,6 +274,8 @@ function ProgramDetail() {
           </div>
         </section>
       )}
+
+      {program.sessions && <NisargBaithakSessions sessions={program.sessions} />}
 
       {/* Objectives + Vision + Impact — skipped when a program has richer narrative sections */}
       {!program.experience &&
