@@ -417,6 +417,10 @@ function HeroSection() {
           </div>
         </motion.div>
       </div>
+
+      {campaignActive && (
+        <NisargBaithakEventDialog open={nisargBaithakOpen} onOpenChange={setNisargBaithakOpen} />
+      )}
     </section>
   );
 }
