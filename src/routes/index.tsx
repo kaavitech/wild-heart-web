@@ -24,10 +24,9 @@ import { LeafDivider } from "@/components/site/LeafDivider";
 import { JourneyTimeline } from "@/components/site/JourneyTimeline";
 import { InstagramReelsRow } from "@/components/site/InstagramReelsRow";
 import { FieldInstagramReelsRow } from "@/components/site/FieldInstagramReelsRow";
-import {
-  isNisargBaithakCampaignActive,
-  NISARG_BAITHAK_IMAGES,
-} from "@/lib/nisarg-baithak";
+import { NisargBaithakEventDialog } from "@/components/site/NisargBaithakEventDialog";
+import { NisargBaithakPosterTile } from "@/components/site/NisargBaithakPosterTile";
+import { isNisargBaithakCampaignActive } from "@/lib/nisarg-baithak";
 // import { YouTubeStoryCard } from "@/components/site/YouTubeStoryCard";
 // import { FIELD_YOUTUBE_VIDEOS } from "@/lib/field-stories-data";
 
@@ -166,6 +165,7 @@ function HeroSection() {
   const decoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   const campaignActive = useMemo(() => isNisargBaithakCampaignActive(), []);
+  const [nisargBaithakOpen, setNisargBaithakOpen] = useState(false);
   const [activeVisual, setActiveVisual] = useState(0);
 
   const collage = COLLAGE_ITEMS;
@@ -301,25 +301,9 @@ function HeroSection() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -40 }}
                     transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 flex items-center justify-center p-2 sm:p-3"
+                    className="absolute inset-0"
                   >
-                    <div className="flex h-full w-full items-center justify-center gap-3 sm:gap-4 md:gap-5">
-                      {NISARG_BAITHAK_IMAGES.map(({ src, alt }, index) => (
-                        <div
-                          key={src}
-                          className={`aspect-[3/4] w-[calc(50%-0.375rem)] overflow-hidden rounded-2xl border border-border/50 bg-white shadow-[0_16px_48px_-16px_rgba(46,94,78,0.35)] ring-1 ring-black/[0.04] sm:w-[calc(50%-0.625rem)] ${
-                            index === 1 ? "translate-y-6 sm:translate-y-8 md:translate-y-10" : ""
-                          }`}
-                        >
-                          <img
-                            src={src}
-                            alt={alt}
-                            className="h-full w-full object-cover object-top"
-                            fetchPriority={index === 0 ? "high" : "auto"}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                    <NisargBaithakPosterTile variant="hero" onClick={() => setNisargBaithakOpen(true)} />
                   </motion.div>
                 )}
 

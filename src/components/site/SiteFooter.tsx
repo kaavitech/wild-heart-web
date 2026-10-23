@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Linkedin, Youtube, Leaf } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
+import kaavixLogo from "@/assets/kaavix-logo.png";
 
 export function SiteFooter() {
   return (
@@ -84,7 +85,16 @@ export function SiteFooter() {
           <div className="flex items-center gap-2">
             <Leaf className="h-3.5 w-3.5" /> © {new Date().getFullYear()} Wild Agile Foundation. All rights reserved.
           </div>
-          <div>Crafted with care for the wild.</div>
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
+            <span>Crafted with care for the wild by</span>
+            <span className="inline-flex items-center gap-2">
+              <span className="inline-flex rounded-md bg-white px-1.5 py-0.5">
+                <img src={kaavixLogo} alt="" className="h-5 w-auto object-contain" aria-hidden />
+              </span>
+              <span className="font-medium text-primary-foreground/85">Kaavix ii</span>
+            </span>
+            <span>.</span>
+          </div>
         </div>
       </div>
     </footer>
