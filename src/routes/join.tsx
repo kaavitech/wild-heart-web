@@ -104,8 +104,8 @@ function JoinPage() {
                       tap here to open WhatsApp
                     </a>
                     , and send us a screenshot after you pay. You can also email your transaction details to{" "}
-                    <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-white underline-offset-4 hover:underline">
-                      hello@wildagilefoundation.org
+                    <a href="mailto:wildagile.foundation@gmail.com" className="font-medium text-white underline-offset-4 hover:underline">
+                    wildagile.foundation@gmail.com
                     </a>{" "}
                     for acknowledgment.
                   </p>
@@ -113,8 +113,8 @@ function JoinPage() {
 
                 <div className="mt-8 border-t border-white/10 pt-6 text-sm text-primary-foreground/75">
                   Prefer to talk first? Write to{" "}
-                  <a href="mailto:hello@wildagilefoundation.org" className="text-white hover:underline">
-                    hello@wildagilefoundation.org
+                  <a href="mailto:wildagile.foundation@gmail.com" className="text-white hover:underline">
+                    wildagile.foundation@gmail.com
                   </a>
                   .
                 </div>

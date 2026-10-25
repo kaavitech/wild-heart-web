@@ -583,7 +583,7 @@ function ProgramDetail() {
                       <Link to="/join" className="btn-primary">
                         <Footprints className="h-4 w-4" /> Join the next walk
                       </Link>
-                      <a href="mailto:hello@wildagilefoundation.org" className="btn-gold">
+                      <a href="mailto:wildagile.foundation@gmail.com" className="btn-gold">
                         <Mail className="h-4 w-4" /> Ask a question
                       </a>
                     </div>
@@ -761,7 +761,7 @@ function ProgramDetail() {
                 </p>
                 <Link to="/join" className="btn-gold mt-8 inline-flex"><Heart className="h-4 w-4" /> Donate</Link>
                 <div className="mt-8 flex items-center gap-3 text-sm text-primary-foreground/80">
-                  <Mail className="h-4 w-4" /> hello@wildagilefoundation.org
+                  <Mail className="h-4 w-4" /> wildagile.foundation@gmail.com
                 </div>
               </div>
             </Reveal>
@@ -864,8 +864,8 @@ function FundraisingSupport({ fundraising }: { fundraising: NonNullable<ReturnTy
                 tap here to open WhatsApp
               </a>
               , and send us a screenshot after you pay. You can also email your transaction details to{" "}
-              <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-primary underline-offset-4 hover:underline">
-                hello@wildagilefoundation.org
+              <a href="mailto:wildagile.foundation@gmail.com" className="font-medium text-primary underline-offset-4 hover:underline">
+                wildagile.foundation@gmail.com
               </a>{" "}
               for acknowledgment.
             </p>
