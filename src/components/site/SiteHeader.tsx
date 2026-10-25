@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Heart } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo-transparent.png";
 import { SOCIAL_LINKS } from "@/components/site/SocialBrandIcons";
 
 const NAV = [
@@ -45,7 +45,7 @@ export function SiteHeader() {
           to="/"
           className="row-span-2 flex h-[7.5rem] min-w-0 items-center gap-2.5 sm:gap-4"
         >
-          <div className="grid aspect-square h-full shrink-0 place-items-center overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-border/50">
+          <div className="grid aspect-square h-full shrink-0 place-items-center">
             <img
               src={logo}
               alt="Wild Agile Foundation"
