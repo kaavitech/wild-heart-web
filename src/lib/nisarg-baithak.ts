@@ -1,4 +1,4 @@
-import nisargBaithakSession2 from "@/assets/landingPage/NisargBaithakSession2.png";
+import nisargBaithakSession2 from "@/assets/landingPage/NisargBaithakSession2.jpg";
 import nisargBaithakSession1Thumb from "@/assets/landingPage/NisargBaithak.thumb.webp";
 import nisargBaithakSession2Thumb from "@/assets/landingPage/NisargBaithakSession2.thumb.webp";
 
@@ -18,7 +18,7 @@ export const NISARG_BAITHAK_EVENT = {
   subtitle: "Wildlife Rescue Stories and the Science Behind It",
   tagline: "Because every wildlife rescue deserves a wild ending!",
   dateLabel: "Sunday, 1 November 2026",
-  timeLabel: "10:30 AM – 12:30 PM (Morning)",
+  timeLabel: "10:00 AM – 12:00 PM (Morning)",
   venueLine:
     "Purva Vidharbha Mahila Parishad Hall, beside Vibgyour School, Burdi, Nagpur, opposite Metro Pillar No. 281",
   venueShort: "Purva Vidharbha Mahila Parishad Hall, Burdi, Nagpur",
@@ -74,6 +74,10 @@ export const NISARG_BAITHAK_EVENT = {
   closing:
     "Join us at the second Nisarg Baithak to discover the stories, science, and human commitment behind every journey back to the wild.",
   included: ["Lecture", "Take Away Gift"],
+  communityNote: [
+    "Nisarg Baithak is a community initiative, and your contribution helps make it happen! PVMP has generously provided the venue, and your nominal contribution helps us cover event arrangements which includes a thoughtful take-home gift. It also helps us to anticipate the attending participants better and plan accordingly.",
+    "Organised by Wild Agile Foundation in collaboration with PVMP and Green Nagpur. Nisarg Baithak is a platform for meaningful conversations on nature, wildlife, and the environment.",
+  ],
 } as const;
 
 export const NISARG_BAITHAK_IMAGES = [

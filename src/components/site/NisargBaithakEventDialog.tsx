@@ -169,6 +169,12 @@ export function NisargBaithakEventDialog({ open, onOpenChange }: NisargBaithakEv
               </ul>
             </section>
 
+            <section className="space-y-3 rounded-xl border border-[color-mix(in_oklab,var(--gold)_45%,transparent)] bg-[color-mix(in_oklab,var(--gold)_10%,var(--background))] p-4 text-sm leading-relaxed text-foreground/90 sm:p-5 sm:text-[0.9375rem]">
+              {event.communityNote.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+            </section>
+
             <section className="space-y-2 border-t border-border/60 pb-2 pt-2">
               <SectionHeading>Where it is</SectionHeading>
               <p className="text-sm leading-relaxed text-muted-foreground">{event.fullAddress}</p>

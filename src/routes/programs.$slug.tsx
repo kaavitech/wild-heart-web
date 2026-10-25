@@ -8,7 +8,10 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { LeafDivider } from "@/components/site/LeafDivider";
 import { NisargBaithakSessions } from "@/components/site/NisargBaithakSessions";
+import bankQR from "@/assets/wildAgileBankQR.jpg";
 import whatsappQR from "@/assets/whatsappQR.jpeg";
+
+const WHATSAPP_URL = "https://wa.me/919970175544";
 
 function HeroDescription({
   description,
@@ -836,22 +839,37 @@ function FundraisingSupport({ fundraising }: { fundraising: NonNullable<ReturnTy
             </dl>
             <figure className="shrink-0 self-center sm:self-start">
               <img
-                src={whatsappQR}
-                alt="Scan to pay via UPI / WhatsApp"
-                className="h-40 w-40 rounded-2xl border border-border bg-white object-contain p-2 shadow-[var(--shadow-soft)]"
+                src={bankQR}
+                alt="IndusInd Bank UPI QR code for Wild Agile Foundation"
+                className="h-auto w-48 rounded-2xl sm:w-52 border border-border bg-white object-contain p-1.5 shadow-[var(--shadow-soft)]"
               />
               <figcaption className="mt-2 text-center text-xs font-medium text-muted-foreground">
                 Scan to pay
+                <span className="mt-0.5 block select-all font-semibold">UPI ID: pos.5385721@indus</span>
               </figcaption>
             </figure>
           </div>
-          <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
-            After contributing, please email your transaction details to{" "}
-            <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-primary hover:underline">
-              hello@wildagilefoundation.org
-            </a>{" "}
-            for acknowledgment.
-          </p>
+          <div className="mt-6 flex flex-col items-center gap-4 rounded-2xl border border-border bg-background/60 p-5 sm:flex-row sm:items-center">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="shrink-0">
+              <img
+                src={whatsappQR}
+                alt="WhatsApp QR code to share your payment screenshot"
+                className="h-28 w-28 rounded-xl border border-border bg-white object-contain p-1.5"
+              />
+            </a>
+            <p className="text-center text-sm leading-relaxed text-muted-foreground sm:text-left md:text-base">
+              <span className="block font-semibold text-primary">Share your transaction details on WhatsApp</span>
+              Scan this QR code, or{" "}
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline-offset-4 hover:underline">
+                tap here to open WhatsApp
+              </a>
+              , and send us a screenshot after you pay. You can also email your transaction details to{" "}
+              <a href="mailto:hello@wildagilefoundation.org" className="font-medium text-primary underline-offset-4 hover:underline">
+                hello@wildagilefoundation.org
+              </a>{" "}
+              for acknowledgment.
+            </p>
+          </div>
           <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">
             All donations are eligible for tax benefits under Section 80G of the Income Tax Act. A donation receipt will be issued for every contribution.
           </p>
