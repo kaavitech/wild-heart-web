@@ -25,7 +25,7 @@ export const NISARG_BAITHAK_EVENT = {
   fullAddress:
     "Purva Vidharbha Mahila Parishad Hall, Beside Vibgyour School, Burdi, Nagpur, Pillar No. 282, Jhansi Rani Metro Station, Plot No. 103, N Ambazari Rd, Ramdaspeth, Nagpur, Maharashtra 440010, India",
   closingTagline: "Rescue is just the beginning. Freedom is the goal.",
-  bookingNote: "Tickets from ₹100 on Urbanaut",
+  bookingNote: "Register & Contribute ₹100 on Urbanaut",
   intro: [
     "What happens when a wild animal is injured, trapped, or found in distress? What goes into rescuing it safely? How do rescuers decide what to do next? And what does it really take for an animal to return to the wild?",
     "Behind every wildlife rescue is a story of urgency, difficult decisions, teamwork, and care. But what happens after the rescue is often a mystery to most of us.",
