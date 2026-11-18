@@ -9,6 +9,7 @@ export function SectionTitle({
   align = "left",
   className,
   subtitleClassName,
+  level = "section",
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -16,7 +17,10 @@ export function SectionTitle({
   align?: "left" | "center";
   className?: string;
   subtitleClassName?: string;
+  /** "page" renders the page's h1 (use once, in the hero); "section" renders an h2. */
+  level?: "page" | "section";
 }) {
+  const Heading = level === "page" ? "h1" : "h2";
   return (
     <div
       className={cn(
@@ -30,9 +34,9 @@ export function SectionTitle({
         </Reveal>
       )}
       <Reveal delay={0.05}>
-        <h2 className="mt-3 font-serif text-4xl leading-[1.05] text-primary md:text-5xl lg:text-6xl">
+        <Heading className={cn("mt-3 text-primary", level === "page" ? "heading-page" : "heading-section")}>
           {title}
-        </h2>
+        </Heading>
       </Reveal>
       {subtitle && (
         <Reveal delay={0.1}>

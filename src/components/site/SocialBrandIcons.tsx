@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { cn } from "@/lib/utils";
+import { SOCIAL_URLS } from "@/lib/site-config";
 
 type IconProps = { className?: string };
 
@@ -58,9 +59,9 @@ export function YouTubeBrandIcon({ className }: IconProps) {
   );
 }
 
+// YouTube is left out until the foundation has a channel to link to.
 export const SOCIAL_LINKS = [
-  { Icon: InstagramBrandIcon, label: "Instagram", href: "#" },
-  { Icon: FacebookBrandIcon, label: "Facebook", href: "#" },
-  { Icon: LinkedInBrandIcon, label: "LinkedIn", href: "#" },
-  { Icon: YouTubeBrandIcon, label: "YouTube", href: "#" },
+  { Icon: InstagramBrandIcon, label: "Instagram", href: SOCIAL_URLS.instagram },
+  { Icon: FacebookBrandIcon, label: "Facebook", href: SOCIAL_URLS.facebook },
+  { Icon: LinkedInBrandIcon, label: "LinkedIn", href: SOCIAL_URLS.linkedin },
 ] as const;

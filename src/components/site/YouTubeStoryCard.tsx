@@ -37,7 +37,7 @@ export function YouTubeStoryCard({
   const description = meta?.description ?? "Fetching video details…";
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white shadow-[var(--shadow-card)] transition-transform duration-500 hover:-translate-y-1">
+    <article className="group card-media flex h-full flex-col transition-transform duration-500 hover:-translate-y-1">
       <div className="relative overflow-hidden">
         <div className={isShort ? "aspect-[9/16] w-full" : "aspect-video w-full"}>
           <YouTubeEmbed url={url} title={title} autoplay={autoplay} isShort={isShort} />
@@ -46,12 +46,12 @@ export function YouTubeStoryCard({
           {category}
         </span>
       </div>
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-5">
         <div className="meta-label">
           YouTube{meta?.author ? ` · ${meta.author}` : ""}
         </div>
-        <h3 className="mt-3 font-serif text-2xl leading-snug text-primary">{title}</h3>
-        <p className="text-body mt-2 line-clamp-3">{description}</p>
+        <h3 className="mt-3 heading-card text-primary">{title}</h3>
+        <p className="copy-card mt-2 line-clamp-3">{description}</p>
         <a
           href={url}
           target="_blank"

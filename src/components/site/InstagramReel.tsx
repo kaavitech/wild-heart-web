@@ -25,7 +25,9 @@ function toDisplayThumbnail(thumbnailUrl: string) {
 async function fetchThumbnail(url: string, direct?: string) {
   if (hasDirectThumbnail(direct)) return direct!;
 
-  const res = await fetch(`/api/instagram-thumbnail?url=${encodeURIComponent(url)}`);
+  const res = await fetch(
+    `/api/instagram-thumbnail?url=${encodeURIComponent(url)}`,
+  );
   if (!res.ok) return "";
 
   const data = (await res.json()) as { thumbnailUrl?: string };
@@ -74,12 +76,13 @@ export function InstagramReel({
     if (playing) loadInstagramEmbedScript();
   }, [playing]);
 
+  // Plays inside the tile itself, using Instagram's embed player.
   if (playing) {
     return (
       <iframe
         src={toEmbedUrl(url)}
         title={title}
-        className="h-full w-full border-0 bg-black"
+        className="h-full w-full border-0 bg-white"
         allowFullScreen
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
@@ -88,31 +91,36 @@ export function InstagramReel({
   }
 
   return (
-    <button
-      type="button"
-      onClick={(event) => {
-        event.stopPropagation();
-        setPlaying(true);
-      }}
-      className="group/play relative block h-full w-full overflow-hidden bg-primary/10"
-      aria-label={`Play ${title}`}
-    >
-      {resolvedThumb ? (
-        <img
-          src={resolvedThumb}
-          alt=""
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
-      ) : (
-        <span aria-hidden className="absolute inset-0 animate-pulse bg-primary/5" />
-      )}
-      <span className="absolute inset-0 bg-black/10 transition-colors group-hover/play:bg-black/25" />
-      <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-primary shadow-lg transition-transform group-hover/play:scale-105">
-          <Play className="ml-0.5 h-5 w-5 fill-current" />
+    <>
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          setPlaying(true);
+        }}
+        className="group/play relative block h-full w-full overflow-hidden bg-primary/10"
+        aria-label={`Play ${title}`}
+      >
+        {resolvedThumb ? (
+          <img
+            src={resolvedThumb}
+            alt=""
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <span
+            aria-hidden
+            className="absolute inset-0 animate-pulse bg-primary/5"
+          />
+        )}
+        <span className="absolute inset-0 bg-black/10 transition-colors group-hover/play:bg-black/25" />
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-primary shadow-lg transition-transform group-hover/play:scale-105">
+            <Play className="ml-0.5 h-5 w-5 fill-current" />
+          </span>
         </span>
-      </span>
-    </button>
+      </button>
+    </>
   );
 }

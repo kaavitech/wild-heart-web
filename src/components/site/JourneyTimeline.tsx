@@ -7,6 +7,7 @@ import {
   Mountain,
   BookOpen,
   Users,
+  MessagesSquare,
   type LucideIcon,
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
@@ -78,6 +79,15 @@ const MILESTONES: Milestone[] = [
       "Launched Nature Connect to bring communities closer to nature through immersive experiences, dialogues, and shared learning that strengthen the bond between people and the environment.",
     icon: Users,
   },
+  {
+    date: "August 2026",
+    phase: "Voices",
+    title: "Nisarg Baithak",
+    description:
+      "Started Nisarg Baithak, a series of talks where specialists share how nature is protected on the ground, from the laws that protect our trees to rescuing wildlife. Now also online.",
+    icon: MessagesSquare,
+    tags: ["Trees & the Law", "Wildlife Rescue"],
+  },
 ];
 
 /** Newest milestone first (left → right). */
@@ -90,18 +100,13 @@ export function JourneyTimeline() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal>
             <div className="eyebrow">Our Journey</div>
-            <h2 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.05] text-primary md:text-5xl lg:text-6xl">
+            <h2 className="mt-3 max-w-2xl heading-section text-primary">
               From a single{" "}
               <span className="bg-gradient-to-br from-secondary to-gold bg-clip-text text-transparent">
                 seed
               </span>
               , a movement grows.
             </h2>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="text-body max-w-xs lg:text-right">
-              Scroll horizontally through the milestones that shaped Wild Agile Foundation.
-            </p>
           </Reveal>
         </div>
 
@@ -179,15 +184,15 @@ function MilestoneCard({
       transition={{ duration: 0.55, delay: index * 0.05 }}
       className={className}
     >
-      <article className="rounded-2xl border border-border/80 bg-card p-5 shadow-[var(--shadow-soft)]">
+      <article className="card-media p-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="meta-label rounded-full bg-primary/8 px-3 py-1 text-primary">
             {m.date}
           </span>
           <span className="meta-label">{m.phase}</span>
         </div>
-        <h3 className="mt-3 font-serif text-xl leading-snug text-primary sm:text-2xl">{m.title}</h3>
-        <p className="text-body mt-2">{m.description}</p>
+        <h3 className="mt-3 heading-card text-primary">{m.title}</h3>
+        <p className="copy-card mt-2">{m.description}</p>
         {m.tags && m.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {m.tags.map((tag) => (

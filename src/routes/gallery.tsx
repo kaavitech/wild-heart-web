@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/site-config";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -5,20 +6,16 @@ import { X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { loadGalleryImages } from "@/lib/gallery-data";
-import hero from "@/assets/hero-deer.jpg.asset.json";
 
 const { images: GALLERY_IMAGES, categories: GALLERY_CATEGORIES } = loadGalleryImages();
 
 export const Route = createFileRoute("/gallery")({
-  head: () => ({
-    meta: [
-      { title: "Gallery — Wild Agile Foundation" },
-      { name: "description", content: "Photographs from nature walks, wildlife programs, school visits and community events." },
-      { property: "og:title", content: "Gallery — Wild Agile Foundation" },
-      { property: "og:description", content: "Photos from the field." },
-      { property: "og:image", content: hero.url },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Gallery",
+      description: "Photographs from nature walks, wildlife programs, school visits and community events by Wild Agile Foundation.",
+      path: "/gallery",
+    }),
   component: GalleryPage,
 });
 
@@ -33,7 +30,7 @@ function GalleryPage() {
       <section className="relative pt-40 pb-10">
         <div aria-hidden className="absolute inset-0 -z-10 bg-[var(--gradient-leaf)]" />
         <div className="container-x">
-          <SectionTitle eyebrow="Gallery" title={<>Field, forest, and faces.</>} />
+          <SectionTitle level="page" eyebrow="Gallery" title={<>Field, forest, and faces.</>} />
           <div className="mt-8 flex flex-wrap gap-2">
             {GALLERY_CATEGORIES.map((c) => (
               <button

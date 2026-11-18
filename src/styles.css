@@ -91,6 +91,12 @@
 
   html {
     scroll-behavior: smooth;
+    /* Decorative blobs bleed past the edge; clip them so the page never scrolls sideways. */
+    overflow-x: clip;
+  }
+
+  body {
+    overflow-x: clip;
   }
 
   body {
@@ -175,9 +181,78 @@
   &:hover { background: color-mix(in oklab, white 25%, transparent); }
 }
 
+/* ---- Type scale: use these instead of ad-hoc text sizes so every page matches ---- */
+/* Page title (one per page, in the hero) */
+@utility heading-page {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 2.5rem;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  @media (min-width: 768px) { font-size: 3.25rem; }
+  @media (min-width: 1024px) { font-size: 3.75rem; }
+}
+/* Section title (h2 under an eyebrow) */
+@utility heading-section {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 2.125rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  @media (min-width: 768px) { font-size: 2.75rem; }
+  @media (min-width: 1024px) { font-size: 3rem; }
+}
+/* Smaller heading inside a section (e.g. "Videos", a story on the media page) */
+@utility heading-sub {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  @media (min-width: 768px) { font-size: 2rem; }
+}
+/* Card title */
+@utility heading-card {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.375rem;
+  line-height: 1.25;
+  @media (min-width: 768px) { font-size: 1.5rem; }
+}
+/* Small card title (narrow tiles) */
+@utility heading-card-sm {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+/* Body text inside cards */
+@utility copy-card {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+  text-wrap: pretty;
+}
+/* Card with an image or video on top: put the caption in a p-5 block */
+@utility card-media {
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  box-shadow: var(--shadow-soft);
+}
+/* Standard content card */
+@utility card {
+  border-radius: 1.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  @media (min-width: 768px) { padding: 1.75rem; }
+}
+
 @utility section-pad {
-  padding-block: 6rem;
-  @media (min-width: 768px) { padding-block: 8rem; }
+  padding-block: 4rem;
+  @media (min-width: 768px) { padding-block: 5.5rem; }
 }
 
 @utility container-x {
@@ -210,8 +285,9 @@
   font-size: 1rem;
   line-height: 1.625;
   color: var(--color-muted-foreground);
-  hyphens: auto;
-  text-align: justify;
+  hyphens: manual;
+  text-align: left;
+  text-wrap: pretty;
   @media (min-width: 768px) { font-size: 1.125rem; }
 }
 

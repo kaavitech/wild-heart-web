@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as NewsletterRouteImport } from './routes/newsletter'
+import { Route as MediaRouteImport } from './routes/media'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ChildSafeguardingRouteImport } from './routes/child-safeguarding'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -21,11 +27,17 @@ import { Route as ProgramsIndexRouteImport } from './routes/programs.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 import { Route as ApiYoutubeMetaRouteImport } from './routes/api.youtube-meta'
+import { Route as ApiNewsletterRouteImport } from './routes/api.newsletter'
 import { Route as ApiInstagramThumbnailRouteImport } from './routes/api.instagram-thumbnail'
 import { Route as ApiInstagramReelsRouteImport } from './routes/api.instagram-reels'
 import { Route as ApiInstagramImageRouteImport } from './routes/api.instagram-image'
 import { Route as ApiInstagramFieldReelsRouteImport } from './routes/api.instagram-field-reels'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
   path: '/team',
@@ -36,9 +48,24 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsletterRoute = NewsletterRouteImport.update({
   id: '/newsletter',
   path: '/newsletter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MediaRoute = MediaRouteImport.update({
+  id: '/media',
+  path: '/media',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JoinRoute = JoinRouteImport.update({
@@ -49,6 +76,16 @@ const JoinRoute = JoinRouteImport.update({
 const GalleryRoute = GalleryRouteImport.update({
   id: '/gallery',
   path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChildSafeguardingRoute = ChildSafeguardingRouteImport.update({
+  id: '/child-safeguarding',
+  path: '/child-safeguarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -86,6 +123,11 @@ const ApiYoutubeMetaRoute = ApiYoutubeMetaRouteImport.update({
   path: '/api/youtube-meta',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiNewsletterRoute = ApiNewsletterRouteImport.update({
+  id: '/api/newsletter',
+  path: '/api/newsletter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiInstagramThumbnailRoute = ApiInstagramThumbnailRouteImport.update({
   id: '/api/instagram-thumbnail',
   path: '/api/instagram-thumbnail',
@@ -110,15 +152,22 @@ const ApiInstagramFieldReelsRoute = ApiInstagramFieldReelsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/child-safeguarding': typeof ChildSafeguardingRoute
+  '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/join': typeof JoinRoute
+  '/media': typeof MediaRoute
   '/newsletter': typeof NewsletterRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/newsletter': typeof ApiNewsletterRoute
   '/api/youtube-meta': typeof ApiYoutubeMetaRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -128,15 +177,22 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/child-safeguarding': typeof ChildSafeguardingRoute
+  '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/join': typeof JoinRoute
+  '/media': typeof MediaRoute
   '/newsletter': typeof NewsletterRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/newsletter': typeof ApiNewsletterRoute
   '/api/youtube-meta': typeof ApiYoutubeMetaRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -147,15 +203,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/child-safeguarding': typeof ChildSafeguardingRoute
+  '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/join': typeof JoinRoute
+  '/media': typeof MediaRoute
   '/newsletter': typeof NewsletterRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/instagram-field-reels': typeof ApiInstagramFieldReelsRoute
   '/api/instagram-image': typeof ApiInstagramImageRoute
   '/api/instagram-reels': typeof ApiInstagramReelsRoute
   '/api/instagram-thumbnail': typeof ApiInstagramThumbnailRoute
+  '/api/newsletter': typeof ApiNewsletterRoute
   '/api/youtube-meta': typeof ApiYoutubeMetaRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -167,15 +230,22 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/child-safeguarding'
+    | '/contact'
     | '/gallery'
     | '/join'
+    | '/media'
     | '/newsletter'
+    | '/partner'
+    | '/privacy'
     | '/sitemap.xml'
     | '/team'
+    | '/terms'
     | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
+    | '/api/newsletter'
     | '/api/youtube-meta'
     | '/programs/$slug'
     | '/projects/$slug'
@@ -185,15 +255,22 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/child-safeguarding'
+    | '/contact'
     | '/gallery'
     | '/join'
+    | '/media'
     | '/newsletter'
+    | '/partner'
+    | '/privacy'
     | '/sitemap.xml'
     | '/team'
+    | '/terms'
     | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
+    | '/api/newsletter'
     | '/api/youtube-meta'
     | '/programs/$slug'
     | '/projects/$slug'
@@ -203,15 +280,22 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/child-safeguarding'
+    | '/contact'
     | '/gallery'
     | '/join'
+    | '/media'
     | '/newsletter'
+    | '/partner'
+    | '/privacy'
     | '/sitemap.xml'
     | '/team'
+    | '/terms'
     | '/api/instagram-field-reels'
     | '/api/instagram-image'
     | '/api/instagram-reels'
     | '/api/instagram-thumbnail'
+    | '/api/newsletter'
     | '/api/youtube-meta'
     | '/programs/$slug'
     | '/projects/$slug'
@@ -222,15 +306,22 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ChildSafeguardingRoute: typeof ChildSafeguardingRoute
+  ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   JoinRoute: typeof JoinRoute
+  MediaRoute: typeof MediaRoute
   NewsletterRoute: typeof NewsletterRoute
+  PartnerRoute: typeof PartnerRoute
+  PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeamRoute: typeof TeamRoute
+  TermsRoute: typeof TermsRoute
   ApiInstagramFieldReelsRoute: typeof ApiInstagramFieldReelsRoute
   ApiInstagramImageRoute: typeof ApiInstagramImageRoute
   ApiInstagramReelsRoute: typeof ApiInstagramReelsRoute
   ApiInstagramThumbnailRoute: typeof ApiInstagramThumbnailRoute
+  ApiNewsletterRoute: typeof ApiNewsletterRoute
   ApiYoutubeMetaRoute: typeof ApiYoutubeMetaRoute
   ProgramsSlugRoute: typeof ProgramsSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -240,6 +331,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/team': {
       id: '/team'
       path: '/team'
@@ -254,11 +352,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/newsletter': {
       id: '/newsletter'
       path: '/newsletter'
       fullPath: '/newsletter'
       preLoaderRoute: typeof NewsletterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/media': {
+      id: '/media'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof MediaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/join': {
@@ -273,6 +392,20 @@ declare module '@tanstack/react-router' {
       path: '/gallery'
       fullPath: '/gallery'
       preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/child-safeguarding': {
+      id: '/child-safeguarding'
+      path: '/child-safeguarding'
+      fullPath: '/child-safeguarding'
+      preLoaderRoute: typeof ChildSafeguardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -324,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiYoutubeMetaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/newsletter': {
+      id: '/api/newsletter'
+      path: '/api/newsletter'
+      fullPath: '/api/newsletter'
+      preLoaderRoute: typeof ApiNewsletterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/instagram-thumbnail': {
       id: '/api/instagram-thumbnail'
       path: '/api/instagram-thumbnail'
@@ -358,15 +498,22 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ChildSafeguardingRoute: ChildSafeguardingRoute,
+  ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
   JoinRoute: JoinRoute,
+  MediaRoute: MediaRoute,
   NewsletterRoute: NewsletterRoute,
+  PartnerRoute: PartnerRoute,
+  PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeamRoute: TeamRoute,
+  TermsRoute: TermsRoute,
   ApiInstagramFieldReelsRoute: ApiInstagramFieldReelsRoute,
   ApiInstagramImageRoute: ApiInstagramImageRoute,
   ApiInstagramReelsRoute: ApiInstagramReelsRoute,
   ApiInstagramThumbnailRoute: ApiInstagramThumbnailRoute,
+  ApiNewsletterRoute: ApiNewsletterRoute,
   ApiYoutubeMetaRoute: ApiYoutubeMetaRoute,
   ProgramsSlugRoute: ProgramsSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/site-config";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
@@ -5,14 +6,12 @@ import { SectionTitle } from "@/components/site/SectionTitle";
 import { PROGRAMS } from "@/lib/programs-data";
 
 export const Route = createFileRoute("/programs/")({
-  head: () => ({
-    meta: [
-      { title: "Programs — Wild Agile Foundation" },
-      { name: "description", content: "Ongoing nature, wildlife and community programs by Wild Agile Foundation." },
-      { property: "og:title", content: "Programs — Wild Agile Foundation" },
-      { property: "og:description", content: "Explore programs connecting children with nature." },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Programs",
+      description: "Ongoing nature, wildlife and community programs by Wild Agile Foundation for children, schools and families.",
+      path: "/programs",
+    }),
   component: ProgramsPage,
 });
 
@@ -22,7 +21,7 @@ function ProgramsPage() {
       <section className="relative pt-40 pb-12">
         <div aria-hidden className="absolute inset-0 -z-10 bg-[var(--gradient-leaf)]" />
         <div className="container-x">
-          <SectionTitle
+          <SectionTitle level="page"
             eyebrow="Our Programs"
             title="Creating Experiences that Inspire Change"
             subtitle="Each program becomes one step in the journey."
@@ -52,7 +51,7 @@ function ProgramsPage() {
                     ))}
                     <span className="rounded-full bg-gold px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">{p.status}</span>
                   </div>
-                  <h3 className="mt-4 font-serif text-4xl">{p.name}</h3>
+                  <h3 className="mt-4 heading-sub">{p.name}</h3>
                   <p className="mt-2 max-w-xl text-sm text-white/85">{p.short}</p>
                   <div className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
                     Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />

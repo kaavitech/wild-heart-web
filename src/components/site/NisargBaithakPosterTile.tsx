@@ -1,6 +1,5 @@
-import { NisargBaithakPosters } from "@/components/site/NisargBaithakPosters";
 import { NisargBaithakTileHighlight } from "@/components/site/NisargBaithakTileHighlight";
-import { NISARG_BAITHAK_IMAGES } from "@/lib/nisarg-baithak";
+import { NISARG_BAITHAK_BANNER, NISARG_BAITHAK_IMAGES } from "@/lib/nisarg-baithak";
 import { cn } from "@/lib/utils";
 
 type NisargBaithakPosterTileProps = {
@@ -38,17 +37,27 @@ export function NisargBaithakPosterTile({
     );
   }
 
+  // Hero (home page, alternating with the orbit collage): the landscape campaign banner.
+  const banner = NISARG_BAITHAK_BANNER;
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label="View Nisarg Baithak event details"
       className={cn(
-        "group/tile relative h-full w-full cursor-pointer rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]/45",
+        "group/tile relative flex h-full w-full cursor-pointer items-center justify-center rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]/45",
         className,
       )}
     >
-      <NisargBaithakPosters variant="hero" showClickHint />
+      <div className="group/poster relative aspect-[931/613] w-full overflow-hidden rounded-3xl border border-border/50 bg-white shadow-[0_24px_60px_-20px_rgba(46,94,78,0.45)] ring-1 ring-black/[0.04] transition-transform duration-300 group-hover/tile:scale-[1.015]">
+        <img
+          src={banner.src}
+          alt={banner.alt}
+          fetchPriority="high"
+          className="h-full w-full object-cover object-left-top"
+        />
+        <NisargBaithakTileHighlight />
+      </div>
     </button>
   );
 }

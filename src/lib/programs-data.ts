@@ -136,6 +136,25 @@ export type Program = {
 };
 
 export const PROGRAMS: Program[] = [
+  // Nisarg Baithak is listed first (Parag, 2026-11-18).
+  {
+    slug: "nisarg-baithak",
+    name: "Nisarg Baithak",
+    tagline: "Talks | Films | Art | Conversation",
+    short: "Conversations on nature with the specialists who protect it.",
+    description:
+      "Nisarg Baithak is a series of gatherings by Wild Agile Foundation. Each session takes up one topic — from the laws that protect our trees to the work of rescuing wildlife — and brings in guests who live that work every day. Come with your curiosity and questions; leave with a deeper understanding of how nature is protected on the ground.",
+    cover: nisargBaithak,
+    tags: ["Talks", "Community", "Conservation"],
+    status: "Active",
+    expectedSupport: ["Wildlife Expert", "Environmentalist", "Volunteer", "Sponsor"],
+    sessions: {
+      title: "Sessions",
+      intro:
+        "Each topic runs as a series of sessions, with new guests and places each time. Open a session for details, photos and reviews.",
+      sessions: NISARG_BAITHAK_SESSIONS,
+    },
+  },
   {
     slug: "nature-connect",
     name: "Nature Connect",
@@ -156,11 +175,11 @@ export const PROGRAMS: Program[] = [
   },
   {
     slug: "eco-steps",
-    name: "EcoSteps",
+    name: "Eco Steps",
     tagline: "A walk into the wild, one Sunday at a time.",
     short: "A walk into the wild, one Sunday at a time.",
     description:
-      "Every last Sunday of the month, we trade screens for soil and swap sidewalks for forest trails. EcoSteps is Wild Agile Foundation's flagship nature walk — a morning where children and their families step into the forest and, for a few hours, simply notice the world around them: the birds overhead, the insects underfoot, the quiet architecture of a wetland.",
+      "Every last Sunday of the month, we trade screens for soil and swap sidewalks for forest trails. Eco Steps is Wild Agile Foundation's flagship nature walk — a morning where children and their families step into the forest and, for a few hours, simply notice the world around them: the birds overhead, the insects underfoot, the quiet architecture of a wetland.",
     closingStatement: "No lectures. No worksheets. Just forest, family, and firsthand wonder.",
     cover: ecoSteps,
     tags: ["Children", "Nature Walks", "Community"],
@@ -174,7 +193,7 @@ export const PROGRAMS: Program[] = [
     impact: "A recurring monthly walk bringing children and families into the wild.",
     expectedSupport: ["Volunteer", "Wildlife Expert", "Photographer", "School"],
     experience: {
-      title: "What Happens on an EcoSteps Walk",
+      title: "What Happens on an Eco Steps Walk",
       intro:
         "Each walk is built around one idea: you protect what you've actually experienced. So instead of teaching kids about nature, we take them into it.",
       highlights: [
@@ -187,16 +206,16 @@ export const PROGRAMS: Program[] = [
     },
     whyItMatters: {
       title: "Why It Matters",
-      body: "Children today spend less time outdoors than any generation before them. Wildlife is increasingly something they see on a screen, not in the world. EcoSteps exists to close that gap — because conservation doesn't start with a lesson plan. It starts with a child crouching by a stream, watching a bird land, and asking why.",
+      body: "Children today spend less time outdoors than any generation before them. Wildlife is increasingly something they see on a screen, not in the world. Eco Steps exists to close that gap — because conservation doesn't start with a lesson plan. It starts with a child crouching by a stream, watching a bird land, and asking why.",
     },
     pastWalks: {
       title: "From Our Past Walks",
       galleryCategory: "Eco Steps",
     },
     joinInfo: {
-      title: "Join an EcoSteps",
+      title: "Join an Eco Steps Walk",
       intro:
-        "EcoSteps is free and open to families with kids. All you need is comfortable walking shoes, a sense of curiosity, and a free Sunday morning.",
+        "Eco Steps is free and open to families with kids. All you need is comfortable walking shoes, a sense of curiosity, and a free Sunday morning.",
       details: [
         {
           label: "Next Walk",
@@ -404,23 +423,6 @@ export const PROGRAMS: Program[] = [
           "202, Durvang Enclave 1, Patil Layout, Swavalambi Nagar, Nagpur, Maharashtra 440022",
         listNote: "List of books you can donate — link to be provided.",
       },
-    },
-  },
-  {
-    slug: "nisarg-baithak",
-    name: "Nisarg Baithak",
-    tagline: "Talks | Films | Art | Conversation",
-    short: "Conversations on nature with the specialists who protect it.",
-    description:
-      "Nisarg Baithak is a series of gatherings by Wild Agile Foundation. Each session takes up one topic — from the laws that protect our trees to the work of rescuing wildlife — and brings in guests who live that work every day. Come with your curiosity and questions; leave with a deeper understanding of how nature is protected on the ground.",
-    cover: nisargBaithak,
-    tags: ["Talks", "Community", "Conservation"],
-    status: "Active",
-    expectedSupport: ["Wildlife Expert", "Environmentalist", "Volunteer", "Sponsor"],
-    sessions: {
-      title: "Sessions",
-      intro: "Every session brings a new topic and a new guest.",
-      sessions: NISARG_BAITHAK_SESSIONS,
     },
   },
 ];

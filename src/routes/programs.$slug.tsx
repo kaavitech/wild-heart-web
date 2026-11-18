@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/site-config";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -109,18 +110,18 @@ export const Route = createFileRoute("/programs/$slug")({
     if (!program) throw notFound();
     return { program };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData ? [
-      { title: `${loaderData.program.name} — Wild Agile Foundation` },
-      { name: "description", content: loaderData.program.short },
-      { property: "og:title", content: loaderData.program.name },
-      { property: "og:description", content: loaderData.program.short },
-      { property: "og:image", content: loaderData.program.cover },
-    ] : [],
-  }),
+  head: ({ loaderData }) =>
+    loaderData
+      ? pageHead({
+          title: loaderData.program.name,
+          description: loaderData.program.short,
+          path: `/programs/${loaderData.program.slug}`,
+          image: loaderData.program.cover,
+        })
+      : { meta: [] },
   notFoundComponent: () => (
     <div className="container-x pt-40 pb-24 text-center">
-      <h1 className="font-serif text-5xl text-primary">Program not found</h1>
+      <h1 className="heading-page text-primary">Program not found</h1>
       <Link to="/programs" className="btn-primary mt-6 inline-flex">Back to programs</Link>
     </div>
   ),
@@ -185,7 +186,7 @@ function ProgramDetail() {
             const Icon = SUPPORT_ICONS[s] ?? Users;
             return (
               <Reveal key={s} dir="up">
-                <div className="group glass-card flex h-full flex-col items-start rounded-2xl p-6 transition-transform hover:-translate-y-1">
+                <div className="group card flex h-full flex-col items-start transition-transform hover:-translate-y-1">
                   <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/8 text-primary">
                     <Icon className="h-6 w-6" />
                   </div>
@@ -233,13 +234,13 @@ function ProgramDetail() {
                 <p className="mt-4 font-display text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
                   {program.name}
                 </p>
-                <h1 className="mt-3 max-w-4xl text-2xl font-semibold leading-[1.25] text-white md:text-3xl lg:text-4xl">
+                <h1 className="mt-3 max-w-4xl heading-section text-white">
                   {program.heroTitle}
                 </h1>
               </>
             ) : (
               <>
-                <h1 className={`max-w-4xl font-serif text-5xl leading-[1.02] text-white md:text-7xl ${program.headline ? "mt-2" : "mt-4"}`}>
+                <h1 className={`max-w-4xl heading-page text-white ${program.headline ? "mt-2" : "mt-4"}`}>
                   {program.name}
                 </h1>
                 {program.tagline && (
@@ -264,7 +265,7 @@ function ProgramDetail() {
                   {program.headline}
                 </p>
               )}
-              <h2 className="mt-3 font-serif text-4xl text-primary md:text-5xl">{program.name}</h2>
+              <h2 className="mt-3 heading-section text-primary">{program.name}</h2>
               <p className="mt-6 text-base leading-relaxed text-foreground/85 md:text-lg">
                 {program.description}
               </p>
@@ -290,7 +291,7 @@ function ProgramDetail() {
                 <Reveal>
                   <div>
                     <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Target className="h-6 w-6" /></div>
-                    <h3 className="mt-5 font-serif text-3xl text-primary">
+                    <h3 className="mt-5 heading-sub text-primary">
                       {program.fundraising ? "What We're Building" : "Objectives"}
                     </h3>
                     <ul className="mt-4 space-y-3 text-base leading-relaxed text-foreground/85 md:text-lg">
@@ -305,7 +306,7 @@ function ProgramDetail() {
                 <Reveal delay={0.1}>
                   <div>
                     <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Eye className="h-6 w-6" /></div>
-                    <h3 className="mt-5 font-serif text-3xl text-primary">Vision</h3>
+                    <h3 className="mt-5 heading-sub text-primary">Vision</h3>
                     <p className="mt-4 text-base italic leading-relaxed text-foreground/85 md:text-lg">"{program.vision}"</p>
                   </div>
                 </Reveal>
@@ -314,7 +315,7 @@ function ProgramDetail() {
                 <Reveal delay={0.2}>
                   <div>
                     <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary"><Sparkles className="h-6 w-6" /></div>
-                    <h3 className="mt-5 font-serif text-3xl text-primary">Impact</h3>
+                    <h3 className="mt-5 heading-sub text-primary">Impact</h3>
                     <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">{program.impact}</p>
                   </div>
                 </Reveal>
@@ -362,7 +363,7 @@ function ProgramDetail() {
                             {step.name}
                           </span>
                         </div>
-                        <p className="text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                        <p className="text-base leading-relaxed text-foreground/85 md:text-lg">
                           {step.description}
                         </p>
                       </li>
@@ -372,7 +373,7 @@ function ProgramDetail() {
 
                 {program.sessionFlow.closingStatement && (
                   <Reveal delay={0.28}>
-                    <p className="mt-6 text-justify text-base italic leading-relaxed text-[var(--gold)] md:text-lg">
+                    <p className="mt-6 text-base italic leading-relaxed text-[var(--gold)] md:text-lg">
                       {program.sessionFlow.closingStatement}
                     </p>
                   </Reveal>
@@ -383,7 +384,7 @@ function ProgramDetail() {
 
           <div className="container-x mt-16">
             <Reveal>
-              <h3 className="font-serif text-3xl text-primary md:text-4xl">Gallery</h3>
+              <h3 className="heading-sub text-primary">Gallery</h3>
               {program.sessionFlow.galleryNote && (
                 <p className="mt-2 text-sm text-muted-foreground md:text-base">
                   {program.sessionFlow.galleryNote}
@@ -424,7 +425,7 @@ function ProgramDetail() {
               {program.testimonials.quotes.map((quote, i) => (
                 <Reveal key={quote} delay={0.08 + i * 0.08}>
                   <blockquote className="h-full border-l-4 border-gold pl-5">
-                    <p className="text-pull-quote text-justify">&ldquo;{quote}&rdquo;</p>
+                    <p className="text-pull-quote">&ldquo;{quote}&rdquo;</p>
                   </blockquote>
                 </Reveal>
               ))}
@@ -451,14 +452,14 @@ function ProgramDetail() {
                 title={<>{program.experience.title}</>}
               />
               <Reveal delay={0.08}>
-                <p className="mt-6 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                <p className="mt-6 text-base leading-relaxed text-foreground/85 md:text-lg">
                   {program.experience.intro}
                 </p>
               </Reveal>
               <ul className="mt-8 space-y-5">
                 {program.experience.highlights.map((item, i) => (
                   <Reveal key={item} delay={0.1 + i * 0.05}>
-                    <li className="flex gap-4 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                    <li className="flex gap-4 text-base leading-relaxed text-foreground/85 md:text-lg">
                       <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--gold)]" />
                       <span>{item}</span>
                     </li>
@@ -479,7 +480,7 @@ function ProgramDetail() {
                 title={<>{program.whyItMatters.title}</>}
               />
               <Reveal delay={0.1}>
-                <p className="mt-6 text-justify text-base leading-relaxed text-foreground/85 md:text-lg">
+                <p className="mt-6 text-base leading-relaxed text-foreground/85 md:text-lg">
                   {program.whyItMatters.body}
                 </p>
               </Reveal>
@@ -593,13 +594,13 @@ function ProgramDetail() {
                 {program.schedule && (
                   <div className="lg:relative">
                     <Reveal delay={0.1} className="lg:absolute lg:inset-0">
-                    <div className="flex h-full flex-col rounded-2xl border border-border/70 bg-card p-6 shadow-[var(--shadow-soft)]">
+                    <div className="card flex h-full flex-col">
                       <div className="flex items-center gap-3">
                         <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
                           <Calendar className="h-5 w-5" />
                         </div>
                         <div>
-                          <h3 className="font-display text-lg font-semibold text-foreground">
+                          <h3 className="heading-card text-primary">
                             {program.schedule.title}
                           </h3>
                           {program.schedule.intro && (
@@ -736,8 +737,8 @@ function ProgramDetail() {
         <div className={`container-x grid gap-10 ${program.fundraising ? "" : "lg:grid-cols-2"}`}>
           {!program.fundraising && (
             <Reveal>
-              <div className="rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
-                <h3 className="font-serif text-3xl text-primary">Volunteer with this program</h3>
+              <div className="card">
+                <h3 className="heading-sub text-primary">Volunteer with this program</h3>
                 <p className="mt-2 text-sm text-muted-foreground">We'll get back to you within a week.</p>
                 <form className="mt-6 grid gap-4" onSubmit={(e) => e.preventDefault()}>
                   <Field label="Full name"><input className="field" required /></Field>
@@ -754,7 +755,7 @@ function ProgramDetail() {
             <Reveal dir="right">
               <div className="relative h-full overflow-hidden rounded-3xl bg-primary p-10 text-primary-foreground shadow-[var(--shadow-card)]">
                 <LeafDivider />
-                <h3 className="font-serif text-4xl">Fuel this work.</h3>
+                <h3 className="heading-sub">Fuel this work.</h3>
                 <p className="mt-3 text-primary-foreground/85">
                   Every contribution goes directly into field programs — buses for school trips, saplings, field guides,
                   and educator stipends.
@@ -778,13 +779,13 @@ function ProgramDetail() {
           <SectionTitle eyebrow="Other Programs" title={<>Keep exploring.</>} />
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {other.map((p) => (
-              <Link key={p.slug} to="/programs/$slug" params={{ slug: p.slug }} className="group overflow-hidden rounded-2xl shadow-[var(--shadow-soft)]">
+              <Link key={p.slug} to="/programs/$slug" params={{ slug: p.slug }} className="group card-media">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={p.cover} alt={p.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <div className="bg-card p-5">
-                  <div className="font-serif text-xl text-primary">{p.name}</div>
-                  <div className="mt-1 text-sm text-muted-foreground">{p.short}</div>
+                  <div className="heading-card text-primary">{p.name}</div>
+                  <div className="copy-card mt-1">{p.short}</div>
                 </div>
               </Link>
             ))}
@@ -811,12 +812,12 @@ function FundraisingSupport({ fundraising }: { fundraising: NonNullable<ReturnTy
   return (
     <div className="grid gap-10 lg:grid-cols-2">
       <Reveal>
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
+        <div className="card">
           <div className="flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary">
               <Landmark className="h-6 w-6" />
             </div>
-            <h3 className="font-serif text-3xl text-primary">Donate via Bank Transfer</h3>
+            <h3 className="heading-card text-primary">Donate via Bank Transfer</h3>
           </div>
           <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <dl className="flex-1 space-y-4">
@@ -877,12 +878,12 @@ function FundraisingSupport({ fundraising }: { fundraising: NonNullable<ReturnTy
       </Reveal>
 
       <Reveal dir="right">
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
+        <div className="card">
           <div className="flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/8 text-primary">
               <BookOpen className="h-6 w-6" />
             </div>
-            <h3 className="font-serif text-3xl text-primary">For Book Donation</h3>
+            <h3 className="heading-card text-primary">For Book Donation</h3>
           </div>
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <div>

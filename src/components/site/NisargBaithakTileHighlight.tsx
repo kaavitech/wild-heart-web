@@ -26,7 +26,7 @@ export function NisargBaithakTileHighlight({
         )}
       >
         <Sparkles className={cn(compact ? "h-3 w-3" : "h-3.5 w-3.5")} />
-        {NISARG_BAITHAK_EVENT.sessionLabel}
+        {NISARG_BAITHAK_EVENT.shortLabel}
       </span>
 
       <div className="relative">

@@ -13,6 +13,40 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { NisargBaithakFloatingPromo } from "@/components/site/NisargBaithakFloatingPromo";
+import { WhatsAppButton } from "@/components/site/WhatsAppButton";
+import {
+  CONTACT,
+  DEFAULT_SHARE_IMAGE,
+  REGISTRATION,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_URLS,
+} from "@/lib/site-config";
+
+// schema.org data so Google can show the foundation's details in search results.
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/apple-touch-icon.png`,
+  image: `${SITE_URL}${DEFAULT_SHARE_IMAGE}`,
+  description:
+    "Nagpur-based non-profit connecting children with nature through school programs, nature walks, wildlife awareness and community action.",
+  email: CONTACT.email,
+  telephone: CONTACT.phoneHref.replace("tel:", ""),
+  taxID: REGISTRATION.pan,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: CONTACT.address.street,
+    addressLocality: CONTACT.address.locality,
+    postalCode: CONTACT.address.postalCode,
+    addressRegion: CONTACT.address.state,
+    addressCountry: CONTACT.address.country,
+  },
+  areaServed: "Nagpur, Maharashtra, India",
+  sameAs: Object.values(SOCIAL_URLS),
+};
 
 function NotFoundComponent() {
   return (
@@ -49,13 +83,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Wild Agile Foundation — Building Environment Conscious Generation" },
+      { title: "Wild Agile Foundation | Building an Environment-Conscious Generation" },
       { name: "description", content: "Wild Agile Foundation connects children with nature through education, wildlife awareness, and community programs." },
       { name: "author", content: "Wild Agile Foundation" },
       { property: "og:title", content: "Wild Agile Foundation" },
       { property: "og:description", content: "Building an environment-conscious generation through nature, wildlife, and education." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:image", content: `${SITE_URL}${DEFAULT_SHARE_IMAGE}` },
+      { property: "og:locale", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(ORGANIZATION_JSON_LD) },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -100,6 +140,7 @@ function RootComponent() {
       </main>
       <SiteFooter />
       <NisargBaithakFloatingPromo />
+      <WhatsAppButton />
     </QueryClientProvider>
   );
 }

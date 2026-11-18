@@ -11,8 +11,8 @@ const NAV = [
   { to: "/programs", label: "Programs" },
   { to: "/team", label: "Team" },
   { to: "/gallery", label: "Gallery" },
-  { to: "/newsletter", label: "Newsletter" },
-  { to: "/join", label: "Join" },
+  { to: "/media", label: "Media" },
+  { to: "/contact", label: "Contact & Partner" },
 ] as const;
 
 export function SiteHeader() {
@@ -43,12 +43,13 @@ export function SiteHeader() {
       <div className="container-x grid grid-cols-[auto_1fr] grid-rows-[2.5rem_5rem] gap-x-6">
         <Link
           to="/"
+          aria-label="Wild Agile Foundation, home"
           className="row-span-2 flex h-[7.5rem] min-w-0 items-center gap-2.5 sm:gap-4"
         >
           <div className="grid aspect-square h-full shrink-0 place-items-center">
             <img
               src={logo}
-              alt="Wild Agile Foundation"
+              alt=""
               className="h-full w-full object-contain p-1.5"
             />
           </div>
@@ -67,7 +68,9 @@ export function SiteHeader() {
             <a
               key={label}
               href={href}
-              aria-label={label}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Wild Agile Foundation on ${label}`}
               className="grid h-5 w-5 place-items-center transition hover:scale-110 hover:opacity-90"
             >
               <Icon />

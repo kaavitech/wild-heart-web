@@ -7,13 +7,13 @@ type InstagramStoryCardProps = {
   category?: string;
 };
 
-export function InstagramStoryCard({ reel, category = "Field Story" }: InstagramStoryCardProps) {
+export function InstagramStoryCard({ reel, category = "Reel" }: InstagramStoryCardProps) {
   const description = reel.caption || "Watch our latest moments from the field on Instagram.";
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[1.25rem] border border-border/50 bg-white transition-transform duration-500 hover:-translate-y-1 hover:shadow-[var(--shadow-soft)]">
+    <article className="group card-media flex flex-col transition-transform duration-500 hover:-translate-y-1">
       <div className="relative shrink-0 overflow-hidden">
-        <div className="h-56 w-full sm:h-60">
+        <div className="aspect-[9/16] w-full bg-black">
           <InstagramReel
             url={reel.url}
             title={reel.title}
@@ -23,10 +23,10 @@ export function InstagramStoryCard({ reel, category = "Field Story" }: Instagram
         </div>
         <span className="category-badge absolute left-3 top-3 text-[10px]">{category}</span>
       </div>
-      <div className="flex flex-col p-3.5">
-        <div className="meta-label text-[10px]">Instagram · {reel.author}</div>
-        <h3 className="mt-1.5 line-clamp-1 font-serif text-base leading-snug text-primary">{reel.title}</h3>
-        <p className="text-body mt-1 line-clamp-2 text-xs leading-relaxed">{description}</p>
+      <div className="flex flex-col p-4">
+        <div className="meta-label text-[10px]">Instagram</div>
+        <h3 className="mt-1.5 line-clamp-1 heading-card-sm text-primary">{reel.title}</h3>
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{description}</p>
         <a
           href={reel.url}
           target="_blank"
