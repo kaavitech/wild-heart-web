@@ -14,6 +14,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { NisargBaithakFloatingPromo } from "@/components/site/NisargBaithakFloatingPromo";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
+import { GoogleAnalytics } from "@/components/site/GoogleAnalytics";
 import {
   CONTACT,
   DEFAULT_SHARE_IMAGE,
@@ -141,6 +142,7 @@ function RootComponent() {
       <SiteFooter />
       <NisargBaithakFloatingPromo />
       <WhatsAppButton />
+      <GoogleAnalytics />
     </QueryClientProvider>
   );
 }

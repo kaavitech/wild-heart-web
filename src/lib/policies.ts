@@ -17,7 +17,7 @@ Wild Agile Foundation ("we", "us") is a non-profit organization based in Nagpur,
 - **Volunteers and partners:** name, email, phone, organization, and what you tell us about your interest and skills.
 - **Schools and organisers:** school or organization name, contact person, email, phone, class and student numbers.
 - **Newsletter subscribers:** email address.
-- **Website visitors:** basic technical data such as pages viewed, device and approximate location, kept in our hosting provider's logs. {{TBC: name the analytics tool if one is added}}. We do not use it to identify you personally.
+- **Website visitors:** basic technical data such as pages viewed, device, browser and approximate location (including city where available), collected via Google Analytics 4 and our hosting provider's logs. We use this only to understand how the website is used. We do not use it to identify you personally.
 - **Photos and videos** taken at programs (see "Photos" below and our [Child Safeguarding and Photo Consent Policy](/child-safeguarding)).
 
 ## Children's information
@@ -37,7 +37,7 @@ We use your information only for these purposes and only with your consent or wh
 
 ## Who we share it with
 
-- Service providers that help us run the website and operations: Cloudflare (website hosting), Brevo (newsletter emails), Google Workspace (email and documents), and WhatsApp (messages you send us). They may process data only on our instructions.
+- Service providers that help us run the website and operations: Cloudflare (website hosting), Google Analytics (website usage statistics), Brevo (newsletter emails), Google Workspace (email and documents), and WhatsApp (messages you send us). They may process data only on our instructions.
 - Our auditors and tax advisers, and government authorities where required by law (for example, donor details for income-tax filings).
 - Partner schools and government departments, only the program details they need (for example, student counts), never for marketing.
 
